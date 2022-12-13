@@ -19,13 +19,13 @@ export default function Map(props: MapProps){
         if (props.token === "") return;
         if (map.current) return; // initialize map only once
         map.current = new mapboxgl.Map({
-            attributionControl:false,
+            attributionControl:true,
             container: mapContainer.current,
             style: 'mapbox://styles/mapbox/satellite-streets-v12',
             center: [lng, lat],
             zoom: zoom
         });
-    },[props.token]);
+    },);
 
     useEffect(() => {
         if (!map.current) return; // wait for map to initialize
