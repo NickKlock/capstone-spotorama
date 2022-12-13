@@ -1,6 +1,7 @@
 package com.github.nickklock.backend.controllers;
 
 
+import com.github.nickklock.backend.services.MapboxService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -8,11 +9,15 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("api/mapbox")
 public class MapboxController {
-    private static final String accessToken =
-            "pk.eyJ1Ijoibmlja2tsb2NrIiwiYSI6ImNraXEzZDhqNDFzaWEyeXBrbm5sOTd4OTAifQ.1qnQdThQElj-xFUOc85aPQ";
+
+    private final MapboxService mapboxService;
+
+    public MapboxController(MapboxService mapboxService) {
+        this.mapboxService = mapboxService;
+    }
 
     @GetMapping
     public String getToken(){
-        return accessToken;
+        return mapboxService.getToken();
     }
 }
