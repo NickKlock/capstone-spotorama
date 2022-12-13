@@ -19,7 +19,7 @@ export default function Map(props: MapProps){
         if (props.token === "") return;
         if (map.current) return; // initialize map only once
         map.current = new mapboxgl.Map({
-            attributionControl:true,
+            attributionControl:false,
             container: mapContainer.current,
             style: 'mapbox://styles/mapbox/satellite-streets-v12',
             center: [lng, lat],
