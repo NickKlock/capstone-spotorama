@@ -1,6 +1,5 @@
 import React, {MutableRefObject, useEffect, useRef, useState} from "react";
 import mapboxgl from 'mapbox-gl'
-import "./MapContainer.css"
 import {Box} from "@mui/material";
 
 mapboxgl.accessToken = "pk.eyJ1Ijoibmlja2tsb2NrIiwiYSI6ImNraXEzZDhqNDFzaWEyeXBrbm5sOTd4OTAifQ.1qnQdThQElj-xFUOc85aPQ"
@@ -14,7 +13,7 @@ export default function Map(){
     useEffect(() => {
         if (map.current) return; // initialize map only once
         map.current = new mapboxgl.Map({
-            attributionControl:true,
+            attributionControl:false,
             container: mapContainer.current,
             style: 'mapbox://styles/mapbox/satellite-streets-v12',
             center: [lng, lat],
@@ -35,8 +34,8 @@ export default function Map(){
     });
 
     return(
-        <Box>
-            <Box ref={mapContainer} />
+        <Box height={"100vh"} display={"flex"} flexDirection={"column"}>
+            <Box ref={mapContainer} flex={1}/>
         </Box>
     )
 }
