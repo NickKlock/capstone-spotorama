@@ -2,8 +2,13 @@ import React, {MutableRefObject, useEffect, useRef, useState} from "react";
 import mapboxgl from 'mapbox-gl'
 import {Box} from "@mui/material";
 
-mapboxgl.accessToken = "pk.eyJ1Ijoibmlja2tsb2NrIiwiYSI6ImNraXEzZDhqNDFzaWEyeXBrbm5sOTd4OTAifQ.1qnQdThQElj-xFUOc85aPQ"
-export default function Map(){
+
+type MapProps = {
+    token:string
+}
+export default function Map(props: MapProps){
+    mapboxgl.accessToken = props.token
+
     const mapContainer= useRef<HTMLDivElement| string>("") as MutableRefObject<HTMLDivElement>;
     const map = useRef<mapboxgl.Map>();
     const [lng, setLng] = useState(-70.9);
@@ -11,6 +16,7 @@ export default function Map(){
     const [zoom, setZoom] = useState(9);
 
     useEffect(() => {
+        if (props.token === "") return;
         if (map.current) return; // initialize map only once
         map.current = new mapboxgl.Map({
             attributionControl:false,
@@ -19,7 +25,7 @@ export default function Map(){
             center: [lng, lat],
             zoom: zoom
         });
-    });
+    },[props.token]);
 
     useEffect(() => {
         if (!map.current) return; // wait for map to initialize
