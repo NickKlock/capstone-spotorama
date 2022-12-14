@@ -7,31 +7,24 @@ import {
 import {beachtypes, disciplines, wavetypes} from "../statics/Statics";
 import {useState} from "react";
 import CustomSelect from "./ui/CustomSelect";
+import {Spot} from "../models/Spot";
 
+export const emptySpot:Spot = {
+    id:"",
+    name:"empty",
+    disciplines:[],
+    wavetypes:[],
+    beachtypes:[],
+    experiencesLevel:[],
+    hazards:[],
+    bestMonths:[],
+    bestDirections:[],
+}
 export default function AddSpot() {
-    const [selectedDisciplines, setSelectedDisciplines] = useState<string[]>([]);
-    const [selectedWaveType, setSelectedWaveType] = useState<string[]>([]);
-    const [selectedBeachType, setSelectedBeachType] = useState<string[]>([]);
+    const [newSpot, setNewSpot] = useState<Spot>(emptySpot);
 
-    function handleDisciplineSelectChange(event: SelectChangeEvent<string[]>) {
-        const value = event.target.value
-        setSelectedDisciplines(typeof value === "string" ?
-            value.split(",")
-            : value)
-    }
-
-    function handleWaveTypeChange(event: SelectChangeEvent<string[]>) {
-        const value = event.target.value
-        setSelectedWaveType(typeof value === "string" ?
-            value.split(",")
-            : value)
-    }
-
-    function handleBeachTypeChange(event: SelectChangeEvent<string[]>) {
-        const value = event.target.value
-        setSelectedBeachType(typeof value === "string" ?
-            value.split(",")
-            : value)
+    function handleInputChange(event: SelectChangeEvent<string[] | string>){
+        setNewSpot({...newSpot, [event.target.name]: event.target.value})
     }
 
     return (
@@ -54,24 +47,27 @@ export default function AddSpot() {
                 <TextField id={"name"} type={"text"} label={"Spotname"}></TextField>
 
                 <CustomSelect
+                    fieldName={"disciplines"}
                     label={"Disciplines"}
-                    selectedValue={selectedDisciplines}
+                    selectedValue={newSpot.disciplines}
                     data={disciplines}
-                    handleSelectChange={handleDisciplineSelectChange}
+                    handleSelectChange={handleInputChange}
                 />
 
                 <CustomSelect
-                    selectedValue={selectedWaveType}
+                    fieldName={"wavetypes"}
+                    selectedValue={newSpot.wavetypes}
                     data={wavetypes}
                     label={"Wavetype"}
-                    handleSelectChange={handleWaveTypeChange}
+                    handleSelectChange={handleInputChange}
                 />
 
                 <CustomSelect
-                    selectedValue={selectedBeachType}
+                    fieldName={"beachtypes"}
+                    selectedValue={newSpot.beachtypes}
                     data={beachtypes}
                     label={"Beach"}
-                    handleSelectChange={handleBeachTypeChange}
+                    handleSelectChange={handleInputChange}
                 />
 
 

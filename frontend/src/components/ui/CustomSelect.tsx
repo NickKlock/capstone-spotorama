@@ -4,6 +4,7 @@ type CustomSelectProps = {
     selectedValue: string[]
     data: string[]
     label:string
+    fieldName:string
     handleSelectChange(event: SelectChangeEvent<string[]>): void;
 }
 export default function CustomSelect(props: CustomSelectProps) {
@@ -19,7 +20,7 @@ export default function CustomSelect(props: CustomSelectProps) {
             <InputLabel>{props.label}</InputLabel>
 
             <Select
-                name={props.label}
+                name={props.fieldName}
                 multiple={true}
                 input={<OutlinedInput label={props.label}/>}
                 value={props.selectedValue}
