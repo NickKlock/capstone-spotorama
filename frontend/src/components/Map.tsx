@@ -1,6 +1,7 @@
 import React, {MutableRefObject, useEffect, useRef, useState} from "react";
 import mapboxgl from 'mapbox-gl'
-import {Box} from "@mui/material";
+import {Box, Fab} from "@mui/material";
+import {Add} from "@mui/icons-material";
 
 
 type MapProps = {
@@ -49,7 +50,11 @@ export default function Map(props: MapProps){
 
     return(
         <Box height={"100vh"} display={"flex"} flexDirection={"column"}>
-            <Box ref={mapContainer} flex={1}/>
+            <Box ref={mapContainer} flex={1}>
+                <Fab color={"primary"} sx={{right:20,position:'fixed',bottom:20}}>
+                    <Add/>
+                </Fab>
+            </Box>
         </Box>
     )
 }
