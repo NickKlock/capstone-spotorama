@@ -5,15 +5,16 @@ import {Box} from "@mui/material";
 
 type MapProps = {
     token:string
+
 }
 export default function Map(props: MapProps){
     mapboxgl.accessToken = props.token
 
     const mapContainer= useRef<HTMLDivElement| string>("") as MutableRefObject<HTMLDivElement>;
     const map = useRef<mapboxgl.Map>();
-    const [lng, setLng] = useState(-70.9);
-    const [lat, setLat] = useState(42.35);
-    const [zoom, setZoom] = useState(9);
+    const [lng, setLng] = useState(6.3398);
+    const [lat, setLat] = useState(50.9988);
+    const [zoom, setZoom] = useState(3.5);
 
     useEffect(() => {
         if (props.token === "") return;
@@ -23,9 +24,17 @@ export default function Map(props: MapProps){
             container: mapContainer.current,
             style: 'mapbox://styles/mapbox/satellite-streets-v12',
             center: [lng, lat],
-            zoom: zoom
+            zoom: zoom,
+            minZoom:2.3
         });
-    },);
+        map.current?.addControl(new mapboxgl.GeolocateControl({
+            positionOptions:{
+                enableHighAccuracy:true
+            },
+            showAccuracyCircle: true
+
+        }))
+    });
 
     useEffect(() => {
         if (!map.current) return; // wait for map to initialize
@@ -35,7 +44,6 @@ export default function Map(props: MapProps){
                 setLat(parseFloat(map.current?.getCenter().lat.toFixed(4)));
                 setZoom(parseFloat(map.current?.getZoom().toFixed(2)));
             }
-
         });
     });
 

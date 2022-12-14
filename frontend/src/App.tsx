@@ -1,6 +1,6 @@
 import React from 'react';
 import Map from "./components/Map";
-import useAccessToken from "./useAccessToken";
+import useAccessToken from "./hooks/useAccessToken";
 
 function App() {
 
