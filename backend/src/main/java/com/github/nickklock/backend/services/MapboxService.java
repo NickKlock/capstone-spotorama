@@ -5,7 +5,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class MapboxService {
-    @Value("${mapbox.token}" )
+    @Value("${Mapbox_Token}" )
     private String token;
 
     public String getToken(){
