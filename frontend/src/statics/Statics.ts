@@ -19,19 +19,19 @@ export const beachtypes:string[]= [
     "grass"
 ]
 
-export const experiencelevel:string[]= [
+export const experiencesLevel:string[]= [
     "beginner",
     "advanced",
     "expert"
 ]
 
-export const hazzards:string[]= [
+export const hazards:string[]= [
     "currents",
     "rocks",
     "reef"
 ]
 
-export const bestmonths:string[]= [
+export const bestMonths:string[]= [
     "January",
     "February",
     "March",
