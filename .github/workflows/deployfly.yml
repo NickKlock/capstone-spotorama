@@ -47,7 +47,7 @@ jobs:
     needs: build-backend
     environment:
       name: production-spotorama.io
-      url: https://muc-java-22-2-team-pause.fly.dev
+      url: https://sptorama.fly.dev
     env:
       FLY_API_TOKEN: ${{ secrets.FLY_API_KEY }}
     steps:
