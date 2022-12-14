@@ -1,4 +1,4 @@
-import {Box, Fab} from "@mui/material";
+import {Box} from "@mui/material";
 import Map from "./Map";
 import {useNavigate} from "react-router-dom";
 
