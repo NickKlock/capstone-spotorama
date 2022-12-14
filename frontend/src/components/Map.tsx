@@ -5,13 +5,13 @@ import {Add} from "@mui/icons-material";
 
 
 type MapProps = {
-    token:string
-
+    token: string
+    handleAddButtonClick(): void;
 }
-export default function Map(props: MapProps){
+export default function Map(props: MapProps) {
     mapboxgl.accessToken = props.token
 
-    const mapContainer= useRef<HTMLDivElement| string>("") as MutableRefObject<HTMLDivElement>;
+    const mapContainer = useRef<HTMLDivElement | string>("") as MutableRefObject<HTMLDivElement>;
     const map = useRef<mapboxgl.Map>();
     const [lng, setLng] = useState(6.3398);
     const [lat, setLat] = useState(50.9988);
@@ -21,16 +21,16 @@ export default function Map(props: MapProps){
         if (props.token === "") return;
         if (map.current) return; // initialize map only once
         map.current = new mapboxgl.Map({
-            attributionControl:false,
+            attributionControl: false,
             container: mapContainer.current,
             style: 'mapbox://styles/mapbox/satellite-streets-v12',
             center: [lng, lat],
             zoom: zoom,
-            minZoom:2.3
+            minZoom: 2.3
         });
         map.current?.addControl(new mapboxgl.GeolocateControl({
-            positionOptions:{
-                enableHighAccuracy:true
+            positionOptions: {
+                enableHighAccuracy: true
             },
             showAccuracyCircle: true
 
@@ -40,7 +40,7 @@ export default function Map(props: MapProps){
     useEffect(() => {
         if (!map.current) return; // wait for map to initialize
         map.current.on('move', () => {
-            if (map.current){
+            if (map.current) {
                 setLng(parseFloat(map.current?.getCenter().lng.toFixed(4)));
                 setLat(parseFloat(map.current?.getCenter().lat.toFixed(4)));
                 setZoom(parseFloat(map.current?.getZoom().toFixed(2)));
@@ -48,10 +48,19 @@ export default function Map(props: MapProps){
         });
     });
 
-    return(
+    function handleAddButtonClick() {
+        props.handleAddButtonClick()
+    }
+
+    return (
         <Box height={"100vh"} display={"flex"} flexDirection={"column"}>
             <Box ref={mapContainer} flex={1}>
-                <Fab color={"primary"} sx={{right:20,position:'fixed',bottom:20}}>
+                <Fab onClick={handleAddButtonClick}
+                    color={"primary"}
+                    sx={{
+                        right: 20,
+                        position: 'fixed',
+                        bottom: 20}}>
                     <Add/>
                 </Fab>
             </Box>
