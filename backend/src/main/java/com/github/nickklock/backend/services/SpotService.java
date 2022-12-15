@@ -16,10 +16,10 @@ public class SpotService {
     }
 
     public Spot add(Spot newSpot) {
-        Spot spotWithId = new Spot(idService.generateId(), newSpot.name(), newSpot.disciplines(), newSpot.wavetypes(),
-                newSpot.beachtypes(), newSpot.experiencesLevel(), newSpot.hazards(), newSpot.bestMonths(),
+        Spot spotWithId = new Spot(idService.generateId(), newSpot.name(), newSpot.disciplines(), newSpot.waveTypes(),
+                newSpot.beachTypes(), newSpot.experiencesLevel(), newSpot.hazards(), newSpot.bestMonths(),
                 newSpot.bestDirections(), newSpot.waterTemperature(),
-                newSpot.parkingSpace(), newSpot.position());
+                newSpot.parkingSpace(), newSpot.position(), newSpot.restrooms());
 
         return spotRepo.save(spotWithId);
     }

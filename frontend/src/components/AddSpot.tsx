@@ -31,15 +31,16 @@ const emptySpot: Spot = {
     id: "",
     name: "empty",
     disciplines: [],
-    wavetypes: [],
-    beachtypes: [],
+    waveTypes: [],
+    beachTypes: [],
     experiencesLevel: [],
     hazards: [],
     bestMonths: [],
     bestDirections: [],
     waterTemperature: [],
     parkingSpace: 0,
-    location: {lat: 0, lng: 0}
+    location: {lat: 0, lng: 0},
+    restrooms:"no"
 }
 
 const parkingSliderMarks = [
@@ -67,6 +68,7 @@ type AddSpotProps ={
 export default function AddSpot(props:AddSpotProps) {
     const [newSpot, setNewSpot] = useState<Spot>(emptySpot);
 
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     useEffect(()=>{
         setNewSpot({...newSpot, location:props.pickedLocation})
     })
@@ -151,7 +153,7 @@ export default function AddSpot(props:AddSpotProps) {
                     <ListItem>
                         <CustomSelect
                             fieldName={"wavetypes"}
-                            selectedValue={newSpot.wavetypes}
+                            selectedValue={newSpot.waveTypes}
                             data={wavetypes}
                             label={"Wavetype"}
                             handleSelectChange={handleInputChange}
@@ -161,7 +163,7 @@ export default function AddSpot(props:AddSpotProps) {
                     <ListItem>
                         <CustomSelect
                             fieldName={"beachtypes"}
-                            selectedValue={newSpot.beachtypes}
+                            selectedValue={newSpot.beachTypes}
                             data={beachtypes}
                             label={"Beach"}
                             handleSelectChange={handleInputChange}

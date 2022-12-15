@@ -38,7 +38,8 @@ class SpotControllerTest {
                         "bestDirections":["N"],
                         "waterTemperature":["0-6"],
                         "parkingSpace":0,
-                        "location":{"lat":54.7687425,"lng":9.9613969}
+                        "location":{"lat":54.7687425,"lng":9.9613969},
+                        "restrooms":"Yes"
                         }
                         """)).andExpect(status().isCreated());
     }

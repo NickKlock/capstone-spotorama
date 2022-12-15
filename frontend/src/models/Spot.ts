@@ -14,8 +14,8 @@ export type Spot= {
     id:string
     name:string
     disciplines:Disciplines[]
-    wavetypes:WaveType[]
-    beachtypes:BeachType[]
+    waveTypes:WaveType[]
+    beachTypes:BeachType[]
     experiencesLevel:ExperiencesLevel[]
     hazards:Hazard[]
     bestMonths:BestMonth[]
@@ -23,4 +23,5 @@ export type Spot= {
     waterTemperature: WaterTemperature[]
     parkingSpace: 0|1|2
     location:Position
+    restrooms:string
 }
