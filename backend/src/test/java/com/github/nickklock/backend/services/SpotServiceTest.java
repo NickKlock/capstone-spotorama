@@ -21,7 +21,7 @@ class SpotServiceTest {
         Spot givenSpot = new Spot("0", "test", new ArrayList<>(),
                 new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(),
                 new ArrayList<>(), new ArrayList<>(), new ArrayList<>(),
-                1, new Position(0, 0));
+                1, new Position(0, 0),"Yes");
 
         when(spotRepo.save(givenSpot)).thenReturn(givenSpot);
         when(idService.generateId()).thenReturn("0");
