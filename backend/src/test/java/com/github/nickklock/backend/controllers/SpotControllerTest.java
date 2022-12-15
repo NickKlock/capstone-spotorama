@@ -23,7 +23,7 @@ class SpotControllerTest {
     private MockMvc mvc;
 
     @Test
-    void addSpot() throws Exception {
+    void addSpot_expect_status_created() throws Exception {
         mvc.perform(post(endPoint)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content("""
