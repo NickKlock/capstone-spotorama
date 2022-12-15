@@ -31,7 +31,7 @@ export const hazards:string[]= [
     "reef"
 ]
 
-export const bestMonths:string[]= [
+export const months:string[]= [
     "January",
     "February",
     "March",
@@ -46,7 +46,7 @@ export const bestMonths:string[]= [
     "December",
 ]
 
-export const bestdirections:string[]= [
+export const windDirections:string[]= [
     "N",
     "S",
     "W",
@@ -55,4 +55,11 @@ export const bestdirections:string[]= [
     "NE",
     "SW",
     "SE"
+]
+export const waterTemperatures:string[]= [
+    "0-6",
+    "6-12",
+    "12-18",
+    "18-24",
+    "24+"
 ]
