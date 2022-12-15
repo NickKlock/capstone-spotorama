@@ -9,7 +9,6 @@ type MapProps = {
 }
 export default function Map(props: MapProps) {
     mapboxgl.accessToken = props.token
-    console.log(props.choosePositionMarker)
     const mapContainer = useRef<HTMLDivElement | string>("") as MutableRefObject<HTMLDivElement>;
     const map = useRef<mapboxgl.Map>();
     const [lng, setLng] = useState(6.3398);
@@ -39,7 +38,6 @@ export default function Map(props: MapProps) {
             showAccuracyCircle: true
 
         }))
-        console.log("in 1st effect")
     });
 
     useEffect(() => {
@@ -54,8 +52,6 @@ export default function Map(props: MapProps) {
                 }
             }
         });
-        console.log("in 2nd effect")
-
     });
 
 
