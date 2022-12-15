@@ -56,10 +56,10 @@ export default function Homepage(props: HomepageProps) {
     return (
         <Box>
             <Map choosePositionMarker={centerMarker} token={props.token}/>
-            {!hidePickLocation && <Fab variant={"extended"} hidden={true} onClick={handleChoosePosition} sx={{
-                right: 20,
+            {!hidePickLocation && <Fab color={"success"} variant={"extended"} hidden={true} onClick={handleChoosePosition} sx={{
+                left: 20,
                 position: 'fixed',
-                bottom: 80
+                bottom: 20
             }} >
                 <WhereToVote sx={{mr:1}}/>
                 Pick location
