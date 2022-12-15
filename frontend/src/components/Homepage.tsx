@@ -1,19 +1,76 @@
-import {Box} from "@mui/material";
+import {Box, Drawer, Fab, SpeedDial, SpeedDialAction} from "@mui/material";
 import Map from "./Map";
-import {useNavigate} from "react-router-dom";
+import {Add, AddLocation, MyLocation} from "@mui/icons-material";
+import React, {useState} from "react";
+import AddSpot from "./AddSpot";
+import {Position} from "../models/Position";
+import mapboxgl from "mapbox-gl";
 
 type HomepageProps = {
     token: string
 }
 export default function Homepage(props: HomepageProps) {
-    const navigate = useNavigate()
-    function handleAddButtonClick() {
-        navigate("/add-spot")
+    const [openDrawer, setOpenDrawer] = useState<boolean>(false)
+    const [pickedLocation, setPickedLocation] = useState<Position>({lat: 0, lng: 0})
+    const [centerMarker, setCenterMarker] = useState<mapboxgl.Marker>()
+    function handleCurrentPosition() {
+        navigator.geolocation.getCurrentPosition((position) => {
+            setPickedLocation({...pickedLocation, lat: position.coords.latitude, lng: position.coords.longitude})
+            setOpenDrawer(true)
+        })
+    }
+
+    function handleDrawerClose() {
+        setOpenDrawer(false)
+    }
+
+    function handleSaveSpot() {
+        //apiCall
+        //closeDrawer
+        //delete marker
+
+    }
+
+    function handleChoosePosition() {
+
+        if (!centerMarker){
+            setCenterMarker(new mapboxgl.Marker().setLngLat([0,0]))
+        }
     }
 
     return (
         <Box>
-            <Map handleAddButtonClick={handleAddButtonClick} token={props.token}/>
+            <Map choosePositionMarker={centerMarker} token={props.token}/>
+            <Fab hidden={true}></Fab>
+            <SpeedDial
+                ariaLabel={"addSpot"}
+                sx={{
+                    right: 20,
+                    position: 'fixed',
+                    bottom: 20
+                }}
+                icon={<Add/>}
+            >
+                <SpeedDialAction key={"currentpostion"}
+                                 icon={<MyLocation/>}
+                                 tooltipOpen={true}
+                                 tooltipTitle={"Current position"}
+                                 onClick={handleCurrentPosition}
+                />
+                <SpeedDialAction key={"choosepostion"}
+                                 icon={<AddLocation/>}
+                                 tooltipOpen={true}
+                                 tooltipTitle={"Pick a position"}
+                                 onClick={handleChoosePosition}
+                />
+            </SpeedDial>
+
+            <Drawer
+                anchor={"bottom"}
+                open={openDrawer}>
+                <AddSpot pickedLocation={pickedLocation} handleCancel={handleDrawerClose} handleSave={handleSaveSpot}/>
+            </Drawer>
+
         </Box>
     )
 }

@@ -1,16 +1,15 @@
 import React, {MutableRefObject, useEffect, useRef, useState} from "react";
 import mapboxgl from 'mapbox-gl'
-import {Box, Fab} from "@mui/material";
-import {Add} from "@mui/icons-material";
+import {Box} from "@mui/material";
 
 
 type MapProps = {
     token: string
-    handleAddButtonClick(): void;
+    choosePositionMarker:mapboxgl.Marker | undefined
 }
 export default function Map(props: MapProps) {
     mapboxgl.accessToken = props.token
-
+    console.log(props.choosePositionMarker)
     const mapContainer = useRef<HTMLDivElement | string>("") as MutableRefObject<HTMLDivElement>;
     const map = useRef<mapboxgl.Map>();
     const [lng, setLng] = useState(6.3398);
@@ -19,6 +18,11 @@ export default function Map(props: MapProps) {
 
     useEffect(() => {
         if (props.token === "") return;
+
+        if (props.choosePositionMarker && map.current){
+            props.choosePositionMarker.addTo(map.current)
+        }
+
         if (map.current) return; // initialize map only once
         map.current = new mapboxgl.Map({
             attributionControl: false,
@@ -35,6 +39,7 @@ export default function Map(props: MapProps) {
             showAccuracyCircle: true
 
         }))
+        console.log("in 1st effect")
     });
 
     useEffect(() => {
@@ -44,26 +49,19 @@ export default function Map(props: MapProps) {
                 setLng(parseFloat(map.current?.getCenter().lng.toFixed(4)));
                 setLat(parseFloat(map.current?.getCenter().lat.toFixed(4)));
                 setZoom(parseFloat(map.current?.getZoom().toFixed(2)));
+                if (props.choosePositionMarker){
+                    props.choosePositionMarker.setLngLat(map.current?.getCenter())
+                }
             }
         });
+        console.log("in 2nd effect")
+
     });
 
-    function handleAddButtonClick() {
-        props.handleAddButtonClick()
-    }
 
     return (
         <Box height={"100vh"} display={"flex"} flexDirection={"column"}>
-            <Box ref={mapContainer} flex={1}>
-                <Fab onClick={handleAddButtonClick}
-                    color={"primary"}
-                    sx={{
-                        right: 20,
-                        position: 'fixed',
-                        bottom: 20}}>
-                    <Add/>
-                </Fab>
-            </Box>
+            <Box ref={mapContainer} flex={1}/>
         </Box>
     )
 }
