@@ -27,19 +27,19 @@ class SpotControllerTest {
         mvc.perform(post(endPoint)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content("""
-                        {"id":"1",
-                        "name":"test",
-                        "disciplines":["kitesurfing"],
-                        "wavetypes":["chop"],
-                        "beachtypes":["sand"],
-                        "experiencesLevel":["beginner"],
-                        "hazards":["currents"],
-                        "bestMonths":["May"],
+                        {"id":"",
+                        "name":"a",
+                        "disciplines":["KITESURFING"],
+                        "waveTypes":["CHOP"],
+                        "beachTypes":["SAND"],
+                        "experiencesLevel":["BEGINNER"],
+                        "hazards":["CURRENTS"],
+                        "bestMonths":["JUNE"],
                         "bestDirections":["N"],
-                        "waterTemperature":["0-6"],
+                        "waterTemperature":["COLD"],
                         "parkingSpace":0,
-                        "location":{"lat":54.7687425,"lng":9.9613969},
-                        "restrooms":"Yes"
+                        "position":{"lat":54.769085918659925,"lng":9.964255101381013},
+                        "restrooms":"yes"
                         }
                         """)).andExpect(status().isCreated());
     }
