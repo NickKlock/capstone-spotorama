@@ -2,6 +2,8 @@ import React, {MutableRefObject, useEffect, useRef, useState} from "react";
 import mapboxgl from 'mapbox-gl'
 import {Box} from "@mui/material";
 import {Spot} from "../models/Spot";
+import SpotPopover from "./SpotPopover";
+import {createRoot} from "react-dom/client";
 
 
 type MapProps = {
@@ -61,8 +63,12 @@ export default function Map(props: MapProps) {
         if (props.spots && props.spots.length > 0){
             props.spots.forEach((spot) => {
                 if (map.current){
+                    const placeholder= document.createElement("div")
+                    const root = createRoot(placeholder)
+                    root.render(<SpotPopover spot={spot}/>)
+
                     const spotPopup = new mapboxgl.Popup({offset: 25})
-                        .setText(spot.name)
+                        .setDOMContent(placeholder)
 
                     new mapboxgl.Marker()
                         .setPopup(spotPopup)
