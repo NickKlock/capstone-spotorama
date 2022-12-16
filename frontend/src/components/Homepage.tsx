@@ -7,6 +7,7 @@ import {Position} from "../models/Position";
 import mapboxgl from "mapbox-gl";
 import {Spot} from "../models/Spot";
 import {addSpot} from "../api-calls";
+import useSpots from "../hooks/useSpots";
 
 type HomepageProps = {
     mapboxToken: string
@@ -16,6 +17,7 @@ export default function Homepage(props: HomepageProps) {
     const [pickedLocation, setPickedLocation] = useState<Position>({lat: 0, lng: 0})
     const [centerMarker, setCenterMarker] = useState<mapboxgl.Marker>()
     const [hidePickLocation, setHidePickLocation] = useState<boolean>(true)
+    const {spots} = useSpots();
 
     function handleCurrentPosition() {
         navigator.geolocation.getCurrentPosition((position) => {
@@ -54,7 +56,7 @@ export default function Homepage(props: HomepageProps) {
 
     return (
         <Box>
-            <Map centerMarker={centerMarker} token={props.mapboxToken}/>
+            <Map centerMarker={centerMarker} token={props.mapboxToken} spots={spots}/>
             {!hidePickLocation &&
                 <Fab color={"success"} variant={"extended"} hidden={true} onClick={handleChoosePosition} sx={{
                     left: 20,
