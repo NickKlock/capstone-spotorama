@@ -12,3 +12,9 @@ export function addSpot(newSpot: Spot){
         .then(response => response.data)
         .catch(console.error)
 }
+
+export function getAllSpots(){
+    return axios.get("api/spots")
+        .then(response => response.data)
+        .catch(console.error)
+}
