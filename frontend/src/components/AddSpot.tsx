@@ -152,7 +152,7 @@ export default function AddSpot(props:AddSpotProps) {
 
                     <ListItem>
                         <CustomSelect
-                            fieldName={"wavetypes"}
+                            fieldName={"waveTypes"}
                             selectedValue={newSpot.waveTypes}
                             data={wavetypes}
                             label={"Wavetype"}
@@ -162,7 +162,7 @@ export default function AddSpot(props:AddSpotProps) {
 
                     <ListItem>
                         <CustomSelect
-                            fieldName={"beachtypes"}
+                            fieldName={"beachTypes"}
                             selectedValue={newSpot.beachTypes}
                             data={beachtypes}
                             label={"Beach"}
