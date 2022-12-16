@@ -1,13 +1,18 @@
 import {useEffect, useState} from "react";
 import {Spot} from "../models/Spot";
-import {getAllSpots} from "../api-calls";
+import {getAllSpots, postSpot} from "../api-calls";
 
-export default function useSpots(){
-    const [spots,setSpots] = useState<Spot[]>([])
+export default function useSpots() {
+    const [spots, setSpots] = useState<Spot[]>([])
 
-    useEffect(()=>{
+    useEffect(() => {
         getAllSpots().then(data => setSpots(data))
-    },[])
+    }, [])
 
-    return {spots}
+    function addSpot(newSpot: Spot):Promise<void> {
+        return postSpot(newSpot)
+            .then(response => setSpots([...spots, response]))
+    }
+
+    return {spots,addSpot}
 }
