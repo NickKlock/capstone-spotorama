@@ -9,7 +9,9 @@ import org.springframework.http.MediaType;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.web.servlet.MockMvc;
 
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
@@ -42,5 +44,10 @@ class SpotControllerTest {
                         "restrooms":"yes"
                         }
                         """)).andExpect(status().isCreated());
+    }
+
+    @Test
+    void listSpots_expect_emptyList() throws Exception {
+        mvc.perform(get(endPoint)).andExpect(status().isOk()).andExpect(content().json("[]"));
     }
 }
