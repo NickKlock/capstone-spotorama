@@ -1,6 +1,7 @@
 package com.github.nickklock.backend.controllers;
 
 import com.github.nickklock.backend.models.Spot;
+import com.github.nickklock.backend.models.SpotRequest;
 import com.github.nickklock.backend.services.SpotService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,7 +21,7 @@ public class SpotController {
     }
 
     @PostMapping
-    public ResponseEntity<Spot> addSpot(@RequestBody Spot newSpot){
+    public ResponseEntity<Spot> addSpot(@RequestBody SpotRequest newSpot){
         return new ResponseEntity<>( spotService.add(newSpot), HttpStatus.CREATED);
     }
 }
