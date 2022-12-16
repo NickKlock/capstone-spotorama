@@ -23,10 +23,10 @@ export default function CustomSelect(props: CustomSelectProps) {
                 name={props.fieldName}
                 multiple={true}
                 input={<OutlinedInput label={props.label}/>}
-                value={props.selectedValue}
+                value={props.selectedValue.map(value => value.toLocaleLowerCase("de-DE"))}
                 onChange={handleSelectChange}
                 renderValue={(selected: string[]) => (
-                    <Box sx={{display: 'flex', flexWrap: 'wrap', gap: 0.5}}>
+                    <Box display={"flex"} flexWrap={"wrap"} gap={0.5}>
                         {selected.map((value) => (
                             <Chip key={value} label={value}/>
                         ))}
@@ -38,7 +38,7 @@ export default function CustomSelect(props: CustomSelectProps) {
                         key={item}
                         value={item}
                     >
-                        {item}
+                        {item.toLocaleLowerCase("de-DE")}
                     </MenuItem>
                 ))}
             </Select>

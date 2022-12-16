@@ -20,28 +20,13 @@ import {
     hazards,
     wavetypes,
     windDirections, waterTemperatures
-} from "../statics/SelectOptions";
+} from "../models/SelectOptions";
 
-import {ChangeEvent, useEffect, useState} from "react";
+import {ChangeEvent, useState} from "react";
 import CustomSelect from "./ui/CustomSelect";
 import {Spot} from "../models/Spot";
 import {Position} from "../models/Position";
 
-const emptySpot: Spot = {
-    id: "",
-    name: "empty",
-    disciplines: [],
-    waveTypes: [],
-    beachTypes: [],
-    experiencesLevel: [],
-    hazards: [],
-    bestMonths: [],
-    bestDirections: [],
-    waterTemperature: [],
-    parkingSpace: 0,
-    location: {lat: 0, lng: 0},
-    restrooms:"no"
-}
 
 const parkingSliderMarks = [
     {
@@ -58,35 +43,48 @@ const parkingSliderMarks = [
     }
 ]
 
-type AddSpotProps ={
-    pickedLocation:Position
-    handleCancel():void
-    handleSave(newSpot: Spot):void
+type AddSpotProps = {
+    pickedLocation: Position
+    handleCancel(): void
+    handleSave(newSpot: Spot): void
 }
 
-export default function AddSpot(props:AddSpotProps) {
-    const [newSpot, setNewSpot] = useState<Spot>(emptySpot);
+export default function AddSpot(props: AddSpotProps) {
+    const initialSpot: Spot = {
+        id: "",
+        name: "empty",
+        disciplines: [],
+        waveTypes: [],
+        beachTypes: [],
+        experiencesLevel: [],
+        hazards: [],
+        bestMonths: [],
+        bestDirections: [],
+        waterTemperature: [],
+        parkingSpace: "FEW",
+        position: props.pickedLocation,
+        restrooms: "no"
+    }
 
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    useEffect(()=>{
-        setNewSpot({...newSpot, location:props.pickedLocation})
-    })
+    const [newSpot, setNewSpot] = useState<Spot>(initialSpot);
 
+    // The final Event type comes from the mui Slider , and it's not compatible with the other events
     function handleInputChange(event: SelectChangeEvent<string[]>
         | ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
         | Event) {
         if (event.target) {
             // There is actually an event.target no matter what event gets fired, therefore we ignore es-lint in this case
-            // This comes from the mui Slider has an Event called Event, and it's not compatible with the other events
-            // @ts-ignore
-            setNewSpot({...newSpot, [event.target.name]: event.target.value})
+                // @ts-ignore
+                setNewSpot({...newSpot, [event.target.name]: event.target.value})
         }
 
     }
 
     function handleSave() {
+        console.log(JSON.stringify(newSpot),newSpot)
         props.handleSave(newSpot)
     }
+
 
     function handleCancel() {
         props.handleCancel();
