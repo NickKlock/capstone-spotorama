@@ -5,6 +5,8 @@ import React, {useState} from "react";
 import AddSpot from "./AddSpot";
 import {Position} from "../models/Position";
 import mapboxgl from "mapbox-gl";
+import {Spot} from "../models/Spot";
+import {addSpot} from "../api-calls";
 
 type HomepageProps = {
     token: string
@@ -14,6 +16,7 @@ export default function Homepage(props: HomepageProps) {
     const [pickedLocation, setPickedLocation] = useState<Position>({lat: 0, lng: 0})
     const [centerMarker, setCenterMarker] = useState<mapboxgl.Marker>()
     const [hidePickLocation, setHidePickLocation] = useState(true)
+
     function handleCurrentPosition() {
         navigator.geolocation.getCurrentPosition((position) => {
             setPickedLocation({...pickedLocation, lat: position.coords.latitude, lng: position.coords.longitude})
@@ -25,30 +28,29 @@ export default function Homepage(props: HomepageProps) {
         setOpenDrawer(false)
     }
 
-    function handleSaveSpot() {
+    function handleSaveSpot(newSpot: Spot) {
         //apiCall
-
-        //closeDrawer
-        setOpenDrawer(false)
-        setHidePickLocation(true)
-        //delete marker
-        centerMarker?.remove()
-        setCenterMarker(undefined)
-
-
+        addSpot(newSpot).then(() => {
+            //closeDrawer
+            setOpenDrawer(false)
+            setHidePickLocation(true)
+            //delete marker
+            centerMarker?.remove()
+            setCenterMarker(undefined)
+        })
     }
 
     function handleCreateCenterMarker() {
-        if (!centerMarker){
-            setCenterMarker(new mapboxgl.Marker().setLngLat([0,0]))
+        if (!centerMarker) {
+            setCenterMarker(new mapboxgl.Marker().setLngLat([0, 0]))
             setHidePickLocation(false)
         }
     }
 
     function handleChoosePosition() {
-        if (centerMarker?.getLngLat()){
+        if (centerMarker?.getLngLat()) {
             setPickedLocation(
-                {...pickedLocation, lat: centerMarker?.getLngLat().lat, lng:centerMarker?.getLngLat().lng})
+                {...pickedLocation, lat: centerMarker?.getLngLat().lat, lng: centerMarker?.getLngLat().lng})
             setOpenDrawer(true)
         }
     }
@@ -56,13 +58,14 @@ export default function Homepage(props: HomepageProps) {
     return (
         <Box>
             <Map choosePositionMarker={centerMarker} token={props.token}/>
-            {!hidePickLocation && <Fab color={"success"} variant={"extended"} hidden={true} onClick={handleChoosePosition} sx={{
-                left: 20,
-                position: 'fixed',
-                bottom: 20
-            }} >
-                <WhereToVote sx={{mr:1}}/>
-                Pick location
+            {!hidePickLocation &&
+                <Fab color={"success"} variant={"extended"} hidden={true} onClick={handleChoosePosition} sx={{
+                    left: 20,
+                    position: 'fixed',
+                    bottom: 20
+                }}>
+                    <WhereToVote sx={{mr: 1}}/>
+                    Pick location
                 </Fab>}
 
             <SpeedDial
@@ -91,7 +94,9 @@ export default function Homepage(props: HomepageProps) {
             <Drawer
                 anchor={"bottom"}
                 open={openDrawer}>
-                <AddSpot pickedLocation={pickedLocation} handleCancel={handleDrawerClose} handleSave={handleSaveSpot}/>
+                <AddSpot pickedLocation={pickedLocation}
+                         handleCancel={handleDrawerClose}
+                         handleSave={handleSaveSpot}/>
             </Drawer>
 
         </Box>

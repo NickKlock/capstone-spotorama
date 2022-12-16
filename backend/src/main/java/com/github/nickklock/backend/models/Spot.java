@@ -1,9 +1,11 @@
 package com.github.nickklock.backend.models;
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.List;
 
+@Document("spots")
 public record Spot(
         @Id
         String id,
