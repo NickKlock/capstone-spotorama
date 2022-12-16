@@ -5,12 +5,12 @@ import {BrowserRouter, Route, Routes} from "react-router-dom";
 
 function App() {
 
-    const {token} = useAccessToken()
+    const {mapboxToken} = useAccessToken()
 
     return (
         <BrowserRouter>
             <Routes>
-                <Route element={<Homepage token={token}/>} path={"/"}/>
+                <Route element={<Homepage mapboxToken={mapboxToken}/>} path={"/"}/>
             </Routes>
         </BrowserRouter>
     )
