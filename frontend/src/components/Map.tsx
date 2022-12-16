@@ -5,7 +5,7 @@ import {Box} from "@mui/material";
 
 type MapProps = {
     token: string
-    choosePositionMarker:mapboxgl.Marker | undefined
+    centerMarker:mapboxgl.Marker | undefined
 }
 export default function Map(props: MapProps) {
     mapboxgl.accessToken = props.token
@@ -18,8 +18,8 @@ export default function Map(props: MapProps) {
     useEffect(() => {
         if (props.token === "") return;
 
-        if (props.choosePositionMarker && map.current){
-            props.choosePositionMarker.addTo(map.current)
+        if (props.centerMarker && map.current){
+            props.centerMarker.addTo(map.current)
         }
 
         if (map.current) return; // initialize map only once
@@ -47,8 +47,8 @@ export default function Map(props: MapProps) {
                 setLng(parseFloat(map.current?.getCenter().lng.toFixed(4)));
                 setLat(parseFloat(map.current?.getCenter().lat.toFixed(4)));
                 setZoom(parseFloat(map.current?.getZoom().toFixed(2)));
-                if (props.choosePositionMarker){
-                    props.choosePositionMarker.setLngLat(map.current?.getCenter())
+                if (props.centerMarker){
+                    props.centerMarker.setLngLat(map.current?.getCenter())
                 }
             }
         });

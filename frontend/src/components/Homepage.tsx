@@ -9,32 +9,29 @@ import {Spot} from "../models/Spot";
 import {addSpot} from "../api-calls";
 
 type HomepageProps = {
-    token: string
+    mapboxToken: string
 }
 export default function Homepage(props: HomepageProps) {
-    const [openDrawer, setOpenDrawer] = useState<boolean>(false)
+    const [openAddNewSpotDrawer, setOpenAddNewSpotDrawer] = useState<boolean>(false)
     const [pickedLocation, setPickedLocation] = useState<Position>({lat: 0, lng: 0})
     const [centerMarker, setCenterMarker] = useState<mapboxgl.Marker>()
-    const [hidePickLocation, setHidePickLocation] = useState(true)
+    const [hidePickLocation, setHidePickLocation] = useState<boolean>(true)
 
     function handleCurrentPosition() {
         navigator.geolocation.getCurrentPosition((position) => {
             setPickedLocation({...pickedLocation, lat: position.coords.latitude, lng: position.coords.longitude})
-            setOpenDrawer(true)
+            setOpenAddNewSpotDrawer(true)
         })
     }
 
     function handleDrawerClose() {
-        setOpenDrawer(false)
+        setOpenAddNewSpotDrawer(false)
     }
 
     function handleSaveSpot(newSpot: Spot) {
-        //apiCall
         addSpot(newSpot).then(() => {
-            //closeDrawer
-            setOpenDrawer(false)
+            setOpenAddNewSpotDrawer(false)
             setHidePickLocation(true)
-            //delete marker
             centerMarker?.remove()
             setCenterMarker(undefined)
         })
@@ -51,13 +48,13 @@ export default function Homepage(props: HomepageProps) {
         if (centerMarker?.getLngLat()) {
             setPickedLocation(
                 {...pickedLocation, lat: centerMarker?.getLngLat().lat, lng: centerMarker?.getLngLat().lng})
-            setOpenDrawer(true)
+            setOpenAddNewSpotDrawer(true)
         }
     }
 
     return (
         <Box>
-            <Map choosePositionMarker={centerMarker} token={props.token}/>
+            <Map centerMarker={centerMarker} token={props.mapboxToken}/>
             {!hidePickLocation &&
                 <Fab color={"success"} variant={"extended"} hidden={true} onClick={handleChoosePosition} sx={{
                     left: 20,
@@ -93,7 +90,7 @@ export default function Homepage(props: HomepageProps) {
 
             <Drawer
                 anchor={"bottom"}
-                open={openDrawer}>
+                open={openAddNewSpotDrawer}>
                 <AddSpot pickedLocation={pickedLocation}
                          handleCancel={handleDrawerClose}
                          handleSave={handleSaveSpot}/>

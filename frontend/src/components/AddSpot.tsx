@@ -20,7 +20,7 @@ import {
     hazards,
     wavetypes,
     windDirections, waterTemperatures
-} from "../statics/Statics";
+} from "../statics/SelectOptions";
 
 import {ChangeEvent, useEffect, useState} from "react";
 import CustomSelect from "./ui/CustomSelect";
@@ -59,7 +59,6 @@ const parkingSliderMarks = [
 ]
 
 type AddSpotProps ={
-
     pickedLocation:Position
     handleCancel():void
     handleSave(newSpot: Spot):void
@@ -77,8 +76,8 @@ export default function AddSpot(props:AddSpotProps) {
         | ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
         | Event) {
         if (event.target) {
-            // There is actually an event.target no matter what event gets fired, there for we ignore
-            // This comes from the mui Slider [Event]
+            // There is actually an event.target no matter what event gets fired, therefore we ignore es-lint in this case
+            // This comes from the mui Slider has an Event called Event, and it's not compatible with the other events
             // @ts-ignore
             setNewSpot({...newSpot, [event.target.name]: event.target.value})
         }
