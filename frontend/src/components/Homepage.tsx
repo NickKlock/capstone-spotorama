@@ -6,7 +6,6 @@ import AddSpot from "./AddSpot";
 import {Position} from "../models/Position";
 import mapboxgl from "mapbox-gl";
 import {Spot} from "../models/Spot";
-import {addSpot} from "../api-calls";
 import useSpots from "../hooks/useSpots";
 
 type HomepageProps = {
@@ -17,7 +16,7 @@ export default function Homepage(props: HomepageProps) {
     const [pickedLocation, setPickedLocation] = useState<Position>({lat: 0, lng: 0})
     const [centerMarker, setCenterMarker] = useState<mapboxgl.Marker>()
     const [hidePickLocation, setHidePickLocation] = useState<boolean>(true)
-    const {spots} = useSpots();
+    const {spots,addSpot} = useSpots();
 
     function handleCurrentPosition() {
         navigator.geolocation.getCurrentPosition((position) => {
@@ -26,16 +25,16 @@ export default function Homepage(props: HomepageProps) {
         })
     }
 
-    function handleDrawerClose() {
+    function handleCancelAddSpot() {
         setOpenAddNewSpotDrawer(false)
+        setHidePickLocation(true)
+        setCenterMarker(undefined)
     }
 
     function handleSaveSpot(newSpot: Spot) {
-        addSpot(newSpot).then(() => {
-            setOpenAddNewSpotDrawer(false)
-            setHidePickLocation(true)
+        addSpot(newSpot).then(()=>{
             centerMarker?.remove()
-            setCenterMarker(undefined)
+            handleCancelAddSpot()
         })
     }
 
@@ -94,7 +93,7 @@ export default function Homepage(props: HomepageProps) {
                 anchor={"bottom"}
                 open={openAddNewSpotDrawer}>
                 <AddSpot pickedLocation={pickedLocation}
-                         handleCancel={handleDrawerClose}
+                         handleCancel={handleCancelAddSpot}
                          handleSave={handleSaveSpot}/>
             </Drawer>
 
