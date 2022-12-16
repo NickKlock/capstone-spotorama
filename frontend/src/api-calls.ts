@@ -7,7 +7,7 @@ export function getAccessToken(){
         .catch(console.error)
 }
 
-export function addSpot(newSpot: Spot){
+export function postSpot(newSpot: Spot){
     return axios.post("api/spots",newSpot)
         .then(response => response.data)
         .catch(console.error)
