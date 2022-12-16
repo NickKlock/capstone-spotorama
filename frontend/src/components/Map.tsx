@@ -1,11 +1,13 @@
 import React, {MutableRefObject, useEffect, useRef, useState} from "react";
 import mapboxgl from 'mapbox-gl'
 import {Box} from "@mui/material";
+import {Spot} from "../models/Spot";
 
 
 type MapProps = {
     token: string
     centerMarker:mapboxgl.Marker | undefined
+    spots:Spot[]
 }
 export default function Map(props: MapProps) {
     mapboxgl.accessToken = props.token
@@ -53,6 +55,24 @@ export default function Map(props: MapProps) {
             }
         });
     });
+
+    useEffect(()=>{
+        if (!map.current) return; // wait for map to initialize
+        if (props.spots && props.spots.length > 0){
+            props.spots.forEach((spot) => {
+                if (map.current){
+                    const spotPopup = new mapboxgl.Popup({offset: 25})
+                        .setText(spot.name)
+
+                    new mapboxgl.Marker()
+                        .setPopup(spotPopup)
+                        .setLngLat(spot.position)
+                        .addTo(map.current)
+                }
+
+            })
+        }
+    },[props.spots])
 
 
     return (
