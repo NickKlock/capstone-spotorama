@@ -1,27 +1,28 @@
 import {
     BeachType,
-    BestDirection,
-    BestMonth,
-    Disciplines,
+    Discipline,
     ExperiencesLevel,
     Hazard,
     WaterTemperature,
-    WaveType
+    WaveType,
+    Month,
+    WindDirection,
+    ParkingSpace
 } from "./SpotSubTypes";
 import {Position} from "./Position";
 
 export type Spot= {
-    id:string
-    name:string
-    disciplines:Disciplines[]
-    waveTypes:WaveType[]
-    beachTypes:BeachType[]
-    experiencesLevel:ExperiencesLevel[]
-    hazards:Hazard[]
-    bestMonths:BestMonth[]
-    bestDirections:BestDirection[]
-    waterTemperature: WaterTemperature[]
-    parkingSpace: 0|1|2
-    location:Position
-    restrooms:string
+    id: string;
+    name: string;
+    disciplines: Discipline[];
+    waveTypes: WaveType[];
+    beachTypes: BeachType[];
+    experiencesLevel: ExperiencesLevel[];
+    hazards: Hazard[];
+    bestMonths: Month[];
+    bestDirections: WindDirection[];
+    waterTemperature: WaterTemperature[];
+    parkingSpace: ParkingSpace;
+    position: Position;
+    restrooms: string;
 }

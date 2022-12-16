@@ -1,23 +1,17 @@
-export type Disciplines = "kitesurfing" | "wingsurfing" | "windsurfing" | "surfing"
+export type Discipline = "KITESURFING" | "WINGSURFING" | "WINDSURFING" | "SURFING";
 
+export type WaveType = "CHOP" | "BIG" | "FLAT" | "MEDIUM" | "SMALL";
 
-export type WaveType = "chop" | "big" | "flat" | "medium" | "small"
+export type BeachType = "SAND" | "ROCKY" | "GRASS";
 
+export type ExperiencesLevel = "BEGINNER" | "ADVANCED" | "EXPERT";
 
-export type BeachType = "sand" | "rocky" | "grass"
+export type Hazard = "CURRENTS" | "ROCKS" | "REEF";
 
+export type Month = "JANUARY" | "FEBRUARY" | "MARCH" | "APRIL" | "MAY" | "JUNE" | "JULY" | "AUGUST" | "SEPTEMBER" | "OCTOBER" | "NOVEMBER" | "DECEMBER";
 
-export type ExperiencesLevel = "beginner" | "advanced" | "expert"
+export type WindDirection = "N" | "S" | "W" | "E" | "NW" | "NE" | "SW" | "SE";
 
+export type WaterTemperature = "COLD" | "MILD" | "WARM" | "HOT" | "TROPICAL";
 
-export type Hazard = "currents" | "rocks" | "reef"
-
-
-export type BestMonth = "January" | "February" | "March" | "April" | "May" | "June" | "July" | "August"
-    | "September" | "October" | "November" | "December"
-
-
-export type BestDirection = "N" | "S" | "W" | "O" | "NW" | "NE" | "SW" | "SE"
-
-
-export type WaterTemperature = "0-6" | "6-12" | "12-18" | "18-24" | "24+"
+export type ParkingSpace = "FEW" | "ENOUGH" | "ALOT";
