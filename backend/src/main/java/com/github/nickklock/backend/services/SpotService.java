@@ -5,6 +5,8 @@ import com.github.nickklock.backend.models.SpotRequest;
 import com.github.nickklock.backend.repos.SpotRepo;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class SpotService {
 
@@ -23,5 +25,9 @@ public class SpotService {
                 newSpot.parkingSpace(), newSpot.position(), newSpot.restrooms());
 
         return spotRepo.save(spotWithId);
+    }
+
+    public List<Spot> list() {
+        return spotRepo.findAll();
     }
 }

@@ -5,10 +5,9 @@ import com.github.nickklock.backend.models.SpotRequest;
 import com.github.nickklock.backend.services.SpotService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("api/spots")
@@ -23,5 +22,10 @@ public class SpotController {
     @PostMapping
     public ResponseEntity<Spot> addSpot(@RequestBody SpotRequest newSpot){
         return new ResponseEntity<>( spotService.add(newSpot), HttpStatus.CREATED);
+    }
+
+    @GetMapping
+    public ResponseEntity<List<Spot>> listSpots(){
+        return new ResponseEntity<>(spotService.list(),HttpStatus.OK);
     }
 }
