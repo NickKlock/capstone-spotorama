@@ -63,12 +63,12 @@ export default function Map(props: MapProps) {
         if (props.spots && props.spots.length > 0){
             props.spots.forEach((spot) => {
                 if (map.current){
-                    const placeholder= document.createElement("div")
-                    const root = createRoot(placeholder)
+                    const htmlDivElement= document.createElement("div")
+                    const root = createRoot(htmlDivElement)
                     root.render(<SpotPopover spot={spot}/>)
 
                     const spotPopup = new mapboxgl.Popup({offset: 25})
-                        .setDOMContent(placeholder)
+                        .setDOMContent(htmlDivElement)
 
                     new mapboxgl.Marker()
                         .setPopup(spotPopup)
