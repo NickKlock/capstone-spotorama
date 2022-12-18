@@ -7,6 +7,7 @@ import {Position} from "../models/Position";
 import mapboxgl from "mapbox-gl";
 import {Spot} from "../models/Spot";
 import useSpots from "../hooks/useSpots";
+import {useNavigate} from "react-router-dom";
 
 type HomepageProps = {
     mapboxToken: string
@@ -17,6 +18,7 @@ export default function Homepage(props: HomepageProps) {
     const [centerMarker, setCenterMarker] = useState<mapboxgl.Marker>()
     const [hidePickLocation, setHidePickLocation] = useState<boolean>(true)
     const {spots,addSpot} = useSpots();
+    const navigate = useNavigate()
 
     function handleCurrentPosition() {
         navigator.geolocation.getCurrentPosition((position) => {
@@ -55,6 +57,7 @@ export default function Homepage(props: HomepageProps) {
 
     function handleNavigate(id:string) {
         console.log(id)
+        navigate("/spots/"+id+"/details")
     }
 
     return (
