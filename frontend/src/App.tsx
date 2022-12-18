@@ -2,6 +2,7 @@ import React from 'react';
 import useAccessToken from "./hooks/useAccessToken";
 import Homepage from "./components/Homepage";
 import {BrowserRouter, Route, Routes} from "react-router-dom";
+import SpotDetail from "./components/SpotDetail";
 
 function App() {
 
@@ -11,7 +12,7 @@ function App() {
         <BrowserRouter>
             <Routes>
                 <Route element={<Homepage mapboxToken={mapboxToken}/>} path={"/"}/>
-                <Route element={<p/>} path={"/spots/:id/details"}/>
+                <Route element={<SpotDetail/>} path={"/spots/:id/details"}/>
             </Routes>
         </BrowserRouter>
     )
