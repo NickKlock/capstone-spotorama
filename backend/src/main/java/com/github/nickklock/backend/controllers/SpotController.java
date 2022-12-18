@@ -20,12 +20,17 @@ public class SpotController {
     }
 
     @PostMapping
-    public ResponseEntity<Spot> addSpot(@RequestBody SpotRequest newSpot){
-        return new ResponseEntity<>( spotService.add(newSpot), HttpStatus.CREATED);
+    public ResponseEntity<Spot> addSpot(@RequestBody SpotRequest newSpot) {
+        return new ResponseEntity<>(spotService.add(newSpot), HttpStatus.CREATED);
     }
 
     @GetMapping
-    public ResponseEntity<List<Spot>> listSpots(){
-        return new ResponseEntity<>(spotService.list(),HttpStatus.OK);
+    public ResponseEntity<List<Spot>> listSpots() {
+        return new ResponseEntity<>(spotService.list(), HttpStatus.OK);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<Spot> byId(@PathVariable String id) {
+        return new ResponseEntity<>(spotService.getById(id), HttpStatus.FOUND);
     }
 }

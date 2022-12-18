@@ -1,5 +1,6 @@
 package com.github.nickklock.backend.services;
 
+import com.github.nickklock.backend.exceptions.NoSuchSpotException;
 import com.github.nickklock.backend.models.Spot;
 import com.github.nickklock.backend.models.SpotRequest;
 import com.github.nickklock.backend.repos.SpotRepo;
@@ -29,5 +30,9 @@ public class SpotService {
 
     public List<Spot> list() {
         return spotRepo.findAll();
+    }
+
+    public Spot getById(String id) {
+        return spotRepo.findById(id).orElseThrow(NoSuchSpotException::new);
     }
 }
