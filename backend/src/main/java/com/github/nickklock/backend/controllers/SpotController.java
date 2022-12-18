@@ -31,6 +31,6 @@ public class SpotController {
 
     @GetMapping("/{id}")
     public ResponseEntity<Spot> byId(@PathVariable String id) {
-        return new ResponseEntity<>(spotService.getById(id), HttpStatus.FOUND);
+        return new ResponseEntity<>(spotService.getById(id), HttpStatus.OK);
     }
 }
