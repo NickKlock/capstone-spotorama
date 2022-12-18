@@ -20,7 +20,7 @@ export function getAllSpots(){
 }
 
 export function getSpotById(id:string){
-    return axios.get("api/spots/"+id)
+    return axios.get("/api/spots/"+id)
         .then(response => response.data)
         .catch(console.error)
 }
