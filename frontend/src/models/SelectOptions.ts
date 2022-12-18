@@ -1,49 +1,46 @@
 export const disciplines:string[] = [
-    "KITESURFING",
-    "WINGSURFING",
-    "WINDSURFING",
-    "SURFING"
+    "kitesurfing", "wingsurfing", "windsurfing", "surfing"
 ]
 
 export const wavetypes:string[]= [
-    "CHOP",
-    "BIG",
-    "FLAT",
-    "MEDIUM",
-    "SMALL"
+    "chop",
+    "big",
+    "flat",
+    "medium",
+    "small"
 ]
 
 export const beachtypes:string[]= [
-    "SAND",
-    "ROCKY",
-    "GRASS"
+    "sand",
+    "rocky",
+    "grass"
 ]
 
 export const experiencesLevel:string[]= [
-    "BEGINNER",
-    "ADVANCED",
-    "EXPERT"
+    "beginner",
+    "advanced",
+    "expert"
 ]
 
 export const hazards:string[]= [
-    "CURRENTS",
-    "ROCKS",
-    "REEF"
+    "currents",
+    "rocks",
+    "reef"
 ]
 
 export const months:string[]= [
-    "JANUARY",
-    "FEBRUARY",
-    "MARCH",
-    "APRIL",
-    "MAY",
-    "JUNE",
-    "JULY",
-    "AUGUST",
-    "SEPTEMBER",
-    "OCTOBER",
-    "NOVEMBER",
-    "DECEMBER",
+    "january",
+    "february",
+    "march",
+    "april",
+    "may",
+    "june",
+    "july",
+    "august",
+    "september",
+    "october",
+    "november",
+    "december",
 ]
 
 export const windDirections:string[]= [
@@ -57,9 +54,9 @@ export const windDirections:string[]= [
     "SE"
 ]
 export const waterTemperatures:string[]= [
-    "COLD",
-    "MILD",
-    "WARM",
-    "HOT",
-    "TROPICAL"
+    "cold",
+    "mild",
+    "warm",
+    "hot",
+    "tropical"
 ]
