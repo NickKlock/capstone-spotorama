@@ -18,3 +18,9 @@ export function getAllSpots(){
         .then(response => response.data)
         .catch(console.error)
 }
+
+export function getSpotById(id:string){
+    return axios.get("api/spots/"+id)
+        .then(response => response.data)
+        .catch(console.error)
+}
