@@ -56,7 +56,6 @@ export default function Homepage(props: HomepageProps) {
     }
 
     function handleNavigate(id:string) {
-        console.log(id)
         navigate("/spots/"+id+"/details")
     }
 
