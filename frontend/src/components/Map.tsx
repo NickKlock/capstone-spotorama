@@ -67,7 +67,7 @@ export default function Map(props: MapProps) {
                     const root = createRoot(htmlDivElement)
                     root.render(<SpotPopover spot={spot}/>)
 
-                    const spotPopup = new mapboxgl.Popup({offset: 25})
+                    const spotPopup = new mapboxgl.Popup({offset: 25, maxWidth:"none"})
                         .setDOMContent(htmlDivElement)
 
                     new mapboxgl.Marker()
