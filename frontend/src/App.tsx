@@ -11,6 +11,7 @@ function App() {
         <BrowserRouter>
             <Routes>
                 <Route element={<Homepage mapboxToken={mapboxToken}/>} path={"/"}/>
+                <Route element={<p/>} path={"/spots/:id/details"}/>
             </Routes>
         </BrowserRouter>
     )
