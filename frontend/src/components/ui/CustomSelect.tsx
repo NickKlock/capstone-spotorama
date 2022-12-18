@@ -28,7 +28,7 @@ export default function CustomSelect(props: CustomSelectProps) {
                 renderValue={(selected: string[]) => (
                     <Box display={"flex"} flexWrap={"wrap"} gap={0.5}>
                         {selected.map((value) => (
-                            <Chip key={value} label={value.toLowerCase()}/>
+                            <Chip key={value} label={value}/>
                         ))}
                     </Box>
                 )}
@@ -38,7 +38,7 @@ export default function CustomSelect(props: CustomSelectProps) {
                         key={item}
                         value={item}
                     >
-                        {item.toLocaleLowerCase("de-DE")}
+                        {item}
                     </MenuItem>
                 ))}
             </Select>
