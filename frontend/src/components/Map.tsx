@@ -10,6 +10,7 @@ type MapProps = {
     token: string
     centerMarker:mapboxgl.Marker | undefined
     spots:Spot[]
+    handleNavigate(id:string):void
 }
 export default function Map(props: MapProps) {
     mapboxgl.accessToken = props.token
@@ -65,7 +66,7 @@ export default function Map(props: MapProps) {
                 if (map.current){
                     const htmlDivElement= document.createElement("div")
                     const root = createRoot(htmlDivElement)
-                    root.render(<SpotPopover spot={spot}/>)
+                    root.render(<SpotPopover handleNavigate={props.handleNavigate} spot={spot}/>)
 
                     const spotPopup = new mapboxgl.Popup({offset: 25, maxWidth:"none"})
                         .setDOMContent(htmlDivElement)
@@ -78,7 +79,7 @@ export default function Map(props: MapProps) {
 
             })
         }
-    },[props.spots])
+    })
 
 
     return (

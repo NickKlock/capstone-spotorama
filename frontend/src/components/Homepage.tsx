@@ -53,9 +53,13 @@ export default function Homepage(props: HomepageProps) {
         }
     }
 
+    function handleNavigate(id:string) {
+        console.log(id)
+    }
+
     return (
         <Box>
-            <Map centerMarker={centerMarker} token={props.mapboxToken} spots={spots}/>
+            <Map handleNavigate={handleNavigate} centerMarker={centerMarker} token={props.mapboxToken} spots={spots}/>
             {!hidePickLocation &&
                 <Fab color={"success"} variant={"extended"} hidden={true} onClick={handleChoosePosition} sx={{
                     left: 20,
