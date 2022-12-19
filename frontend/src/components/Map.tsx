@@ -64,6 +64,9 @@ export default function Map(props: MapProps) {
         if (props.spots && props.spots.length > 0){
             props.spots.forEach((spot) => {
                 if (map.current){
+                    // The React wrapper for mapbox-gl is
+                    // outdated so there is no "react-way" to render the PopUp with a JSX.Element
+                    // that's why I'm accessing the dom directly
                     const htmlDivElement= document.createElement("div")
                     const root = createRoot(htmlDivElement)
                     root.render(<SpotPopover handleNavigate={props.handleNavigate} spot={spot}/>)
