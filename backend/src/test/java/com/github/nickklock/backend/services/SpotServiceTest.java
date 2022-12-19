@@ -44,7 +44,7 @@ class SpotServiceTest {
     @Test
     void getById_expect_throws_exception() {
         assertThrows(NoSuchSpotException.class, ()-> spotService.getById("0"));
-        verify(spotRepo).findById("");
+        verify(spotRepo).findById("0");
     }
 
     @Test
