@@ -11,13 +11,14 @@ import {useNavigate} from "react-router-dom";
 
 type HomepageProps = {
     mapboxToken: string
+    spots:Spot[]
 }
 export default function Homepage(props: HomepageProps) {
     const [openAddNewSpotDrawer, setOpenAddNewSpotDrawer] = useState<boolean>(false)
     const [pickedLocation, setPickedLocation] = useState<Position>({lat: 0, lng: 0})
     const [centerMarker, setCenterMarker] = useState<mapboxgl.Marker>()
     const [hidePickLocation, setHidePickLocation] = useState<boolean>(true)
-    const {spots,addSpot} = useSpots();
+    const {addSpot} = useSpots();
     const navigate = useNavigate()
 
     function handleCurrentPosition() {
@@ -61,7 +62,7 @@ export default function Homepage(props: HomepageProps) {
 
     return (
         <Box>
-            <Map handleNavigate={handleNavigate} centerMarker={centerMarker} token={props.mapboxToken} spots={spots}/>
+            <Map handleNavigate={handleNavigate} centerMarker={centerMarker} token={props.mapboxToken} spots={props.spots}/>
             {!hidePickLocation &&
                 <Fab color={"success"} variant={"extended"} hidden={true} onClick={handleChoosePosition} sx={{
                     left: 20,
