@@ -81,7 +81,6 @@ export default function AddSpot(props: AddSpotProps) {
     }
 
     function handleSave() {
-        console.log(JSON.stringify(newSpot),newSpot)
         props.handleSave(newSpot)
     }
 
