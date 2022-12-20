@@ -5,12 +5,11 @@ import {Spot} from "../models/Spot";
 import SpotPopover from "./SpotPopover";
 import {createRoot} from "react-dom/client";
 
-
 type MapProps = {
     token: string
-    centerMarker:mapboxgl.Marker | undefined
-    spots:Spot[]
-    handleNavigate(id:string):void
+    centerMarker: mapboxgl.Marker | undefined
+    spots: Spot[]
+    handleNavigate(id: string): void
 }
 export default function Map(props: MapProps) {
     mapboxgl.accessToken = props.token
@@ -23,7 +22,7 @@ export default function Map(props: MapProps) {
     useEffect(() => {
         if (props.token === "") return;
 
-        if (props.centerMarker && map.current){
+        if (props.centerMarker && map.current) {
             props.centerMarker.addTo(map.current)
         }
 
@@ -52,26 +51,26 @@ export default function Map(props: MapProps) {
                 setLng(parseFloat(map.current?.getCenter().lng.toFixed(4)));
                 setLat(parseFloat(map.current?.getCenter().lat.toFixed(4)));
                 setZoom(parseFloat(map.current?.getZoom().toFixed(2)));
-                if (props.centerMarker){
+                if (props.centerMarker) {
                     props.centerMarker.setLngLat(map.current?.getCenter())
                 }
             }
         });
     });
 
-    useEffect(()=>{
+    useEffect(() => {
         if (!map.current) return; // wait for map to initialize
-        if (props.spots && props.spots.length > 0){
+        if (props.spots && props.spots.length > 0) {
             props.spots.forEach((spot) => {
-                if (map.current){
+                if (map.current) {
                     // The React wrapper for mapbox-gl is
                     // outdated so there is no "react-way" to render the PopUp with a JSX.Element
                     // that's why I'm accessing the dom directly
-                    const htmlDivElement= document.createElement("div")
+                    const htmlDivElement = document.createElement("div")
                     const root = createRoot(htmlDivElement)
                     root.render(<SpotPopover handleNavigate={props.handleNavigate} spot={spot}/>)
 
-                    const spotPopup = new mapboxgl.Popup({offset: 25, maxWidth:"none"})
+                    const spotPopup = new mapboxgl.Popup({offset: 25, maxWidth: "none"})
                         .setDOMContent(htmlDivElement)
 
                     new mapboxgl.Marker()
@@ -86,8 +85,6 @@ export default function Map(props: MapProps) {
 
 
     return (
-        <Box height={"100vh"} display={"flex"} flexDirection={"column"}>
-            <Box ref={mapContainer} flex={1}/>
-        </Box>
+        <Box height={"94vh"} ref={mapContainer} flex={1}/>
     )
 }

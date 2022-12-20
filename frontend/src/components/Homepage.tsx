@@ -6,19 +6,18 @@ import AddSpot from "./AddSpot";
 import {Position} from "../models/Position";
 import mapboxgl from "mapbox-gl";
 import {Spot} from "../models/Spot";
-import useSpots from "../hooks/useSpots";
 import {useNavigate} from "react-router-dom";
 
 type HomepageProps = {
     mapboxToken: string
     spots:Spot[]
+    handleAddSpot(newSpot:Spot):Promise<void>
 }
 export default function Homepage(props: HomepageProps) {
     const [openAddNewSpotDrawer, setOpenAddNewSpotDrawer] = useState<boolean>(false)
     const [pickedLocation, setPickedLocation] = useState<Position>({lat: 0, lng: 0})
     const [centerMarker, setCenterMarker] = useState<mapboxgl.Marker>()
     const [hidePickLocation, setHidePickLocation] = useState<boolean>(true)
-    const {addSpot} = useSpots();
     const navigate = useNavigate()
 
     function handleCurrentPosition() {
@@ -35,7 +34,7 @@ export default function Homepage(props: HomepageProps) {
     }
 
     function handleSaveSpot(newSpot: Spot) {
-        addSpot(newSpot).then(()=>{
+        props.handleAddSpot(newSpot).then(()=>{
             centerMarker?.remove()
             handleCancelAddSpot()
         })
@@ -67,7 +66,7 @@ export default function Homepage(props: HomepageProps) {
                 <Fab color={"success"} variant={"extended"} hidden={true} onClick={handleChoosePosition} sx={{
                     left: 20,
                     position: 'fixed',
-                    bottom: 20
+                    bottom: 80
                 }}>
                     <WhereToVote sx={{mr: 1}}/>
                     Pick location
@@ -78,7 +77,7 @@ export default function Homepage(props: HomepageProps) {
                 sx={{
                     right: 20,
                     position: 'fixed',
-                    bottom: 20
+                    bottom: 80
                 }}
                 icon={<Add/>}
             >
@@ -103,7 +102,6 @@ export default function Homepage(props: HomepageProps) {
                          handleCancel={handleCancelAddSpot}
                          handleSave={handleSaveSpot}/>
             </Drawer>
-
         </Box>
     )
 }
