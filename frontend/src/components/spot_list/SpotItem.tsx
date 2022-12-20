@@ -13,11 +13,10 @@ export default function SpotItem(props: SpotItemProps) {
         navigate("/spots/" + props.spot.id + "/details")
     }
 
-    return (
-            <CustomCard
-                onClick={handleGoToDetails}
-                subtitle={props.spot.disciplines.join(", ").toLowerCase()}
-                avatarLetter={props.spot.name.charAt(0)}
-                title={props.spot.name}/>
+    return (<CustomCard
+            onClick={handleGoToDetails}
+            subtitle={props.spot.disciplines.join(", ").toLowerCase()}
+            avatarLetter={props.spot.name.charAt(0)}
+            title={props.spot.name}/>
     )
 }
