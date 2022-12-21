@@ -1,26 +1,24 @@
 import {Box, Drawer, Fab, SpeedDial, SpeedDialAction} from "@mui/material";
-import Map from "./Map";
 import {Add, AddLocation, MyLocation, WhereToVote} from "@mui/icons-material";
 import React, {useState} from "react";
 import AddSpot from "./AddSpot";
 import {Position} from "../models/Position";
-import mapboxgl from "mapbox-gl";
 import {Spot} from "../models/Spot";
 import {useNavigate} from "react-router-dom";
 import {MapProvider} from "react-map-gl";
-import Map1 from "./Map1";
+import SpotMap from "./map/SpotMap";
 
 type HomepageProps = {
-    mapboxToken: string
-    spots:Spot[]
-    handleAddSpot(newSpot:Spot):Promise<void>
+    spots: Spot[]
+    handleAddSpot(newSpot: Spot): Promise<void>
 }
 export default function Homepage(props: HomepageProps) {
     const [openAddNewSpotDrawer, setOpenAddNewSpotDrawer] = useState<boolean>(false)
     const [pickedLocation, setPickedLocation] = useState<Position>({lat: 0, lng: 0})
-    const [centerMarker, setCenterMarker] = useState<mapboxgl.Marker>()
-    const [hidePickLocation, setHidePickLocation] = useState<boolean>(true)
+    const [showCenterMarker, setShowCenterMarker] = useState<boolean>(false)
+    const [hidePickLocation, setHidePickLocationButton] = useState<boolean>(true)
     const navigate = useNavigate()
+    const [centerPosition, setCenterPosition] = useState<Position>()
 
     function handleCurrentPosition() {
         navigator.geolocation.getCurrentPosition((position) => {
@@ -31,41 +29,51 @@ export default function Homepage(props: HomepageProps) {
 
     function handleCancelAddSpot() {
         setOpenAddNewSpotDrawer(false)
-        setHidePickLocation(true)
-        setCenterMarker(undefined)
+        setHidePickLocationButton(true)
+        setShowCenterMarker(false)
     }
 
     function handleSaveSpot(newSpot: Spot) {
-        props.handleAddSpot(newSpot).then(()=>{
-            centerMarker?.remove()
+        props.handleAddSpot(newSpot).then(() => {
             handleCancelAddSpot()
         })
     }
 
     function handleCreateCenterMarker() {
-        if (!centerMarker) {
-            setCenterMarker(new mapboxgl.Marker().setLngLat([0, 0]))
-            setHidePickLocation(false)
+        if (!showCenterMarker) {
+            setShowCenterMarker(true)
+            setHidePickLocationButton(false)
         }
     }
 
     function handleChoosePosition() {
-        if (centerMarker?.getLngLat()) {
+        if (showCenterMarker && centerPosition) {
             setPickedLocation(
-                {...pickedLocation, lat: centerMarker?.getLngLat().lat, lng: centerMarker?.getLngLat().lng})
+                {...pickedLocation, lat: centerPosition.lat, lng: centerPosition.lng})
             setOpenAddNewSpotDrawer(true)
         }
     }
 
-    function handleNavigate(id:string) {
-        navigate("/spots/"+id+"/details")
+    function handleNavigateToSpotDetails(id: string) {
+        navigate("/spots/" + id + "/details")
     }
-//            <Map handleNavigate={handleNavigate} centerMarker={centerMarker} token={props.mapboxToken} spots={props.spots}/>
+
+    function handleCenterPosition(center:Position) {
+        setCenterPosition(center)
+    }
+
     return (
         <Box>
             <MapProvider>
-                <Map1 mapboxToken={props.mapboxToken}/>
+                <SpotMap showCenterMarker={showCenterMarker}
+                         handleSpotPopupButtonClick={handleNavigateToSpotDetails}
+                         spots={props.spots}
+                         handleCenterPositionChange={handleCenterPosition}
+                         centerLng={centerPosition?.lng}
+                         centerLat={centerPosition?.lat}
+                />
             </MapProvider>
+
             {!hidePickLocation &&
                 <Fab color={"success"} variant={"extended"} hidden={true} onClick={handleChoosePosition} sx={{
                     left: 20,
