@@ -14,8 +14,7 @@ function App() {
     const {spots, addSpot} = useSpots()
 
     function handleAddSpot(newSpot:Spot):Promise<void> {
-        return addSpot(newSpot).then(()=>{
-        })
+        return addSpot(newSpot).then(() => Promise.resolve())
     }
 
     return (
