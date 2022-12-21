@@ -6,6 +6,7 @@ import useSpots from "./hooks/useSpots";
 import SpotList from "./components/spot_list/SpotList";
 import BottomNavigationBar from "./components/BottomNavigationBar";
 import {Spot} from "./models/Spot";
+import TitleBarRoutes from "./components/TitleBarRoutes";
 
 function App() {
 
@@ -19,8 +20,11 @@ function App() {
         <BrowserRouter>
             <Routes>
                 <Route element={<Homepage handleAddSpot={handleAddSpot} spots={spots}/>} path={"/"}/>
-                <Route element={<SpotList spots={spots}/>} path={"/spots"}/>
-                <Route element={<SpotDetail/>} path={"/spots/:id/details"}/>
+                <Route element={<TitleBarRoutes/>}>
+                    <Route element={<SpotList spots={spots}/>} path={"/spots"}/>
+                    <Route element={<SpotDetail/>} path={"/spots/:id/details"}/>
+                </Route>
+
             </Routes>
             <BottomNavigationBar/>
         </BrowserRouter>
