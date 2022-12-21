@@ -26,7 +26,7 @@ export default function Controls(props:ControlsProps){
         }
         spotmap.on("move",onMove)
         onMove()
-
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     },[spotmap])
 
     if (props.showCenterMarker){
