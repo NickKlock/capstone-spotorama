@@ -28,7 +28,7 @@ export default function TitleBar(){
 
     return(
         <Box sx={{ flexGrow: 1 }}>
-            <AppBar position="static" component={"nav"}>
+            <AppBar position="fixed" component={"nav"}>
                 <Toolbar>
                     <IconButton
                         size="large"

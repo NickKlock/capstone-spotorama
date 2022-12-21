@@ -17,7 +17,7 @@ export default function SpotList(props: SpotListProps) {
     return (<Stack
         direction={"column"}
         spacing={2}
-        marginTop={2}>
+        marginTop={10}>
         <TextField type={"search"} onChange={handleSearchInputChange} placeholder={"Search for a Spot"}/>
         {filteredSpots.map((spot) => <SpotItem spot={spot} key={spot.id}/>
         )}

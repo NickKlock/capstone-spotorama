@@ -7,6 +7,7 @@ import SpotList from "./components/spot_list/SpotList";
 import BottomNavigationBar from "./components/BottomNavigationBar";
 import {Spot} from "./models/Spot";
 import TitleBarRoutes from "./components/TitleBarRoutes";
+import {Box} from "@mui/material";
 
 function App() {
 
@@ -26,7 +27,9 @@ function App() {
                 </Route>
 
             </Routes>
-            <BottomNavigationBar/>
+            <Box height={56}>
+                <BottomNavigationBar/>
+            </Box>
         </BrowserRouter>
     )
 }

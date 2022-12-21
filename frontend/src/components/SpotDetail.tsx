@@ -28,7 +28,7 @@ export default function SpotDetail(){
             </Box>
         )
     }else {
-        return(<Stack direction={"column"} spacing={2}>
+        return(<Stack direction={"column"} spacing={1} marginTop={10}>
                 <CustomAccordion icon={<Attractions/>} mainContent={spot.disciplines} title={"Best for"}/>
                 <CustomAccordion icon={<Explore/>} mainContent={spot.bestDirections} title={"Best wind directions"}/>
                 <CustomAccordion icon={<Waves/>} mainContent={spot.waveTypes} title={"Wave conditions"}/>
