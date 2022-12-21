@@ -7,6 +7,8 @@ import {Position} from "../models/Position";
 import mapboxgl from "mapbox-gl";
 import {Spot} from "../models/Spot";
 import {useNavigate} from "react-router-dom";
+import {MapProvider} from "react-map-gl";
+import Map1 from "./Map1";
 
 type HomepageProps = {
     mapboxToken: string
@@ -58,10 +60,12 @@ export default function Homepage(props: HomepageProps) {
     function handleNavigate(id:string) {
         navigate("/spots/"+id+"/details")
     }
-
+//            <Map handleNavigate={handleNavigate} centerMarker={centerMarker} token={props.mapboxToken} spots={props.spots}/>
     return (
         <Box>
-            <Map handleNavigate={handleNavigate} centerMarker={centerMarker} token={props.mapboxToken} spots={props.spots}/>
+            <MapProvider>
+                <Map1 mapboxToken={props.mapboxToken}/>
+            </MapProvider>
             {!hidePickLocation &&
                 <Fab color={"success"} variant={"extended"} hidden={true} onClick={handleChoosePosition} sx={{
                     left: 20,
