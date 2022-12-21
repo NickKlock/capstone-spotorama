@@ -18,7 +18,6 @@ export default function TitleBar(){
         }else {
             const splitString = location.pathname.split("/")
             const spotId = splitString[2];
-            console.log(spotId)
             getSpotById(spotId).then(res => setTitle("Details about "+res.name))
         }
     },[location.pathname])
@@ -29,7 +28,7 @@ export default function TitleBar(){
 
     return(
         <Box sx={{ flexGrow: 1 }}>
-            <AppBar position="sticky" component={"nav"}>
+            <AppBar position="static" component={"nav"}>
                 <Toolbar>
                     <IconButton
                         size="large"
