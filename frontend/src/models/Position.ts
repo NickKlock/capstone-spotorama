@@ -1,4 +1,5 @@
 export type Position = {
     lng:number
-    lat:number
+    lat: number
+    country?: string
 }

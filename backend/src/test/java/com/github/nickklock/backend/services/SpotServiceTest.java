@@ -11,26 +11,28 @@ import org.junit.jupiter.api.Test;
 import java.util.ArrayList;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 
 class SpotServiceTest {
 
     SpotRepo spotRepo = mock(SpotRepo.class);
     IdService idService = mock(IdService.class);
-    SpotService spotService = new SpotService(spotRepo, idService);
+    CountryByCordsService countryByCordsService = mock(CountryByCordsService.class);
+    SpotService spotService = new SpotService(spotRepo, idService, countryByCordsService);
 
     @Test
     void add_expect_given_and_result_equals_verify_shoprepo() {
-        SpotRequest spotRequest = new SpotRequest( "test", new ArrayList<>(),
+        SpotRequest spotRequest = new SpotRequest("test", new ArrayList<>(),
                 new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(),
                 new ArrayList<>(), new ArrayList<>(), new ArrayList<>(),
-                ParkingSpace.FEW, new Position(0, 0),"Yes");
+                ParkingSpace.FEW, new Position(0, 0, "Germany"), "Yes");
 
-        Spot givenSpot = new Spot( "0","test", new ArrayList<>(),
+        Spot givenSpot = new Spot("0", "test", new ArrayList<>(),
                 new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(),
                 new ArrayList<>(), new ArrayList<>(), new ArrayList<>(),
-                ParkingSpace.FEW, new Position(0, 0),"Yes");
+                ParkingSpace.FEW, new Position(0, 0, "Germany"), "Yes");
 
         when(spotRepo.save(givenSpot)).thenReturn(givenSpot);
         when(idService.generateId()).thenReturn("0");
@@ -49,10 +51,10 @@ class SpotServiceTest {
 
     @Test
     void getById_expect_spot(){
-        when(spotRepo.findById("0")).thenReturn(Optional.of(new Spot("0","test", new ArrayList<>(),
+        when(spotRepo.findById("0")).thenReturn(Optional.of(new Spot("0", "test", new ArrayList<>(),
                 new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(),
                 new ArrayList<>(), new ArrayList<>(), new ArrayList<>(),
-                ParkingSpace.FEW, new Position(0, 0),"Yes")));
+                ParkingSpace.FEW, new Position(0, 0, "Germany"), "Yes")));
 
         Spot result = spotService.getById("0");
 

@@ -22,5 +22,6 @@ public record Spot(
         ParkingSpace parkingSpace,
         Position position,
         String restrooms
+
 ) {
 }
