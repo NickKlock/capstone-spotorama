@@ -8,7 +8,8 @@ type SpotListProps = {
 }
 export default function SpotList(props: SpotListProps) {
     const [searchTerm, setSearchTerm] = useState<string>("")
-    function handleSearchInputChange(event:ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) {
+
+    function handleSearchInputChange(event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) {
         setSearchTerm(event.target.value)
     }
 
