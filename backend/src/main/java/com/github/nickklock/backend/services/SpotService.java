@@ -1,5 +1,6 @@
 package com.github.nickklock.backend.services;
 
+import com.github.nickklock.backend.client.MapboxClient;
 import com.github.nickklock.backend.exceptions.NoSuchSpotException;
 import com.github.nickklock.backend.models.Position;
 import com.github.nickklock.backend.models.Spot;
@@ -15,17 +16,20 @@ public class SpotService {
 
     private final SpotRepo spotRepo;
     private final IdService idService;
-    private final CountryByCordsService countryByCordsService;
+    private final MapboxClient mapboxClient;
 
-    public SpotService(SpotRepo spotRepo, IdService idService, CountryByCordsService countryByCordsService) {
+    public SpotService(SpotRepo spotRepo, IdService idService, MapboxClient mapboxClient) {
         this.spotRepo = spotRepo;
         this.idService = idService;
-        this.countryByCordsService = countryByCordsService;
+        this.mapboxClient = mapboxClient;
     }
 
 
     public Spot add(SpotRequest newSpot) {
-        CountryByCord countryByCords = countryByCordsService.getCountryByCords(newSpot);
+        CountryByCord countryByCords = mapboxClient.countryByCords(
+                String.valueOf(newSpot.position().lng()),
+                String.valueOf(newSpot.position().lat()),
+                System.getenv("Mapbox_Token"));
 
         Position position = new Position(newSpot.position().lng(),
                 newSpot.position().lat(),
