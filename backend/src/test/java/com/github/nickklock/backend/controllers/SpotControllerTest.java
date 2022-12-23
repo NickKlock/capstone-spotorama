@@ -68,10 +68,10 @@ class SpotControllerTest {
 
     @Test
     void byId_expect_200() throws Exception{
-        spotRepo.save(new Spot("0","test",new ArrayList<>(),
-                new ArrayList<>(),new ArrayList<>(),new ArrayList<>(),
-                new ArrayList<>(),new ArrayList<>(),new ArrayList<>(),
-                new ArrayList<>(), ParkingSpace.FEW,new Position(0,0),
+        spotRepo.save(new Spot("0", "test", new ArrayList<>(),
+                new ArrayList<>(), new ArrayList<>(), new ArrayList<>(),
+                new ArrayList<>(), new ArrayList<>(), new ArrayList<>(),
+                new ArrayList<>(), ParkingSpace.FEW, new Position(0, 0, "Germany"),
                 "yes"));
         mvc.perform(get(endPoint+"/0"))
                 .andExpect(status().isOk());
