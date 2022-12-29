@@ -24,13 +24,11 @@ class SpotServiceTest {
     SpotRepo spotRepo = mock(SpotRepo.class);
     IdService idService = mock(IdService.class);
 
-    //mocking for some reason didn't work ,
-    //always returned null with when(mapboxClient.get..()).thenReturn(new CountryByCord(List.of(new Feature("Germany"))))
-    MapboxClient mapboxClient = (lng, lat, token) -> new CountryByCord(List.of(new Feature("Germany")));
+    MapboxClient mapboxClient = mock(MapboxClient.class);
     SpotService spotService = new SpotService(spotRepo, idService, mapboxClient);
 
     @Test
-    void add_expect_given_and_result_equals_verify_shoprepo() {
+    void add_expect_given_and_result_equals_verify_spotRepo() {
         SpotRequest spotRequest = new SpotRequest("test", new ArrayList<>(),
                 new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(),
                 new ArrayList<>(), new ArrayList<>(), new ArrayList<>(),
@@ -42,6 +40,9 @@ class SpotServiceTest {
                 new ArrayList<>(), new ArrayList<>(), new ArrayList<>(),
                 ParkingSpace.FEW, new Position(0, 0, "Germany"), "Yes");
 
+        when(mapboxClient.countryByCords(any(), any(), any()))
+                .thenReturn(new CountryByCord(List.of(new Feature("Germany"))));
+
         when(spotRepo.save(givenSpot)).thenReturn(givenSpot);
         when(idService.generateId()).thenReturn("0");
 
@@ -49,6 +50,7 @@ class SpotServiceTest {
 
         assertEquals(givenSpot, result);
         verify(spotRepo).save(givenSpot);
+        verify(mapboxClient).countryByCords(any(), any(), any());
     }
 
     @Test
