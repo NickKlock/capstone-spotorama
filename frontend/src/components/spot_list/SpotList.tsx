@@ -66,6 +66,4 @@ export default function SpotList(props: SpotListProps) {
             <p>loading...</p>
         )
     }
-
-
 }
