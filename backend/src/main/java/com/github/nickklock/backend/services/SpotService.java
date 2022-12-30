@@ -26,10 +26,10 @@ public class SpotService {
 
 
     public Spot add(SpotRequest newSpot) {
-        CountryByCord countryByCords = mapboxClient.countryByCords(
-                String.valueOf(newSpot.position().lng()),
-                String.valueOf(newSpot.position().lat()),
-                System.getenv("Mapbox_Token"));
+         CountryByCord countryByCords = mapboxClient.countryByCords(
+                 String.valueOf(newSpot.position().lng()),
+                 String.valueOf(newSpot.position().lat()),
+                 System.getenv("Mapbox_Token"));
 
         Position position = new Position(newSpot.position().lng(),
                 newSpot.position().lat(),
