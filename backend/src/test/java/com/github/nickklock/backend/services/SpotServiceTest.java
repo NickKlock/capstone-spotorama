@@ -15,8 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 class SpotServiceTest {
@@ -51,6 +50,7 @@ class SpotServiceTest {
         assertEquals(givenSpot, result);
         verify(spotRepo).save(givenSpot);
         verify(mapboxClient).countryByCords(any(), any(), any());
+
     }
 
     @Test
@@ -60,7 +60,7 @@ class SpotServiceTest {
     }
 
     @Test
-    void getById_expect_spot(){
+    void getById_expect_spot() {
         when(spotRepo.findById("0")).thenReturn(Optional.of(new Spot("0", "test", new ArrayList<>(),
                 new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(),
                 new ArrayList<>(), new ArrayList<>(), new ArrayList<>(),
@@ -68,6 +68,35 @@ class SpotServiceTest {
 
         Spot result = spotService.getById("0");
 
-        assertEquals("0",result.id());
+        assertEquals("0", result.id());
+    }
+
+    @Test
+    void getCountryByCord_expected_proper_country_by_cord() {
+        CountryByCord expectedResult = new CountryByCord(List.of(new Feature("Germany")));
+
+        when(mapboxClient.countryByCords(any(), any(), any()))
+                .thenReturn(expectedResult);
+
+        CountryByCord actualResult = spotService.getCountryByCords(0, 0);
+
+        assertNotNull(actualResult);
+        assertEquals(expectedResult, actualResult);
+        verify(mapboxClient).countryByCords(any(), any(), any());
+
+    }
+
+    @Test
+    void createPositionFromRawData() {
+        Position expectedResult = new Position(0, 0, "Germany");
+        CountryByCord givenCountryByCord = new CountryByCord(List.of(new Feature("Germany")));
+
+        when(mapboxClient.countryByCords(any(), any(), any())).thenReturn(givenCountryByCord);
+
+        Position result = spotService.createPositionFromRawData(0, 0);
+
+        assertEquals(expectedResult, result);
+        verify(mapboxClient).countryByCords(any(), any(), any());
+
     }
 }

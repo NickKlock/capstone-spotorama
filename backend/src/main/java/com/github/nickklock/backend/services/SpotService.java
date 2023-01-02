@@ -26,19 +26,13 @@ public class SpotService {
 
 
     public Spot add(SpotRequest newSpot) {
-         CountryByCord countryByCords = mapboxClient.countryByCords(
-                 String.valueOf(newSpot.position().lng()),
-                 String.valueOf(newSpot.position().lat()),
-                 System.getenv("Mapbox_Token"));
 
-        Position position = new Position(newSpot.position().lng(),
-                newSpot.position().lat(),
-                countryByCords.features().get(0).text());
+        Position positionFromRawData = createPositionFromRawData(newSpot.position().lng(), newSpot.position().lat());
 
         Spot spotWithId = new Spot(idService.generateId(), newSpot.name(), newSpot.disciplines(), newSpot.waveTypes(),
                 newSpot.beachTypes(), newSpot.experiencesLevel(), newSpot.hazards(), newSpot.bestMonths(),
                 newSpot.bestDirections(), newSpot.waterTemperature(),
-                newSpot.parkingSpace(), position, newSpot.restrooms());
+                newSpot.parkingSpace(), positionFromRawData, newSpot.restrooms());
 
         return spotRepo.save(spotWithId);
     }
@@ -49,5 +43,13 @@ public class SpotService {
 
     public Spot getById(String id) {
         return spotRepo.findById(id).orElseThrow(NoSuchSpotException::new);
+    }
+
+    public CountryByCord getCountryByCords(double lng, double lat) {
+        return mapboxClient.countryByCords(String.valueOf(lng), String.valueOf(lat), System.getenv("Mapbox_Token"));
+    }
+
+    public Position createPositionFromRawData(double lng, double lat) {
+        return new Position(lng, lat, getCountryByCords(lng, lat).features().get(0).text());
     }
 }
