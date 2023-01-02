@@ -13,12 +13,7 @@ public class MapboxConfig {
     private String baseUrl;
 
     @Bean
-    String baseUrl() {
-        return this.baseUrl;
-    }
-
-    @Bean
-    MapboxClient mapboxClient(String baseUrl) {
+    MapboxClient mapboxClient() {
         WebClient webClient = WebClient
                 .builder()
                 .baseUrl(baseUrl)
