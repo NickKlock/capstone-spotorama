@@ -39,7 +39,8 @@ export default function SpotList(props: SpotListProps) {
     }, [props.spots])
 
     if (groupedSpots) {
-        const filteredCountries = Array.from(groupedSpots).filter(([countryName]) => countryName.toLowerCase().includes(searchTerm))
+        const filteredCountries = Array.from(groupedSpots)
+            .filter(([countryName]) => countryName.toLowerCase().includes(searchTerm))
 
         return (
             <Stack
