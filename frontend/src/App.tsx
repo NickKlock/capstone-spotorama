@@ -8,6 +8,7 @@ import BottomNavigationBar from "./components/BottomNavigationBar";
 import {Spot} from "./models/Spot";
 import TitleBarRoutes from "./components/TitleBarRoutes";
 import {Box} from "@mui/material";
+import Register from "./components/profile/Register";
 
 function App() {
 
@@ -21,6 +22,7 @@ function App() {
         <BrowserRouter>
             <Routes>
                 <Route element={<Homepage handleAddSpot={handleAddSpot} spots={spots}/>} path={"/"}/>
+                <Route element={<Register/>} path={"/profile"}/>
                 <Route element={<TitleBarRoutes/>}>
                     <Route element={<SpotList spots={spots}/>} path={"/spots"}/>
                     <Route element={<SpotDetail/>} path={"/spots/:id/details"}/>
