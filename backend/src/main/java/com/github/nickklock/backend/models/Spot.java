@@ -1,7 +1,6 @@
 package com.github.nickklock.backend.models;
 
 import com.github.nickklock.backend.models.enums.*;
-import com.github.nickklock.backend.models.user.UserSpot;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -22,8 +21,6 @@ public record Spot(
         List<WaterTemperature> waterTemperature,
         ParkingSpace parkingSpace,
         Position position,
-        String restrooms,
-        UserSpot userSpot
-
+        String restrooms
 ) {
 }
