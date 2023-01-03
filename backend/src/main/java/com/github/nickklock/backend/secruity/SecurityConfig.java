@@ -32,12 +32,12 @@ public class SecurityConfig {
                         response.sendError(HttpStatus.UNAUTHORIZED.value(), HttpStatus.UNAUTHORIZED.getReasonPhrase()))
                 .and()
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/users/login/me").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/api/users/").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/api/users/login/").permitAll()
+                        //.requestMatchers("/api/users/login/me").permitAll()
+                        .requestMatchers("/api/users/").permitAll()
+                        //.requestMatchers(HttpMethod.POST, "/api/users/login/").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/spots/**").permitAll()
+                        //.requestMatchers(HttpMethod.DELETE, "/api/user/").authenticated()
                         .requestMatchers(HttpMethod.POST, "/api/spots/").authenticated()
-                        .requestMatchers(HttpMethod.DELETE, "/api/user/").authenticated()
                         .anyRequest().authenticated()
                 )
                 .build();
