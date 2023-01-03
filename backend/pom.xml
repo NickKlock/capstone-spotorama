@@ -95,7 +95,7 @@
                 </executions>
                 <configuration>
                     <jsonLibrary>jackson2</jsonLibrary>
-                    <classPatterns>com.github.nickklock.backend.models.*</classPatterns>
+                    <classPatterns>com.github.nickklock.backend.models.*.*</classPatterns>
                     <outputKind>module</outputKind>
                 </configuration>
             </plugin>
