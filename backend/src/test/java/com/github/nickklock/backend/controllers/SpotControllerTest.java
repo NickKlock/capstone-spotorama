@@ -49,7 +49,8 @@ class SpotControllerTest {
     @Test
     void addSpot_expect_status_created() throws Exception {
         withEnvironmentVariable("Mapbox_Token", "token").execute(() -> {
-            mockWebServer.enqueue(new MockResponse().setResponseCode(201)
+
+            mockWebServer.enqueue(new MockResponse().setResponseCode(200)
                     .setHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON)
                     .setBody("""
                             {
@@ -81,7 +82,6 @@ class SpotControllerTest {
                     .andExpect(status().isCreated());
 
             RecordedRequest recordedRequest = mockWebServer.takeRequest();
-
             assertEquals("GET", recordedRequest.getMethod());
         });
 
