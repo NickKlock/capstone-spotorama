@@ -31,3 +31,15 @@ export function addUser(newUser: UserAuth) {
         .then(response => response.data)
         .catch(console.error)
 }
+
+export function whoAmI() {
+    return axios.get("/api/users/me")
+        .then(response => response.data)
+        .catch(console.error)
+}
+
+export function getToken() {
+    return axios.get("/csrf")
+        .then(response => response.data)
+        .catch(console.error)
+}

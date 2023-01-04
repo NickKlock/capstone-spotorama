@@ -49,43 +49,44 @@ export default function Register() {
 
             <Typography textAlign={"center"} variant={"h6"}>Register a new account</Typography>
 
-            <List>
-                <ListItem>
-                    <FormControl fullWidth={true} margin={"dense"}>
-                        <TextField name={"username"} type={"email"} label={"E-Mail"}
-                                   onChange={handleUserObjectInputChanges}/>
-                    </FormControl>
-                </ListItem>
+            <form>
+                <List>
+                    <ListItem>
+                        <FormControl fullWidth={true} margin={"dense"}>
+                            <TextField name={"username"} type={"email"} label={"E-Mail"}
+                                       onChange={handleUserObjectInputChanges}/>
+                        </FormControl>
+                    </ListItem>
 
-                <ListItem>
-                    <FormControl fullWidth={true} margin={"dense"}>
-                        <TextField name={"password"} type={"password"} label={"Password"}
-                                   onChange={handleUserObjectInputChanges}/>
-                    </FormControl>
-                </ListItem>
+                    <ListItem>
+                        <FormControl fullWidth={true} margin={"dense"}>
+                            <TextField name={"password"} type={"password"} label={"Password"}
+                                       onChange={handleUserObjectInputChanges}/>
+                        </FormControl>
+                    </ListItem>
 
-                <ListItem>
-                    <FormControl fullWidth={true} margin={"dense"}>
-                        <TextField name={"nickname"} type={"text"} label={"Displayed Name"}
-                                   onChange={handleAuthorObjectInputChanges}/>
-                    </FormControl>
-                </ListItem>
+                    <ListItem>
+                        <FormControl fullWidth={true} margin={"dense"}>
+                            <TextField name={"nickname"} type={"text"} label={"Displayed Name"}
+                                       onChange={handleAuthorObjectInputChanges}/>
+                        </FormControl>
+                    </ListItem>
 
-                <ListItem>
-                    <FormControl fullWidth={true} margin={"dense"}>
-                        <TextField name={"firstName"} type={"text"} label={"Name"}
-                                   onChange={handleAuthorObjectInputChanges}/>
-                    </FormControl>
-                </ListItem>
+                    <ListItem>
+                        <FormControl fullWidth={true} margin={"dense"}>
+                            <TextField name={"firstName"} type={"text"} label={"Name"}
+                                       onChange={handleAuthorObjectInputChanges}/>
+                        </FormControl>
+                    </ListItem>
 
-                <ListItem>
-                    <FormControl fullWidth={true} margin={"dense"}>
-                        <TextField name={"lastName"} type={"text"} label={"Last name"}
-                                   onChange={handleAuthorObjectInputChanges}/>
-                    </FormControl>
-                </ListItem>
-            </List>
-
+                    <ListItem>
+                        <FormControl fullWidth={true} margin={"dense"}>
+                            <TextField name={"lastName"} type={"text"} label={"Last name"}
+                                       onChange={handleAuthorObjectInputChanges}/>
+                        </FormControl>
+                    </ListItem>
+                </List>
+            </form>
             <Button
                 color={"secondary"}
                 startIcon={<PersonAdd/>}

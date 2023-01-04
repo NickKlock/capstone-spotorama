@@ -9,7 +9,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.argon2.Argon2PasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -18,7 +17,6 @@ import java.util.List;
 public class UserService implements UserDetailsService {
     private final UserRepo userRepo;
     private final IdService idService;
-    private final PasswordEncoder passwordEncoder = Argon2PasswordEncoder.defaultsForSpringSecurity_v5_8();
 
     public UserService(UserRepo userRepo, IdService idService) {
         this.userRepo = userRepo;
@@ -29,7 +27,7 @@ public class UserService implements UserDetailsService {
         User savedUser = userRepo.save(new User(
                 idService.generateId(),
                 userAuth.username(),
-                passwordEncoder.encode(userAuth.password()),
+                Argon2PasswordEncoder.defaultsForSpringSecurity_v5_8().encode(userAuth.password()),
                 userAuth.author()));
 
         return new UserSpot(savedUser.id(), savedUser.username(), savedUser.author());
