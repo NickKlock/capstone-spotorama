@@ -22,8 +22,8 @@ function App() {
         <BrowserRouter>
             <Routes>
                 <Route element={<Homepage handleAddSpot={handleAddSpot} spots={spots}/>} path={"/"}/>
-                <Route element={<Register/>} path={"/profile"}/>
                 <Route element={<TitleBarRoutes/>}>
+                    <Route element={<Register/>} path={"/profile"}/>
                     <Route element={<SpotList spots={spots}/>} path={"/spots"}/>
                     <Route element={<SpotDetail/>} path={"/spots/:id/details"}/>
                 </Route>
