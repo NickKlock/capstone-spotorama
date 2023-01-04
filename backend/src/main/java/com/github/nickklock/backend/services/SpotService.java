@@ -17,13 +17,14 @@ public class SpotService {
     private final SpotRepo spotRepo;
     private final IdService idService;
     private final MapboxClient mapboxClient;
+    private final MapboxService mapboxService;
 
-    public SpotService(SpotRepo spotRepo, IdService idService, MapboxClient mapboxClient) {
+    public SpotService(SpotRepo spotRepo, IdService idService, MapboxClient mapboxClient, MapboxService mapboxService) {
         this.spotRepo = spotRepo;
         this.idService = idService;
         this.mapboxClient = mapboxClient;
+        this.mapboxService = mapboxService;
     }
-
 
     public Spot add(SpotRequest newSpot) {
 
@@ -46,7 +47,7 @@ public class SpotService {
     }
 
     public CountryByCord getCountryByCords(double lng, double lat) {
-        return mapboxClient.countryByCords(String.valueOf(lng), String.valueOf(lat), System.getenv("Mapbox_Token"));
+        return mapboxClient.countryByCords(String.valueOf(lng), String.valueOf(lat), mapboxService.getToken());
     }
 
     public Position createPositionFromRawData(double lng, double lat) {
