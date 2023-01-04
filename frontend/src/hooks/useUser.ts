@@ -1,10 +1,12 @@
 import {UserAuth} from "../models/User";
-import {addUser} from "../api-calls";
+import {addUser, getToken} from "../api-calls";
 
 export default function useUser() {
 
     function registerUser(newUser: UserAuth) {
-        addUser(newUser)
+        getToken().then(() => {
+            addUser(newUser)
+        })
     }
 
     return {registerUser}
