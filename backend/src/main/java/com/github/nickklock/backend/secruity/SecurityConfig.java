@@ -42,11 +42,9 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/api/users/me").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/users/").permitAll()
-                        //.requestMatchers(HttpMethod.POST, "/api/users/login/").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/spots/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/csrf").permitAll()
-                        //.requestMatchers(HttpMethod.DELETE, "/api/user/").authenticated()
-                        .requestMatchers(HttpMethod.POST, "/api/spots/").authenticated()
+                        .requestMatchers(HttpMethod.GET, "/api/mapbox").permitAll()
                         .anyRequest().authenticated()
                 )
                 .build();
