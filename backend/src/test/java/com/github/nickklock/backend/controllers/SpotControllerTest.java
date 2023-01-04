@@ -13,6 +13,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
@@ -20,7 +21,6 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.ArrayList;
 
-import static com.github.stefanbirkner.systemlambda.SystemLambda.withEnvironmentVariable;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -28,7 +28,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
-@AutoConfigureMockMvc
+@AutoConfigureMockMvc(addFilters = false)
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 class SpotControllerTest {
 
@@ -37,53 +37,53 @@ class SpotControllerTest {
     private MockMvc mvc;
     @Autowired
     private SpotRepo spotRepo;
-
-
     private static final MockWebServer mockWebServer = new MockWebServer();
+
 
     @DynamicPropertySource
     static void setDynamicProperties(DynamicPropertyRegistry registry) {
         registry.add("mapbox.coordinate.to.country.base.url", () -> mockWebServer.url("/").toString());
     }
 
+
+    @WithMockUser
     @Test
     void addSpot_expect_status_created() throws Exception {
-        withEnvironmentVariable("Mapbox_Token", "token").execute(() -> {
+        mockWebServer.enqueue(new MockResponse().setResponseCode(201)
+                .setHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON)
+                .setBody("""
+                        {
+                        "features":[{
+                        "name":"Germany"
+                        }]
+                        }
+                        """)
+        );
 
-            mockWebServer.enqueue(new MockResponse().setResponseCode(200)
-                    .setHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON)
-                    .setBody("""
-                            {
-                            "features":[{
-                            "name":"Germany"
-                            }]
-                            }
-                            """)
-            );
+        mvc.perform(post(endPoint)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("""
+                                {"id":"",
+                                "name":"a",
+                                "disciplines":["KITESURFING"],
+                                "waveTypes":["CHOP"],
+                                "beachTypes":["SAND"],
+                                "experiencesLevel":["BEGINNER"],
+                                "hazards":["CURRENTS"],
+                                "bestMonths":["JUNE"],
+                                "bestDirections":["N"],
+                                "waterTemperature":["COLD"],
+                                "parkingSpace":0,
+                                "position":{"lat":54.7690,"lng":9.9642},
+                                "restrooms":"yes"
+                                }
+                                """)
 
-            mvc.perform(post(endPoint)
-                            .contentType(MediaType.APPLICATION_JSON)
-                            .content("""
-                                    {"id":"",
-                                    "name":"a",
-                                    "disciplines":["KITESURFING"],
-                                    "waveTypes":["CHOP"],
-                                    "beachTypes":["SAND"],
-                                    "experiencesLevel":["BEGINNER"],
-                                    "hazards":["CURRENTS"],
-                                    "bestMonths":["JUNE"],
-                                    "bestDirections":["N"],
-                                    "waterTemperature":["COLD"],
-                                    "parkingSpace":0,
-                                    "position":{"lat":54.7690,"lng":9.9642},
-                                    "restrooms":"yes"
-                                    }
-                                    """))
-                    .andExpect(status().isCreated());
+                )
+                .andExpect(status().isCreated());
 
-            RecordedRequest recordedRequest = mockWebServer.takeRequest();
-            assertEquals("GET", recordedRequest.getMethod());
-        });
+        RecordedRequest recordedRequest = mockWebServer.takeRequest();
+        assertEquals("GET", recordedRequest.getMethod());
 
 
     }
