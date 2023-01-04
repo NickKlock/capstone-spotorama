@@ -39,13 +39,10 @@ class SpotControllerTest {
     private SpotRepo spotRepo;
     private static final MockWebServer mockWebServer = new MockWebServer();
 
-
     @DynamicPropertySource
     static void setDynamicProperties(DynamicPropertyRegistry registry) {
         registry.add("mapbox.coordinate.to.country.base.url", () -> mockWebServer.url("/").toString());
     }
-
-
     @WithMockUser
     @Test
     void addSpot_expect_status_created() throws Exception {
