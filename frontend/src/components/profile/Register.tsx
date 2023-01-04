@@ -35,8 +35,6 @@ export default function Register() {
     }
 
     function handleRegisterUser() {
-        console.log(JSON.stringify(newUser))
-        console.log(newUser)
         registerUser(newUser)
     }
 
