@@ -5,7 +5,8 @@ import {getSpotById} from "../api-calls";
 import {ArrowBack} from "@mui/icons-material";
 
 const titles = {
-    "/spots":"Spot overview"
+    "/spots": "Spot overview",
+    "/profile": "Profile"
 }
 export default function TitleBar(){
     const location = useLocation()
@@ -13,12 +14,12 @@ export default function TitleBar(){
     const navigate = useNavigate()
 
     useEffect(()=>{
-        if(location.pathname === "/spots"){
+        if (location.pathname === "/spots" || location.pathname === "/profile") {
             setTitle(titles[location.pathname])
-        }else {
+        } else {
             const splitString = location.pathname.split("/")
             const spotId = splitString[2];
-            getSpotById(spotId).then(res => setTitle("Details about "+res.name))
+            getSpotById(spotId).then(res => setTitle("Details about " + res.name))
         }
     },[location.pathname])
 

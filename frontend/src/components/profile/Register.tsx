@@ -43,7 +43,9 @@ export default function Register() {
              display={"flex"}
              justifyContent={"space-between"}
              alignItems={"center"}
-             flexDirection={"column"}>
+             flexDirection={"column"}
+             marginTop={10}
+        >
 
             <Typography textAlign={"center"} variant={"h6"}>Register a new account</Typography>
 
