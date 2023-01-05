@@ -3,7 +3,22 @@ import {ChangeEvent, useState} from "react";
 import {UserAuth} from "../../models/User";
 import {PersonAdd} from "@mui/icons-material";
 import useUser from "../../hooks/useUser";
+import CustomListItemTextInput from "../ui/CustomListItemTextInput";
 
+const autohorInputFields = [
+    {
+        name: "nickname",
+        label: "Displayed name"
+    },
+    {
+        name: "firstName",
+        label: "Name"
+    },
+    {
+        name: "lastName",
+        label: "Last name"
+    }
+]
 export default function Register() {
     const initialNewUser: UserAuth = {
         author: {
@@ -49,44 +64,27 @@ export default function Register() {
 
             <Typography textAlign={"center"} variant={"h6"}>Register a new account</Typography>
 
-            <form>
-                <List>
-                    <ListItem>
-                        <FormControl fullWidth={true} margin={"dense"}>
-                            <TextField name={"username"} type={"email"} label={"E-Mail"}
-                                       onChange={handleUserObjectInputChanges}/>
-                        </FormControl>
-                    </ListItem>
+            <List>
+                <ListItem>
+                    <FormControl fullWidth={true} margin={"dense"}>
+                        <TextField name={"username"} type={"email"} label={"E-Mail"}
+                                   onChange={handleUserObjectInputChanges}/>
+                    </FormControl>
+                </ListItem>
 
-                    <ListItem>
-                        <FormControl fullWidth={true} margin={"dense"}>
-                            <TextField name={"password"} type={"password"} label={"Password"}
-                                       onChange={handleUserObjectInputChanges}/>
-                        </FormControl>
-                    </ListItem>
+                <ListItem>
+                    <FormControl fullWidth={true} margin={"dense"}>
+                        <TextField name={"password"} type={"password"} label={"Password"}
+                                   onChange={handleUserObjectInputChanges}/>
+                    </FormControl>
+                </ListItem>
 
-                    <ListItem>
-                        <FormControl fullWidth={true} margin={"dense"}>
-                            <TextField name={"nickname"} type={"text"} label={"Displayed Name"}
-                                       onChange={handleAuthorObjectInputChanges}/>
-                        </FormControl>
-                    </ListItem>
+                {autohorInputFields.map((inputField) =>
+                    <CustomListItemTextInput name={inputField.name}
+                                             label={inputField.label}
+                                             onChange={handleAuthorObjectInputChanges}/>)}
+            </List>
 
-                    <ListItem>
-                        <FormControl fullWidth={true} margin={"dense"}>
-                            <TextField name={"firstName"} type={"text"} label={"Name"}
-                                       onChange={handleAuthorObjectInputChanges}/>
-                        </FormControl>
-                    </ListItem>
-
-                    <ListItem>
-                        <FormControl fullWidth={true} margin={"dense"}>
-                            <TextField name={"lastName"} type={"text"} label={"Last name"}
-                                       onChange={handleAuthorObjectInputChanges}/>
-                        </FormControl>
-                    </ListItem>
-                </List>
-            </form>
             <Button
                 color={"secondary"}
                 startIcon={<PersonAdd/>}
