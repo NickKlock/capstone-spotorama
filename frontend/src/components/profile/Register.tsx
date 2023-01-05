@@ -6,7 +6,7 @@ import CustomListItemTextInput from "../ui/CustomListItemTextInput";
 import {Navigate, useNavigate} from "react-router-dom";
 
 type RegisterProps = {
-    handleRegisterUser(newUser: NewUserRequest): void
+    handleRegisterUser(newUser: NewUserRequest): Promise<void>
     loggedInUser: UserSpot
 }
 
