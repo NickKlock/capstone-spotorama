@@ -1,14 +1,17 @@
 import {Box, Button, FormControl, List, ListItem, TextField, Typography} from "@mui/material";
 import {ChangeEvent, useState} from "react";
-import {NewUserRequest} from "../../models/User";
+import {NewUserRequest, UserSpot} from "../../models/User";
 import {PersonAdd} from "@mui/icons-material";
 import CustomListItemTextInput from "../ui/CustomListItemTextInput";
+import {Navigate, useNavigate} from "react-router-dom";
 
 type RegisterProps = {
     handleRegisterUser(newUser: NewUserRequest): void
+    loggedInUser: UserSpot
 }
 
 export default function Register(props: RegisterProps) {
+    const navigate = useNavigate()
     const authorInputFields = [
         {
             name: "nickname",
@@ -53,50 +56,52 @@ export default function Register(props: RegisterProps) {
 
     function handleRegisterUser() {
         props.handleRegisterUser(newUser)
+            .then(() => navigate("/login"))
     }
 
     return (
-        <Box flexWrap={"wrap"}
-             display={"flex"}
-             justifyContent={"space-between"}
-             alignItems={"center"}
-             flexDirection={"column"}
-             marginTop={10}
-        >
-
-            <Typography textAlign={"center"} variant={"h6"}>Register a new account</Typography>
-
-            <List>
-                <ListItem>
-                    <FormControl fullWidth={true} margin={"dense"}>
-                        <TextField name={"username"} type={"email"} label={"E-Mail"}
-                                   onChange={handleUserObjectInputChanges}/>
-                    </FormControl>
-                </ListItem>
-
-                <ListItem>
-                    <FormControl fullWidth={true} margin={"dense"}>
-                        <TextField name={"password"} type={"password"} label={"Password"}
-                                   onChange={handleUserObjectInputChanges}/>
-                    </FormControl>
-                </ListItem>
-
-                {authorInputFields.map((inputField) =>
-                    <CustomListItemTextInput name={inputField.name}
-                                             label={inputField.label}
-                                             onChange={handleAuthorObjectInputChanges}
-                                             key={inputField.name}/>)}
-            </List>
-
-            <Button
-                color={"secondary"}
-                startIcon={<PersonAdd/>}
-                variant={"contained"}
-                onClick={handleRegisterUser}
+        props.loggedInUser.username === "anonymousUser" ?
+            <Box flexWrap={"wrap"}
+                 display={"flex"}
+                 justifyContent={"space-between"}
+                 alignItems={"center"}
+                 flexDirection={"column"}
+                 marginTop={10}
             >
-                Register
-            </Button>
 
-        </Box>
+                <Typography textAlign={"center"} variant={"h6"}>Register a new account</Typography>
+
+                <List>
+                    <ListItem>
+                        <FormControl fullWidth={true} margin={"dense"}>
+                            <TextField name={"username"} type={"email"} label={"E-Mail"}
+                                       onChange={handleUserObjectInputChanges}/>
+                        </FormControl>
+                    </ListItem>
+
+                    <ListItem>
+                        <FormControl fullWidth={true} margin={"dense"}>
+                            <TextField name={"password"} type={"password"} label={"Password"}
+                                       onChange={handleUserObjectInputChanges}/>
+                        </FormControl>
+                    </ListItem>
+
+                    {authorInputFields.map((inputField) =>
+                        <CustomListItemTextInput name={inputField.name}
+                                                 label={inputField.label}
+                                                 onChange={handleAuthorObjectInputChanges}
+                                                 key={inputField.name}/>)}
+                </List>
+
+                <Button
+                    color={"secondary"}
+                    startIcon={<PersonAdd/>}
+                    variant={"contained"}
+                    onClick={handleRegisterUser}
+                >
+                    Register
+                </Button>
+
+            </Box> : <Navigate to={"/"}/>
     )
 }
