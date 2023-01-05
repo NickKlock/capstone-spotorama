@@ -1,12 +1,14 @@
 import {Box, Button, FormControl, List, ListItem, TextField, Typography} from "@mui/material";
 import {ChangeEvent, useState} from "react";
-import {UserAuth} from "../../models/User";
+import {NewUserRequest} from "../../models/User";
 import {PersonAdd} from "@mui/icons-material";
-import useUser from "../../hooks/useUser";
 import CustomListItemTextInput from "../ui/CustomListItemTextInput";
 
+type RegisterProps = {
+    handleRegisterUser(newUser: NewUserRequest): void
+}
 
-export default function Register() {
+export default function Register(props: RegisterProps) {
     const authorInputFields = [
         {
             name: "nickname",
@@ -22,7 +24,7 @@ export default function Register() {
         }
     ]
 
-    const initialNewUser: UserAuth = {
+    const initialNewUser: NewUserRequest = {
         author: {
             createdSpots: [],
             firstName: "",
@@ -33,11 +35,9 @@ export default function Register() {
         username: ""
     }
 
-    const [newUser, setNewUser] = useState<UserAuth>(initialNewUser)
-    const {registerUser} = useUser()
+    const [newUser, setNewUser] = useState<NewUserRequest>(initialNewUser)
 
     function handleUserObjectInputChanges(event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) {
-
         setNewUser({...newUser, [event.target.name]: event.target.value})
     }
 
@@ -52,7 +52,7 @@ export default function Register() {
     }
 
     function handleRegisterUser() {
-        registerUser(newUser)
+        props.handleRegisterUser(newUser)
     }
 
     return (
