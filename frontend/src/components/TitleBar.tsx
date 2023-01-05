@@ -6,15 +6,20 @@ import {ArrowBack} from "@mui/icons-material";
 
 const titles = {
     "/spots": "Spot overview",
-    "/profile": "Profile"
+    "/profile": "Profile",
+    "/login": "Login",
+    "/register": "Sign up",
 }
 export default function TitleBar(){
     const location = useLocation()
     const [title,setTitle] = useState<string>("")
     const navigate = useNavigate()
 
-    useEffect(()=>{
-        if (location.pathname === "/spots" || location.pathname === "/profile") {
+    useEffect(()=> {
+        if (location.pathname === "/spots" ||
+            location.pathname === "/profile" ||
+            location.pathname === "/login" ||
+            location.pathname === "/register") {
             setTitle(titles[location.pathname])
         } else {
             const splitString = location.pathname.split("/")
