@@ -1,17 +1,21 @@
 package com.github.nickklock.backend.services;
 
 import com.github.nickklock.backend.exceptions.MyUsernameNotFoundException;
+import com.github.nickklock.backend.models.user.Author;
+import com.github.nickklock.backend.models.user.NewUserRequest;
 import com.github.nickklock.backend.models.user.User;
-import com.github.nickklock.backend.models.user.UserAuth;
 import com.github.nickklock.backend.models.user.UserSpot;
 import com.github.nickklock.backend.repos.UserRepo;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.argon2.Argon2PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class UserService implements UserDetailsService {
@@ -23,12 +27,12 @@ public class UserService implements UserDetailsService {
         this.idService = idService;
     }
 
-    public UserSpot createNewUser(UserAuth userAuth) {
+    public UserSpot createNewUser(NewUserRequest newUserRequest) {
         User savedUser = userRepo.save(new User(
                 idService.generateId(),
-                userAuth.username(),
-                Argon2PasswordEncoder.defaultsForSpringSecurity_v5_8().encode(userAuth.password()),
-                userAuth.author()));
+                newUserRequest.username(),
+                Argon2PasswordEncoder.defaultsForSpringSecurity_v5_8().encode(newUserRequest.password()),
+                newUserRequest.author()));
 
         return new UserSpot(savedUser.id(), savedUser.username(), savedUser.author());
     }
@@ -38,5 +42,14 @@ public class UserService implements UserDetailsService {
         User user = userRepo.findByUsername(username)
                 .orElseThrow(MyUsernameNotFoundException::new);
         return new org.springframework.security.core.userdetails.User(user.username(), user.password(), List.of());
+    }
+
+    public UserSpot getUserSpotBySecurityContext() {
+        String userNameBySecurityContext = SecurityContextHolder.getContext().getAuthentication().getName();
+
+        Optional<User> userByUsername = userRepo.findByUsername(userNameBySecurityContext);
+        return userByUsername.map(user -> new UserSpot(user.id(), user.username(), user.author()))
+                .orElse(new UserSpot("null", "anonymousUser",
+                        new Author("anonymousUser", "", "", Collections.emptyList())));
     }
 }
