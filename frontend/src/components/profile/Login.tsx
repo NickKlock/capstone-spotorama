@@ -1,4 +1,4 @@
-import {Box, IconButton, TextField, Typography} from "@mui/material";
+import {Box, IconButton, Link, TextField, Typography} from "@mui/material";
 import {UserLoginRequest, UserSpot} from "../../models/User";
 import {LoginSharp} from "@mui/icons-material";
 import {ChangeEvent, useState} from "react";
@@ -31,7 +31,7 @@ export default function Login(props: LoginProps) {
                  display={"grid"}
                  flexWrap={"wrap"}
                  justifyContent={"center"}
-                 marginTop={"60px"}>
+                 marginTop={"65px"}>
 
                 <Typography variant={"h4"} textAlign={"center"} sx={{mb: 5}}>Login</Typography>
 
@@ -49,6 +49,10 @@ export default function Login(props: LoginProps) {
                 <IconButton onClick={handleLogin} color={"secondary"}>
                     <LoginSharp/>
                 </IconButton>
+                <Link href={"/register"} underline={"hover"}>
+                    {"Register an account"}
+                </Link>
+
 
             </Box> : <Navigate to={"/"}/>
     )
