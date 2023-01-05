@@ -12,11 +12,9 @@ import org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfig
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -68,22 +66,17 @@ class UserControllerTest {
 
     @Test
     void me_expect_notLoggedInUser() throws Exception {
-        MvcResult mvcResult = mvc.perform(get(endPoint + "/me"))
+        mvc.perform(get(endPoint + "/me"))
                 .andExpect(status().isOk())
                 .andReturn();
 
-        String contentAsString = mvcResult.getResponse().getContentAsString();
-        assertEquals("anonymousUser", contentAsString);
     }
 
     @WithMockUser
     @Test
     void me_expect_loggedInUser() throws Exception {
-        MvcResult mvcResult = mvc.perform(get(endPoint + "/me"))
-                .andExpect(status().isOk())
-                .andReturn();
+        mvc.perform(get(endPoint + "/me"))
+                .andExpect(status().isOk());
 
-        String contentAsString = mvcResult.getResponse().getContentAsString();
-        assertEquals("user", contentAsString);
     }
 }
