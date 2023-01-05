@@ -23,26 +23,29 @@ function App() {
         return addSpot(newSpot).then(() => Promise.resolve())
     }
 
-    function handleRegisterNewUser(newUser: NewUserRequest) {
-        registerUser(newUser)
+    function handleRegisterNewUser(newUser: NewUserRequest): Promise<void> {
+        return registerUser(newUser)
     }
 
-    function handleLoginUser(loginUserRequest: UserLoginRequest) {
-        login(loginUserRequest)
+    function handleLoginUser(loginUserRequest: UserLoginRequest): Promise<void> {
+        return login(loginUserRequest)
     }
 
     return (
         <BrowserRouter>
             <Routes>
                 <Route element={<Homepage handleAddSpot={handleAddSpot} spots={spots}/>} path={"/"}/>
+
                 <Route element={<TitleBarRoutes/>}>
-                    <Route element={<Login handleLoginRequest={handleLoginUser}/>} path={"/login"}/>
-                    <Route element={<Register handleRegisterUser={handleRegisterNewUser}/>} path={"/register"}/>
+                    <Route element={<Login loggedInUser={loggedInUser} handleLoginRequest={handleLoginUser}/>}
+                           path={"/login"}/>
+                    <Route element={<Register loggedInUser={loggedInUser} handleRegisterUser={handleRegisterNewUser}/>}
+                           path={"/register"}/>
                     <Route element={<SpotList spots={spots}/>} path={"/spots"}/>
                     <Route element={<SpotDetail/>} path={"/spots/:id/details"}/>
                 </Route>
-
             </Routes>
+
             <Box height={56}>
                 <BottomNavigationBar/>
             </Box>
