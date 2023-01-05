@@ -82,7 +82,8 @@ export default function Register() {
                 {autohorInputFields.map((inputField) =>
                     <CustomListItemTextInput name={inputField.name}
                                              label={inputField.label}
-                                             onChange={handleAuthorObjectInputChanges}/>)}
+                                             onChange={handleAuthorObjectInputChanges}
+                                             key={inputField.name}/>)}
             </List>
 
             <Button
