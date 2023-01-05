@@ -47,6 +47,7 @@ export function getToken() {
 export function loginUser(loginUserRequest: UserLoginRequest) {
     return axios.post("/api/users/login", undefined,
         {
+            withCredentials: true,
             auth:
                 {
                     password: loginUserRequest.password,
