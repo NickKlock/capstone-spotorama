@@ -18,17 +18,20 @@ export default function useUser() {
 
     useEffect(() => {
         whoAmI().then(data => setLoggedInUser(data))
-    })
+    }, [])
 
-    function registerUser(newUser: NewUserRequest) {
-        getToken().then(() => {
-            addUser(newUser)
+    function registerUser(newUser: NewUserRequest): Promise<void> {
+        return getToken().then(() => {
+            return addUser(newUser).then(() => Promise.resolve())
         })
     }
 
-    function login(userLoginRequest: UserLoginRequest) {
-        loginUser(userLoginRequest)
-            .then(data => setLoggedInUser(data))
+    function login(userLoginRequest: UserLoginRequest): Promise<void> {
+        return getToken().then(() => {
+            return loginUser(userLoginRequest)
+                .then(data => setLoggedInUser(data))
+                .then(() => Promise.resolve())
+        })
     }
 
     return {registerUser, loggedInUser, login}
