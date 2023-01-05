@@ -9,13 +9,26 @@ import {Spot} from "./models/Spot";
 import TitleBarRoutes from "./components/TitleBarRoutes";
 import {Box} from "@mui/material";
 import Register from "./components/profile/Register";
+import useUser from "./hooks/useUser";
+import {NewUserRequest, UserLoginRequest} from "./models/User";
+import Login from "./components/profile/Login";
 
 function App() {
 
     const {spots, addSpot} = useSpots()
 
-    function handleAddSpot(newSpot:Spot):Promise<void> {
+    const {registerUser, loggedInUser, login} = useUser();
+
+    function handleAddSpot(newSpot: Spot): Promise<void> {
         return addSpot(newSpot).then(() => Promise.resolve())
+    }
+
+    function handleRegisterNewUser(newUser: NewUserRequest) {
+        registerUser(newUser)
+    }
+
+    function handleLoginUser(loginUserRequest: UserLoginRequest) {
+        login(loginUserRequest)
     }
 
     return (
@@ -23,7 +36,8 @@ function App() {
             <Routes>
                 <Route element={<Homepage handleAddSpot={handleAddSpot} spots={spots}/>} path={"/"}/>
                 <Route element={<TitleBarRoutes/>}>
-                    <Route element={<Register/>} path={"/profile"}/>
+                    <Route element={<Login handleLoginRequest={handleLoginUser}/>} path={"/login"}/>
+                    <Route element={<Register handleRegisterUser={handleRegisterNewUser}/>} path={"/register"}/>
                     <Route element={<SpotList spots={spots}/>} path={"/spots"}/>
                     <Route element={<SpotDetail/>} path={"/spots/:id/details"}/>
                 </Route>

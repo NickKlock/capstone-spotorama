@@ -1,11 +1,10 @@
 package com.github.nickklock.backend.controllers;
 
-import com.github.nickklock.backend.models.user.UserAuth;
+import com.github.nickklock.backend.models.user.NewUserRequest;
 import com.github.nickklock.backend.models.user.UserSpot;
 import com.github.nickklock.backend.services.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -19,12 +18,17 @@ public class UserController {
     }
 
     @PostMapping
-    public ResponseEntity<UserSpot> add(@RequestBody UserAuth userAuth) {
-        return new ResponseEntity<>(userService.createNewUser(userAuth), HttpStatus.CREATED);
+    public ResponseEntity<UserSpot> add(@RequestBody NewUserRequest newUserRequest) {
+        return new ResponseEntity<>(userService.createNewUser(newUserRequest), HttpStatus.CREATED);
     }
 
     @GetMapping("/me")
-    public String me() {
-        return SecurityContextHolder.getContext().getAuthentication().getName();
+    public ResponseEntity<UserSpot> me() {
+        return new ResponseEntity<>(userService.getUserSpotBySecurityContext(), HttpStatus.OK);
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<UserSpot> login() {
+        return new ResponseEntity<>(userService.getUserSpotBySecurityContext(), HttpStatus.OK);
     }
 }
