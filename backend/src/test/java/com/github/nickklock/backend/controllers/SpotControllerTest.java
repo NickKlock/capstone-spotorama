@@ -46,7 +46,7 @@ class SpotControllerTest {
     @WithMockUser
     @Test
     void addSpot_expect_status_created() throws Exception {
-        mockWebServer.enqueue(new MockResponse().setResponseCode(201)
+        mockWebServer.enqueue(new MockResponse().setResponseCode(200)
                 .setHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON)
                 .setBody("""
                         {

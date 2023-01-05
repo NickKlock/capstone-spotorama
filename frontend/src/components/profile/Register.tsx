@@ -5,21 +5,23 @@ import {PersonAdd} from "@mui/icons-material";
 import useUser from "../../hooks/useUser";
 import CustomListItemTextInput from "../ui/CustomListItemTextInput";
 
-const autohorInputFields = [
-    {
-        name: "nickname",
-        label: "Displayed name"
-    },
-    {
-        name: "firstName",
-        label: "Name"
-    },
-    {
-        name: "lastName",
-        label: "Last name"
-    }
-]
+
 export default function Register() {
+    const authorInputFields = [
+        {
+            name: "nickname",
+            label: "Displayed name"
+        },
+        {
+            name: "firstName",
+            label: "Name"
+        },
+        {
+            name: "lastName",
+            label: "Last name"
+        }
+    ]
+
     const initialNewUser: UserAuth = {
         author: {
             createdSpots: [],
@@ -79,7 +81,7 @@ export default function Register() {
                     </FormControl>
                 </ListItem>
 
-                {autohorInputFields.map((inputField) =>
+                {authorInputFields.map((inputField) =>
                     <CustomListItemTextInput name={inputField.name}
                                              label={inputField.label}
                                              onChange={handleAuthorObjectInputChanges}

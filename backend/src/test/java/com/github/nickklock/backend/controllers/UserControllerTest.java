@@ -67,7 +67,7 @@ class UserControllerTest {
     }
 
     @Test
-    void me_expect_anonymousUser() throws Exception {
+    void me_expect_notLoggedInUser() throws Exception {
         MvcResult mvcResult = mvc.perform(get(endPoint + "/me"))
                 .andExpect(status().isOk())
                 .andReturn();
@@ -78,7 +78,7 @@ class UserControllerTest {
 
     @WithMockUser
     @Test
-    void me_expect_userUser() throws Exception {
+    void me_expect_loggedInUser() throws Exception {
         MvcResult mvcResult = mvc.perform(get(endPoint + "/me"))
                 .andExpect(status().isOk())
                 .andReturn();
