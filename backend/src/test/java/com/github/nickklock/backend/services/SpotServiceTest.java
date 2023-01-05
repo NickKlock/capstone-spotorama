@@ -28,7 +28,7 @@ class SpotServiceTest {
     SpotService spotService = new SpotService(spotRepo, idService, mapboxClient, mapboxService);
 
     @Test
-    void add_expect_given_and_result_equals_verify_spotRepo() {
+    void add_expect_spot_verify_use_of_spotRepo_and_mapbox_client() {
         SpotRequest spotRequest = new SpotRequest("test", new ArrayList<>(),
                 new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(),
                 new ArrayList<>(), new ArrayList<>(), new ArrayList<>(),
