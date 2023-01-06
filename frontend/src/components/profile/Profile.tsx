@@ -1,5 +1,7 @@
 import {Box} from "@mui/material";
 import {UserRequest, UserSpot} from "../../models/User";
+import UserForm from "./UserForm";
+import {Edit} from "@mui/icons-material";
 import {useState} from "react";
 
 type ProfileProps = {
@@ -9,13 +11,22 @@ type ProfileProps = {
     handleEditUser(): Promise<void>
 }
 export default function Profile(props: ProfileProps) {
-    const [currentUser, setCurrentUser] = useState<UserRequest>({
-        username: props.loggedInUser.username,
-        password: "********",
-        author: props.loggedInUser.author
-    })
 
-    return (<Box>
+    const [enableEdit, setEnableEdit] = useState<boolean>(false)
 
-    </Box>)
+    function handleEditUser(userRequest: UserRequest) {
+
+    }
+
+    return (
+        <Box>
+            <UserForm loggedInUser={props.loggedInUser}
+                      editable={enableEdit}
+                      formTitle={"Profile"}
+                      buttonIcon={<Edit/>}
+                      buttonText={"Save"}
+                      handleButtonClick={handleEditUser}/>
+        </Box>
+    )
+
 }
