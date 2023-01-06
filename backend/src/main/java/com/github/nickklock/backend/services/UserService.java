@@ -2,8 +2,8 @@ package com.github.nickklock.backend.services;
 
 import com.github.nickklock.backend.exceptions.MyUsernameNotFoundException;
 import com.github.nickklock.backend.models.user.Author;
-import com.github.nickklock.backend.models.user.NewUserRequest;
 import com.github.nickklock.backend.models.user.User;
+import com.github.nickklock.backend.models.user.UserRequest;
 import com.github.nickklock.backend.models.user.UserSpot;
 import com.github.nickklock.backend.repos.UserRepo;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -27,12 +27,12 @@ public class UserService implements UserDetailsService {
         this.idService = idService;
     }
 
-    public UserSpot createNewUser(NewUserRequest newUserRequest) {
+    public UserSpot createNewUser(UserRequest userRequest) {
         User savedUser = userRepo.save(new User(
                 idService.generateId(),
-                newUserRequest.username(),
-                Argon2PasswordEncoder.defaultsForSpringSecurity_v5_8().encode(newUserRequest.password()),
-                newUserRequest.author()));
+                userRequest.username(),
+                Argon2PasswordEncoder.defaultsForSpringSecurity_v5_8().encode(userRequest.password()),
+                userRequest.author()));
 
         return new UserSpot(savedUser.id(), savedUser.username(), savedUser.author());
     }

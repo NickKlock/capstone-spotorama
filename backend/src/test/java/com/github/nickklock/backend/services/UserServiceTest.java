@@ -2,8 +2,8 @@ package com.github.nickklock.backend.services;
 
 import com.github.nickklock.backend.exceptions.MyUsernameNotFoundException;
 import com.github.nickklock.backend.models.user.Author;
-import com.github.nickklock.backend.models.user.NewUserRequest;
 import com.github.nickklock.backend.models.user.User;
+import com.github.nickklock.backend.models.user.UserRequest;
 import com.github.nickklock.backend.models.user.UserSpot;
 import com.github.nickklock.backend.repos.UserRepo;
 import org.junit.jupiter.api.Test;
@@ -24,17 +24,17 @@ class UserServiceTest {
 
     @Test
     void createNewUser_expect_expected_user() {
-        NewUserRequest givenNewUserRequest = new NewUserRequest("nick", "123",
+        UserRequest givenUserRequest = new UserRequest("nick", "123",
                 new Author("admin", "nick", "klockgether", List.of()));
 
-        UserSpot expectedUserSpot = new UserSpot("0", givenNewUserRequest.username(), givenNewUserRequest.author());
+        UserSpot expectedUserSpot = new UserSpot("0", givenUserRequest.username(), givenUserRequest.author());
 
         when(idService.generateId()).thenReturn("0");
 
         when(userRepo.save(any()))
-                .thenReturn(new User("0", givenNewUserRequest.username(), givenNewUserRequest.password(), givenNewUserRequest.author()));
+                .thenReturn(new User("0", givenUserRequest.username(), givenUserRequest.password(), givenUserRequest.author()));
 
-        UserSpot result = userService.createNewUser(givenNewUserRequest);
+        UserSpot result = userService.createNewUser(givenUserRequest);
 
         assertEquals("0", result.id());
         assertEquals(expectedUserSpot, result);

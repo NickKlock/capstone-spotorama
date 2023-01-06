@@ -1,6 +1,6 @@
 import axios from "axios";
 import {Spot} from "./models/Spot";
-import {NewUserRequest, UserLoginRequest} from "./models/User";
+import {UserLoginRequest, UserRequest} from "./models/User";
 
 export function getAccessToken() {
     return axios.get("/api/mapbox")
@@ -26,7 +26,7 @@ export function getSpotById(id: string) {
         .catch(console.error)
 }
 
-export function addUser(newUser: NewUserRequest) {
+export function addUser(newUser: UserRequest) {
     return axios.post("/api/users/", newUser)
         .then(response => response.data)
         .catch(console.error)

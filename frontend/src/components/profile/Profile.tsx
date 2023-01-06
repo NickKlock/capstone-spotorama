@@ -1,5 +1,6 @@
 import {Box} from "@mui/material";
-import {UserSpot} from "../../models/User";
+import {UserRequest, UserSpot} from "../../models/User";
+import {useState} from "react";
 
 type ProfileProps = {
     loggedInUser: UserSpot
@@ -8,6 +9,7 @@ type ProfileProps = {
     handleEditUser(): Promise<void>
 }
 export default function Profile(props: ProfileProps) {
+    const [currentUser, setCurrentUser] = useState<UserRequest>(props.loggedInUser)
 
     return (<Box>
 

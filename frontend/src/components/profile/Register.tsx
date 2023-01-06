@@ -1,12 +1,12 @@
 import {Box, Button, FormControl, List, ListItem, TextField, Typography} from "@mui/material";
 import {ChangeEvent, useState} from "react";
-import {NewUserRequest, UserSpot} from "../../models/User";
+import {UserRequest, UserSpot} from "../../models/User";
 import {PersonAdd} from "@mui/icons-material";
 import CustomListItemTextInput from "../ui/CustomListItemTextInput";
 import {Navigate, useNavigate} from "react-router-dom";
 
 type RegisterProps = {
-    handleRegisterUser(newUser: NewUserRequest): Promise<void>
+    handleRegisterUser(newUser: UserRequest): Promise<void>
     loggedInUser: UserSpot
 }
 
@@ -27,7 +27,7 @@ export default function Register(props: RegisterProps) {
         }
     ]
 
-    const initialNewUser: NewUserRequest = {
+    const initialNewUser: UserRequest = {
         author: {
             createdSpots: [],
             firstName: "",
@@ -38,7 +38,7 @@ export default function Register(props: RegisterProps) {
         username: ""
     }
 
-    const [newUser, setNewUser] = useState<NewUserRequest>(initialNewUser)
+    const [newUser, setNewUser] = useState<UserRequest>(initialNewUser)
 
     function handleUserObjectInputChanges(event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) {
         setNewUser({...newUser, [event.target.name]: event.target.value})

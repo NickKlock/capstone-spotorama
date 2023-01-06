@@ -1,4 +1,4 @@
-import {NewUserRequest, UserLoginRequest, UserSpot} from "../models/User";
+import {UserLoginRequest, UserRequest, UserSpot} from "../models/User";
 import {addUser, getToken, loginUser, whoAmI} from "../api-calls";
 import {useEffect, useState} from "react";
 
@@ -20,7 +20,7 @@ export default function useUser() {
         whoAmI().then(data => setLoggedInUser(data))
     }, [])
 
-    function registerUser(newUser: NewUserRequest): Promise<void> {
+    function registerUser(newUser: UserRequest): Promise<void> {
         return getToken().then(() => {
             return addUser(newUser).then(() => Promise.resolve())
         })
