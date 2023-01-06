@@ -12,6 +12,7 @@ import Register from "./components/profile/Register";
 import useUser from "./hooks/useUser";
 import {NewUserRequest, UserLoginRequest} from "./models/User";
 import Login from "./components/profile/Login";
+import Profile from "./components/profile/Profile";
 
 function App() {
 
@@ -35,7 +36,7 @@ function App() {
         <BrowserRouter>
             <Routes>
                 <Route element={<Homepage handleAddSpot={handleAddSpot} spots={spots}/>} path={"/"}/>
-
+                <Route element={<Profile/>} path={"/profile"}/>
                 <Route element={<TitleBarRoutes/>}>
                     <Route element={<Login loggedInUser={loggedInUser} handleLoginRequest={handleLoginUser}/>}
                            path={"/login"}/>
