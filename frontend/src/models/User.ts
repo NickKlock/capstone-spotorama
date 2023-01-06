@@ -1,4 +1,4 @@
-export type NewUserRequest = {
+export type UserRequest = {
     username: string;
     password: string;
     author: Author;

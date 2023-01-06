@@ -10,7 +10,7 @@ import TitleBarRoutes from "./components/TitleBarRoutes";
 import {Box} from "@mui/material";
 import Register from "./components/profile/Register";
 import useUser from "./hooks/useUser";
-import {NewUserRequest, UserLoginRequest} from "./models/User";
+import {UserLoginRequest, UserRequest} from "./models/User";
 import Login from "./components/profile/Login";
 import Profile from "./components/profile/Profile";
 
@@ -24,7 +24,7 @@ function App() {
         return addSpot(newSpot).then(() => Promise.resolve())
     }
 
-    function handleRegisterNewUser(newUser: NewUserRequest): Promise<void> {
+    function handleRegisterNewUser(newUser: UserRequest): Promise<void> {
         return registerUser(newUser)
     }
 

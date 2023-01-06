@@ -1,6 +1,6 @@
 package com.github.nickklock.backend.controllers;
 
-import com.github.nickklock.backend.models.user.NewUserRequest;
+import com.github.nickklock.backend.models.user.UserRequest;
 import com.github.nickklock.backend.models.user.UserSpot;
 import com.github.nickklock.backend.services.UserService;
 import org.springframework.http.HttpStatus;
@@ -18,8 +18,8 @@ public class UserController {
     }
 
     @PostMapping
-    public ResponseEntity<UserSpot> add(@RequestBody NewUserRequest newUserRequest) {
-        return new ResponseEntity<>(userService.createNewUser(newUserRequest), HttpStatus.CREATED);
+    public ResponseEntity<UserSpot> add(@RequestBody UserRequest userRequest) {
+        return new ResponseEntity<>(userService.createNewUser(userRequest), HttpStatus.CREATED);
     }
 
     @GetMapping("/me")

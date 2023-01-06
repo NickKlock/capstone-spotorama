@@ -1,6 +1,6 @@
 package com.github.nickklock.backend.models.user;
 
-public record NewUserRequest(
+public record UserRequest(
         String username,
         String password,
         Author author
