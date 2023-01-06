@@ -1,9 +1,8 @@
-import {Box, Button, FormControl, List, ListItem, TextField, Typography} from "@mui/material";
-import {ChangeEvent, useState} from "react";
+import {Box} from "@mui/material";
 import {UserRequest, UserSpot} from "../../models/User";
 import {PersonAdd} from "@mui/icons-material";
-import CustomListItemTextInput from "../ui/CustomListItemTextInput";
 import {Navigate, useNavigate} from "react-router-dom";
+import UserForm from "./UserForm";
 
 type RegisterProps = {
     handleRegisterUser(newUser: UserRequest): Promise<void>
@@ -12,96 +11,20 @@ type RegisterProps = {
 
 export default function Register(props: RegisterProps) {
     const navigate = useNavigate()
-    const authorInputFields = [
-        {
-            name: "nickname",
-            label: "Displayed name"
-        },
-        {
-            name: "firstName",
-            label: "Name"
-        },
-        {
-            name: "lastName",
-            label: "Last name"
-        }
-    ]
 
-    const initialNewUser: UserRequest = {
-        author: {
-            createdSpots: [],
-            firstName: "",
-            lastName: "",
-            nickname: ""
-        },
-        password: "",
-        username: ""
-    }
-
-    const [newUser, setNewUser] = useState<UserRequest>(initialNewUser)
-
-    function handleUserObjectInputChanges(event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) {
-        setNewUser({...newUser, [event.target.name]: event.target.value})
-    }
-
-    function handleAuthorObjectInputChanges(event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) {
-        setNewUser(newUser => ({
-            ...newUser,
-            author: {
-                ...newUser.author,
-                [event.target.name]: event.target.value
-            }
-        }))
-    }
-
-    function handleRegisterUser() {
-        props.handleRegisterUser(newUser)
+    function handleRegisterUser(userRequest: UserRequest) {
+        props.handleRegisterUser(userRequest)
             .then(() => navigate("/login"))
     }
 
     return (
         props.loggedInUser.username === "anonymousUser" ?
-            <Box flexWrap={"wrap"}
-                 display={"flex"}
-                 justifyContent={"space-between"}
-                 alignItems={"center"}
-                 flexDirection={"column"}
-                 marginTop={10}
-            >
-
-                <Typography textAlign={"center"} variant={"h6"}>Register a new account</Typography>
-
-                <List>
-                    <ListItem>
-                        <FormControl fullWidth={true} margin={"dense"}>
-                            <TextField name={"username"} type={"email"} label={"E-Mail"}
-                                       onChange={handleUserObjectInputChanges}/>
-                        </FormControl>
-                    </ListItem>
-
-                    <ListItem>
-                        <FormControl fullWidth={true} margin={"dense"}>
-                            <TextField name={"password"} type={"password"} label={"Password"}
-                                       onChange={handleUserObjectInputChanges}/>
-                        </FormControl>
-                    </ListItem>
-
-                    {authorInputFields.map((inputField) =>
-                        <CustomListItemTextInput name={inputField.name}
-                                                 label={inputField.label}
-                                                 onChange={handleAuthorObjectInputChanges}
-                                                 key={inputField.name}/>)}
-                </List>
-
-                <Button
-                    color={"secondary"}
-                    startIcon={<PersonAdd/>}
-                    variant={"contained"}
-                    onClick={handleRegisterUser}
-                >
-                    Register
-                </Button>
-
+            <Box>
+                <UserForm loggedInUser={props.loggedInUser}
+                          formTitle={"Register a new account"}
+                          buttonIcon={<PersonAdd/>}
+                          buttonText={"Register"}
+                          handleButtonClick={handleRegisterUser}/>
             </Box> : <Navigate to={"/"}/>
     )
 }
