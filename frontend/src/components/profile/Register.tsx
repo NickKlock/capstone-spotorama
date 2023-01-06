@@ -22,6 +22,7 @@ export default function Register(props: RegisterProps) {
             <Box>
                 <UserForm loggedInUser={props.loggedInUser}
                           formTitle={"Register a new account"}
+                          editable={true}
                           buttonIcon={<PersonAdd/>}
                           buttonText={"Register"}
                           handleButtonClick={handleRegisterUser}/>

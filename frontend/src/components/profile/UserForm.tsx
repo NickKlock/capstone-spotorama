@@ -10,6 +10,7 @@ type RegisterProps = {
     buttonText: string
     color?: "secondary" | "success" | "inherit" | "warning" | "error" | "primary" | "info"
     handleButtonClick(userRequestForm: UserRequest): void
+    editable: boolean
 }
 
 export default function UserForm(props: RegisterProps) {
@@ -90,6 +91,7 @@ export default function UserForm(props: RegisterProps) {
                                    type={"email"}
                                    label={"E-Mail"}
                                    value={userRequestForm.username}
+                                   disabled={!props.editable}
                                    onChange={handleUserObjectInputChanges}/>
                     </FormControl>
                 </ListItem>
@@ -100,6 +102,7 @@ export default function UserForm(props: RegisterProps) {
                                    type={"password"}
                                    label={"Password"}
                                    value={userRequestForm.password}
+                                   disabled={!props.editable}
                                    onChange={handleUserObjectInputChanges}/>
                     </FormControl>
                 </ListItem>
@@ -107,6 +110,7 @@ export default function UserForm(props: RegisterProps) {
                 {authorInputFields.map((inputField) =>
                     <CustomListItemTextInput name={inputField.name}
                                              label={inputField.label}
+                                             editable={props.editable}
                                              onChange={handleAuthorObjectInputChanges}
                                              value={inputField.value}
                                              key={inputField.name}/>)}
