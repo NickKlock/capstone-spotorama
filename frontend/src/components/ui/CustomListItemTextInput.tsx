@@ -6,6 +6,7 @@ type CustomListItemProps = {
     label: string
     onChange(event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>): void;
     value?: string
+    editable: boolean
 }
 export default function CustomListItemTextInput(props: CustomListItemProps) {
 
@@ -21,6 +22,7 @@ export default function CustomListItemTextInput(props: CustomListItemProps) {
                            type={"text"}
                            label={props.label}
                            value={props.value}
+                           disabled={!props.editable}
                            onChange={onChange}/>
             </FormControl>
         </ListItem>
