@@ -26,7 +26,11 @@ export default function Profile(props: ProfileProps) {
 
     function handleLogout() {
         props.handleLogout()
-            .then(() => navigate("/"))
+        // .then(() => navigate("/"))
+    }
+
+    function handleDelete() {
+        props.handleDeleteUser()
     }
 
     return (
@@ -42,7 +46,18 @@ export default function Profile(props: ProfileProps) {
             </IconButton>
             <Button variant={"contained"}
                     color={"warning"}
-                    onClick={handleLogout}> Logout</Button>
+                    onClick={handleLogout}
+            >
+                Logout
+            </Button>
+
+            <Button variant={"contained"}
+                    color={"error"}
+                    onClick={handleDelete}
+            >
+                Delete
+            </Button>
+
         </Box>
     )
 
