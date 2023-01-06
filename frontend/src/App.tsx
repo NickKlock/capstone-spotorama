@@ -18,7 +18,7 @@ function App() {
 
     const {spots, addSpot} = useSpots()
 
-    const {registerUser, loggedInUser, login} = useUser();
+    const {registerUser, loggedInUser, login, logout, updateUser, deleteUser} = useUser();
 
     function handleAddSpot(newSpot: Spot): Promise<void> {
         return addSpot(newSpot).then(() => Promise.resolve())
@@ -36,12 +36,18 @@ function App() {
         <BrowserRouter>
             <Routes>
                 <Route element={<Homepage handleAddSpot={handleAddSpot} spots={spots}/>} path={"/"}/>
-                <Route element={<Profile/>} path={"/profile"}/>
+
+                <Route element={<Profile handleDeleteUser={deleteUser}
+                                         handleEditUser={updateUser}
+                                         handleLogout={logout}
+                                         loggedInUser={loggedInUser}/>} path={"/profile"}/>
+
                 <Route element={<TitleBarRoutes/>}>
-                    <Route element={<Login loggedInUser={loggedInUser} handleLoginRequest={handleLoginUser}/>}
-                           path={"/login"}/>
-                    <Route element={<Register loggedInUser={loggedInUser} handleRegisterUser={handleRegisterNewUser}/>}
-                           path={"/register"}/>
+                    <Route element={<Login
+                        loggedInUser={loggedInUser}
+                        handleLoginRequest={handleLoginUser}/>} path={"/login"}/>
+                    <Route element={<Register loggedInUser={loggedInUser}
+                                              handleRegisterUser={handleRegisterNewUser}/>} path={"/register"}/>
                     <Route element={<SpotList spots={spots}/>} path={"/spots"}/>
                     <Route element={<SpotDetail/>} path={"/spots/:id/details"}/>
                 </Route>

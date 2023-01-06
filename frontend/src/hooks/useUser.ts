@@ -34,5 +34,23 @@ export default function useUser() {
         })
     }
 
-    return {registerUser, loggedInUser, login}
+    function logout(): Promise<void> {
+        return getToken().then(() => {
+            //logout
+        })
+    }
+
+    function updateUser(): Promise<void> {
+        return getToken().then(() => {
+            //update
+        })
+    }
+
+    function deleteUser(): Promise<void> {
+        return getToken().then(() => {
+            //delete
+        })
+    }
+
+    return {registerUser, loggedInUser, login, logout, updateUser, deleteUser}
 }
