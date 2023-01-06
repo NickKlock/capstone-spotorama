@@ -5,6 +5,7 @@ type CustomListItemProps = {
     name: string
     label: string
     onChange(event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>): void;
+    value?: string
 }
 export default function CustomListItemTextInput(props: CustomListItemProps) {
 
@@ -16,7 +17,10 @@ export default function CustomListItemTextInput(props: CustomListItemProps) {
     return (
         <ListItem>
             <FormControl fullWidth={true} margin={"dense"}>
-                <TextField name={props.name} type={"text"} label={props.label}
+                <TextField name={props.name}
+                           type={"text"}
+                           label={props.label}
+                           value={props.value}
                            onChange={onChange}/>
             </FormControl>
         </ListItem>
