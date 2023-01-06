@@ -1,8 +1,9 @@
-import {Box} from "@mui/material";
+import {Box, Button, IconButton} from "@mui/material";
 import {UserRequest, UserSpot} from "../../models/User";
 import UserForm from "./UserForm";
-import {Edit} from "@mui/icons-material";
+import {Edit, Save} from "@mui/icons-material";
 import {useState} from "react";
+import {useNavigate} from "react-router-dom";
 
 type ProfileProps = {
     loggedInUser: UserSpot
@@ -11,11 +12,21 @@ type ProfileProps = {
     handleEditUser(): Promise<void>
 }
 export default function Profile(props: ProfileProps) {
-
+    const navigate = useNavigate()
     const [enableEdit, setEnableEdit] = useState<boolean>(false)
+
 
     function handleEditUser(userRequest: UserRequest) {
 
+    }
+
+    function handleEditButton() {
+        setEnableEdit(!enableEdit)
+    }
+
+    function handleLogout() {
+        props.handleLogout()
+            .then(() => navigate("/"))
     }
 
     return (
@@ -23,9 +34,15 @@ export default function Profile(props: ProfileProps) {
             <UserForm loggedInUser={props.loggedInUser}
                       editable={enableEdit}
                       formTitle={"Profile"}
-                      buttonIcon={<Edit/>}
+                      buttonIcon={<Save/>}
                       buttonText={"Save"}
                       handleButtonClick={handleEditUser}/>
+            <IconButton size={"small"} onClick={handleEditButton}>
+                <Edit/>
+            </IconButton>
+            <Button variant={"contained"}
+                    color={"warning"}
+                    onClick={handleLogout}> Logout</Button>
         </Box>
     )
 
