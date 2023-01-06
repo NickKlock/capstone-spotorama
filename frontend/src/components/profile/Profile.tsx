@@ -9,7 +9,11 @@ type ProfileProps = {
     handleEditUser(): Promise<void>
 }
 export default function Profile(props: ProfileProps) {
-    const [currentUser, setCurrentUser] = useState<UserRequest>(props.loggedInUser)
+    const [currentUser, setCurrentUser] = useState<UserRequest>({
+        username: props.loggedInUser.username,
+        password: "********",
+        author: props.loggedInUser.author
+    })
 
     return (<Box>
 
