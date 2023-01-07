@@ -1,19 +1,23 @@
-import {Box, Button, FormControl, List, ListItem, TextField, Typography} from "@mui/material";
+import {Box, Button, FormControl, IconButton, List, ListItem, TextField, Typography} from "@mui/material";
 import CustomListItemTextInput from "../ui/CustomListItemTextInput";
 import {UserRequest, UserSpot} from "../../models/User";
 import {ChangeEvent, ReactNode, useState} from "react";
+import {Edit} from "@mui/icons-material";
 
-type RegisterProps = {
+type UserFormProps = {
     loggedInUser: UserSpot
     formTitle: string
     buttonIcon: ReactNode
     buttonText: string
     color?: "secondary" | "success" | "inherit" | "warning" | "error" | "primary" | "info"
-    handleButtonClick(userRequestForm: UserRequest): void
+    onFormButtonClick(userRequestForm: UserRequest): void
     editable: boolean
+    marginTop: number
+    showEditButton: boolean
+    onEditButtonClick?(): void
 }
 
-export default function UserForm(props: RegisterProps) {
+export default function UserForm(props: UserFormProps) {
     let authorInputFields = [
         {
             name: "nickname",
@@ -31,7 +35,8 @@ export default function UserForm(props: RegisterProps) {
             value: ""
         }
     ]
-    let userRequest: UserRequest = {
+
+    let initialUserRequest: UserRequest = {
         author: {
             createdSpots: [],
             firstName: "",
@@ -43,16 +48,16 @@ export default function UserForm(props: RegisterProps) {
     }
 
     if (props.loggedInUser.username !== "anonymousUser") {
-        userRequest.author = props.loggedInUser.author
-        userRequest.username = props.loggedInUser.username
-        userRequest.password = "********"
+        initialUserRequest.author = props.loggedInUser.author
+        initialUserRequest.username = props.loggedInUser.username
+        initialUserRequest.password = "********"
 
-        authorInputFields[0].value = userRequest.author.nickname
-        authorInputFields[1].value = userRequest.author.firstName
-        authorInputFields[2].value = userRequest.author.lastName
+        authorInputFields[0].value = initialUserRequest.author.nickname
+        authorInputFields[1].value = initialUserRequest.author.firstName
+        authorInputFields[2].value = initialUserRequest.author.lastName
     }
 
-    const [userRequestForm, setUserRequestForm] = useState<UserRequest>(userRequest)
+    const [userRequestForm, setUserRequestForm] = useState<UserRequest>(initialUserRequest)
 
     function handleUserObjectInputChanges(event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) {
         setUserRequestForm({...userRequestForm, [event.target.name]: event.target.value})
@@ -70,7 +75,7 @@ export default function UserForm(props: RegisterProps) {
 
 
     function handleRegisterUser() {
-        props.handleButtonClick(userRequestForm)
+        props.onFormButtonClick(userRequestForm)
     }
 
     return (
@@ -79,10 +84,24 @@ export default function UserForm(props: RegisterProps) {
              justifyContent={"space-between"}
              alignItems={"center"}
              flexDirection={"column"}
-             marginTop={10}
+             marginTop={props.marginTop}
         >
 
-            <Typography textAlign={"center"} variant={"h6"}>{props.formTitle}</Typography>
+            <Box display={"flex"} flexGrow={1}>
+                <Typography textAlign={"center"}
+                            variant={"h6"}>
+                    {props.formTitle}
+                </Typography>
+
+
+                {props.showEditButton &&
+                    <IconButton size={"small"}
+                                onClick={props.onEditButtonClick && props.onEditButtonClick}>
+                        <Edit/>
+                    </IconButton>}
+
+            </Box>
+
 
             <List>
                 <ListItem>

@@ -25,7 +25,10 @@ export default function Register(props: RegisterProps) {
                           editable={true}
                           buttonIcon={<PersonAdd/>}
                           buttonText={"Register"}
-                          handleButtonClick={handleRegisterUser}/>
+                          onFormButtonClick={handleRegisterUser}
+                          showEditButton={false}
+                          marginTop={10}
+                />
             </Box> : <Navigate to={"/"}/>
     )
 }
