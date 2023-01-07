@@ -61,3 +61,7 @@ export function loginUser(loginUserRequest: UserLoginRequest) {
 export function logoutUser() {
     return axios.post("/api/users/logout")
 }
+
+export function updateUser(updatedUserRequest: UserRequest) {
+    return axios.put("/api/users/", updatedUserRequest)
+}
