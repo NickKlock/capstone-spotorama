@@ -1,5 +1,5 @@
 import {UserLoginRequest, UserRequest, UserSpot} from "../models/User";
-import {addUser, getToken, loginUser, whoAmI} from "../api-calls";
+import {addUser, getToken, loginUser, logoutUser, whoAmI} from "../api-calls";
 import {useEffect, useState} from "react";
 
 export default function useUser() {
@@ -36,7 +36,8 @@ export default function useUser() {
 
     function logout(): Promise<void> {
         return getToken().then(() => {
-            //logout
+            logoutUser()
+                .catch(console.error)
         })
     }
 
@@ -48,7 +49,7 @@ export default function useUser() {
 
     function deleteUser(): Promise<void> {
         return getToken().then(() => {
-            //delete
+
         })
     }
 
