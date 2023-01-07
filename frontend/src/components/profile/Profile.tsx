@@ -3,13 +3,13 @@ import {UserRequest, UserSpot} from "../../models/User";
 import UserForm from "./UserForm";
 import {Save} from "@mui/icons-material";
 import {useState} from "react";
-import {useNavigate} from "react-router-dom";
+import {Navigate, useNavigate} from "react-router-dom";
 
 type ProfileProps = {
     loggedInUser: UserSpot
     handleLogout(): Promise<void>
     handleDeleteUser(): Promise<void>
-    handleEditUser(): Promise<void>
+    handleEditUser(userRequest: UserRequest): Promise<void>
 }
 export default function Profile(props: ProfileProps) {
     const navigate = useNavigate()
@@ -17,7 +17,8 @@ export default function Profile(props: ProfileProps) {
 
 
     function handleEditUser(userRequest: UserRequest) {
-
+        props.handleEditUser(userRequest)
+            .then(r => console.log(r))
     }
 
     function handleEditButtonClick() {
@@ -34,17 +35,18 @@ export default function Profile(props: ProfileProps) {
     }
 
     return (
-        <Box>
-            <UserForm loggedInUser={props.loggedInUser}
-                      editable={enableEdit}
-                      formTitle={"Profile"}
-                      buttonIcon={<Save/>}
-                      buttonText={"Save"}
-                      onFormButtonClick={handleEditUser}
-                      marginTop={2}
-                      showEditButton={true}
-                      onEditButtonClick={handleEditButtonClick}
-            />
+        props.loggedInUser.username !== "anonymousUser" ?
+            <Box>
+                <UserForm loggedInUser={props.loggedInUser}
+                          editable={enableEdit}
+                          formTitle={"Profile"}
+                          buttonIcon={<Save/>}
+                          buttonText={"Save"}
+                          onFormButtonClick={handleEditUser}
+                          marginTop={2}
+                          showEditButton={true}
+                          onEditButtonClick={handleEditButtonClick}
+                />
             <Button variant={"contained"}
                     color={"warning"}
                     onClick={handleLogout}
@@ -52,14 +54,14 @@ export default function Profile(props: ProfileProps) {
                 Logout
             </Button>
 
-            <Button variant={"contained"}
-                    color={"error"}
-                    onClick={handleDelete}
-            >
-                Delete
-            </Button>
+                <Button variant={"contained"}
+                        color={"error"}
+                        onClick={handleDelete}
+                >
+                    Delete
+                </Button>
 
-        </Box>
+            </Box> : <Navigate to={"/login"}/>
     )
 
 }

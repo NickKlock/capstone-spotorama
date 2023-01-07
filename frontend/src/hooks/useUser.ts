@@ -3,8 +3,7 @@ import {addUser, getToken, loginUser, logoutUser, whoAmI} from "../api-calls";
 import {useEffect, useState} from "react";
 
 export default function useUser() {
-
-    const [loggedInUser, setLoggedInUser] = useState<UserSpot>({
+    const initialUser = {
         author: {
             createdSpots: [],
             firstName: "",
@@ -13,8 +12,8 @@ export default function useUser() {
         },
         id: "null",
         username: "anonymousUser"
-
-    })
+    }
+    const [loggedInUser, setLoggedInUser] = useState<UserSpot>(initialUser)
 
     useEffect(() => {
         whoAmI().then(data => setLoggedInUser(data))
@@ -37,6 +36,7 @@ export default function useUser() {
     function logout(): Promise<void> {
         return getToken().then(() => {
             logoutUser()
+                .then(() => setLoggedInUser(initialUser))
                 .catch(console.error)
         })
     }
