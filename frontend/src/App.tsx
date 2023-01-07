@@ -10,7 +10,6 @@ import TitleBarRoutes from "./components/TitleBarRoutes";
 import {Box} from "@mui/material";
 import Register from "./components/profile/Register";
 import useUser from "./hooks/useUser";
-import {UserLoginRequest, UserRequest} from "./models/User";
 import Login from "./components/profile/Login";
 import Profile from "./components/profile/Profile";
 
@@ -22,14 +21,6 @@ function App() {
 
     function handleAddSpot(newSpot: Spot): Promise<void> {
         return addSpot(newSpot).then(() => Promise.resolve())
-    }
-
-    function handleRegisterNewUser(newUser: UserRequest): Promise<void> {
-        return registerUser(newUser)
-    }
-
-    function handleLoginUser(loginUserRequest: UserLoginRequest): Promise<void> {
-        return login(loginUserRequest)
     }
 
     return (
@@ -45,9 +36,9 @@ function App() {
                 <Route element={<TitleBarRoutes/>}>
                     <Route element={<Login
                         loggedInUser={loggedInUser}
-                        handleLoginRequest={handleLoginUser}/>} path={"/login"}/>
+                        handleLoginRequest={login}/>} path={"/login"}/>
                     <Route element={<Register loggedInUser={loggedInUser}
-                                              handleRegisterUser={handleRegisterNewUser}/>} path={"/register"}/>
+                                              handleRegisterUser={registerUser}/>} path={"/register"}/>
                     <Route element={<SpotList spots={spots}/>} path={"/spots"}/>
                     <Route element={<SpotDetail/>} path={"/spots/:id/details"}/>
                 </Route>
