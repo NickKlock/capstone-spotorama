@@ -52,4 +52,13 @@ public class UserService implements UserDetailsService {
                 .orElse(new UserSpot("null", "anonymousUser",
                         new Author("anonymousUser", "", "", Collections.emptyList())));
     }
+
+    public UserSpot updateUser(UserRequest userRequest) {
+        User user = userRepo.findByUsername(userRequest.username()).orElseThrow(MyUsernameNotFoundException::new);
+        User editedUser = user.withAuthor(userRequest.author())
+                .withPassword(userRequest.password())
+                .withUsername(userRequest.username());
+
+        return UserSpot.fromUser(userRepo.save(editedUser));
+    }
 }

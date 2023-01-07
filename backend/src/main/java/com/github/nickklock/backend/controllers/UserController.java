@@ -22,6 +22,11 @@ public class UserController {
         return new ResponseEntity<>(userService.createNewUser(userRequest), HttpStatus.CREATED);
     }
 
+    @PutMapping
+    public ResponseEntity<UserSpot> update(@RequestBody UserRequest userRequest) {
+        return new ResponseEntity<>(userService.updateUser(userRequest), HttpStatus.OK);
+    }
+
     @GetMapping("/me")
     public ResponseEntity<UserSpot> me() {
         return new ResponseEntity<>(userService.getUserSpotBySecurityContext(), HttpStatus.OK);
@@ -34,6 +39,7 @@ public class UserController {
 
     @PostMapping("/logout")
     public void logout() {
-        //document why this method is empty
+        //Gets handled by Spring Security
     }
+
 }
