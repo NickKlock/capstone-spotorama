@@ -57,3 +57,7 @@ export function loginUser(loginUserRequest: UserLoginRequest) {
     ).then(response => response.data)
         .catch(console.error)
 }
+
+export function logoutUser() {
+    return axios.post("/api/users/logout")
+}

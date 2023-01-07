@@ -31,4 +31,9 @@ public class UserController {
     public ResponseEntity<UserSpot> login() {
         return new ResponseEntity<>(userService.getUserSpotBySecurityContext(), HttpStatus.OK);
     }
+
+    @PostMapping("/logout")
+    public void logout() {
+        //document why this method is empty
+    }
 }
