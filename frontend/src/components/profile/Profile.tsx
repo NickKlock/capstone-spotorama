@@ -8,7 +8,7 @@ import {Navigate, useNavigate} from "react-router-dom";
 type ProfileProps = {
     loggedInUser: UserSpot
     handleLogout(): Promise<void>
-    handleDeleteUser(): Promise<void>
+    handleDeleteUser(id: String): Promise<void>
     handleEditUser(userRequest: UserRequest): Promise<void>
 }
 export default function Profile(props: ProfileProps) {
@@ -31,7 +31,8 @@ export default function Profile(props: ProfileProps) {
     }
 
     function handleDelete() {
-        props.handleDeleteUser()
+        props.handleDeleteUser(props.loggedInUser.id)
+            .then(() => navigate("/"))
     }
 
     return (
@@ -47,12 +48,12 @@ export default function Profile(props: ProfileProps) {
                           showEditButton={true}
                           onEditButtonClick={handleEditButtonClick}
                 />
-            <Button variant={"contained"}
-                    color={"warning"}
-                    onClick={handleLogout}
-            >
-                Logout
-            </Button>
+                <Button variant={"contained"}
+                        color={"warning"}
+                        onClick={handleLogout}
+                >
+                    Logout
+                </Button>
 
                 <Button variant={"contained"}
                         color={"error"}

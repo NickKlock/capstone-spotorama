@@ -1,5 +1,5 @@
 import {UserLoginRequest, UserRequest, UserSpot} from "../models/User";
-import {addUser, getToken, loginUser, logoutUser, updateUser, whoAmI} from "../api-calls";
+import {addUser, deleteUser, getToken, loginUser, logoutUser, updateUser, whoAmI} from "../api-calls";
 import {useEffect, useState} from "react";
 
 export default function useUser() {
@@ -41,18 +41,18 @@ export default function useUser() {
         })
     }
 
-    function editUser(userRequest: UserRequest): Promise<void> {
+    function edit(userRequest: UserRequest): Promise<void> {
         return getToken().then(() => {
             updateUser(userRequest)
                 .then(data => setLoggedInUser(data))
         })
     }
 
-    function deleteUser(): Promise<void> {
+    function deletee(id: string): Promise<void> {
         return getToken().then(() => {
-
+            deleteUser(id).then(response => setLoggedInUser(response))
         })
     }
 
-    return {registerUser, loggedInUser, login, logout, editUser, deleteUser}
+    return {registerUser, loggedInUser, login, logout, edit, deletee}
 }
