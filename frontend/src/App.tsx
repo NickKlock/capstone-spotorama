@@ -16,7 +16,7 @@ function App() {
 
     const {spots, addSpot} = useSpots()
 
-    const {registerUser, loggedInUser, login, logout, editUser, deleteUser} = useUser();
+    const {registerUser, loggedInUser, login, logout, edit, deletee} = useUser();
 
 
     return (
@@ -24,8 +24,8 @@ function App() {
             <Routes>
                 <Route element={<Homepage handleAddSpot={addSpot} spots={spots}/>} path={"/"}/>
 
-                <Route element={<Profile handleDeleteUser={deleteUser}
-                                         handleEditUser={editUser}
+                <Route element={<Profile handleDeleteUser={deletee}
+                                         handleEditUser={edit}
                                          handleLogout={logout}
                                          loggedInUser={loggedInUser}/>} path={"/profile"}/>
 
