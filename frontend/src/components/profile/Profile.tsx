@@ -18,7 +18,7 @@ export default function Profile(props: ProfileProps) {
 
     function handleEditUser(userRequest: UserRequest) {
         props.handleEditUser(userRequest)
-            .then(r => console.log(r))
+            .then(() => setEnableEdit(false))
     }
 
     function handleEditButtonClick() {
