@@ -23,6 +23,7 @@ import java.util.Optional;
 public class UserService implements UserDetailsService {
     private final UserRepo userRepo;
     private final IdService idService;
+    private static final String anonymousUser = "anonymousUser";
 
     public UserService(UserRepo userRepo, IdService idService) {
         this.userRepo = userRepo;
@@ -51,8 +52,8 @@ public class UserService implements UserDetailsService {
 
         Optional<User> userByUsername = userRepo.findByUsername(userNameBySecurityContext);
         return userByUsername.map(user -> new UserSpot(user.id(), user.username(), user.author()))
-                .orElse(new UserSpot("null", "anonymousUser",
-                        new Author("anonymousUser", "", "", Collections.emptyList())));
+                .orElse(new UserSpot("null", anonymousUser,
+                        new Author(anonymousUser, "", "", Collections.emptyList())));
     }
 
     public UserSpot updateUser(UserRequest userRequest) {
@@ -64,7 +65,7 @@ public class UserService implements UserDetailsService {
         return UserSpot.fromUser(userRepo.save(editedUser));
     }
 
-    public void deleteUser(String id, HttpSession httpSession) {
+    public UserSpot deleteUser(String id, HttpSession httpSession) {
         User userByUsername = userRepo.
                 findByUsername(SecurityContextHolder.getContext().getAuthentication().getName())
                 .orElseThrow(MyUsernameNotFoundException::new);
@@ -74,6 +75,8 @@ public class UserService implements UserDetailsService {
             SecurityContextHolder.getContext().setAuthentication(null);
             SecurityContextHolder.clearContext();
             httpSession.invalidate();
+            return new UserSpot("null", anonymousUser,
+                    new Author(anonymousUser, "", "", Collections.emptyList()));
         } else {
             throw new NotTheRequestedUserException();
         }
