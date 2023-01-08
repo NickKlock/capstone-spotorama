@@ -54,6 +54,6 @@ export default function Login(props: LoginProps) {
                 </Link>
 
 
-            </Box> : <Navigate to={"/"}/>
+            </Box> : <Navigate to={"/profile"}/>
     )
 }
