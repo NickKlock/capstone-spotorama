@@ -54,5 +54,5 @@ export default function useUser() {
         })
     }
 
-    return {registerUser, loggedInUser, login, logout, updateUser: editUser, deleteUser}
+    return {registerUser, loggedInUser, login, logout, editUser, deleteUser}
 }
