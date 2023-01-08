@@ -29,9 +29,8 @@ public class UserController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<HttpStatus> delete(@PathVariable String id, HttpSession httpSession) {
-        userService.deleteUser(id, httpSession);
-        return new ResponseEntity<>(HttpStatus.OK);
+    public ResponseEntity<UserSpot> delete(@PathVariable String id, HttpSession httpSession) {
+        return new ResponseEntity<>(userService.deleteUser(id, httpSession), HttpStatus.OK);
     }
 
     @GetMapping("/me")
