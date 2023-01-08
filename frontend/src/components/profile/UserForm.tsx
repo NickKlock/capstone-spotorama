@@ -1,7 +1,7 @@
 import {Box, Button, FormControl, IconButton, List, ListItem, TextField, Typography} from "@mui/material";
 import CustomListItemTextInput from "../ui/CustomListItemTextInput";
 import {UserRequest, UserSpot} from "../../models/User";
-import {ChangeEvent, ReactNode, useState} from "react";
+import {ChangeEvent, ReactNode, useMemo, useState} from "react";
 import {Edit} from "@mui/icons-material";
 
 type UserFormProps = {
@@ -18,7 +18,8 @@ type UserFormProps = {
 }
 
 export default function UserForm(props: UserFormProps) {
-    let authorInputFields = [
+
+    const authorInputFields = useMemo(() => [
         {
             name: "nickname",
             label: "Displayed name",
@@ -34,28 +35,32 @@ export default function UserForm(props: UserFormProps) {
             label: "Last name",
             value: ""
         }
-    ]
+    ], [])
 
-    let initialUserRequest: UserRequest = {
-        author: {
-            createdSpots: [],
-            firstName: "",
-            lastName: "",
-            nickname: ""
-        },
-        password: "",
-        username: ""
-    }
+    const initialUserRequest = useMemo(() => {
+        return {
+            author: {
+                createdSpots: [""],
+                firstName: "",
+                lastName: "",
+                nickname: ""
+            },
+            password: "",
+            username: ""
+        }
 
-    if (props.loggedInUser.username !== "anonymousUser") {
-        initialUserRequest.author = props.loggedInUser.author
-        initialUserRequest.username = props.loggedInUser.username
-        initialUserRequest.password = "********"
+    }, [])
 
-        authorInputFields[0].value = initialUserRequest.author.nickname
-        authorInputFields[1].value = initialUserRequest.author.firstName
-        authorInputFields[2].value = initialUserRequest.author.lastName
-    }
+    useMemo(() => {
+        if (props.loggedInUser.username !== "anonymousUser") {
+            initialUserRequest.author = props.loggedInUser.author
+            initialUserRequest.username = props.loggedInUser.username
+
+            authorInputFields[0].value = initialUserRequest.author.nickname
+            authorInputFields[1].value = initialUserRequest.author.firstName
+            authorInputFields[2].value = initialUserRequest.author.lastName
+        }
+    }, [authorInputFields, initialUserRequest, props.loggedInUser.author, props.loggedInUser.username])
 
     const [userRequestForm, setUserRequestForm] = useState<UserRequest>(initialUserRequest)
 
@@ -64,15 +69,19 @@ export default function UserForm(props: UserFormProps) {
     }
 
     function handleAuthorObjectInputChanges(event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) {
-        setUserRequestForm(newUser => ({
-            ...newUser,
+
+        setUserRequestForm(userRequestForm => ({
+            ...userRequestForm,
             author: {
-                ...newUser.author,
+                ...userRequestForm.author,
                 [event.target.name]: event.target.value
             }
         }))
+        let toEditInputField = authorInputFields.find(inputField => inputField.name === event.target.name)
+        if (toEditInputField) {
+            toEditInputField.value = event.target.value
+        }
     }
-
 
     function handleRegisterUser() {
         props.onFormButtonClick(userRequestForm)
@@ -120,6 +129,7 @@ export default function UserForm(props: UserFormProps) {
                         <TextField name={"password"}
                                    type={"password"}
                                    label={"Password"}
+                                   placeholder={"**********"}
                                    value={userRequestForm.password}
                                    disabled={!props.editable}
                                    onChange={handleUserObjectInputChanges}/>
