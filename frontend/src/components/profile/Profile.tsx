@@ -1,7 +1,7 @@
-import {Box, Button} from "@mui/material";
+import {Box, SpeedDial, SpeedDialAction} from "@mui/material";
 import {UserRequest, UserSpot} from "../../models/User";
 import UserForm from "./UserForm";
-import {Save} from "@mui/icons-material";
+import {DeleteForever, Logout, ManageAccounts, Save} from "@mui/icons-material";
 import {useState} from "react";
 import {Navigate, useNavigate} from "react-router-dom";
 
@@ -48,19 +48,30 @@ export default function Profile(props: ProfileProps) {
                           showEditButton={true}
                           onEditButtonClick={handleEditButtonClick}
                 />
-                <Button variant={"contained"}
-                        color={"warning"}
-                        onClick={handleLogout}
-                >
-                    Logout
-                </Button>
 
-                <Button variant={"contained"}
-                        color={"error"}
-                        onClick={handleDelete}
-                >
-                    Delete
-                </Button>
+                <SpeedDial ariaLabel={"user-actions"}
+                           sx={
+                               {
+                                   position: "absolute",
+                                   bottom: 80,
+                                   right: 16
+                               }}
+                           icon={<ManageAccounts/>}>
+
+                    <SpeedDialAction key={"logout"}
+                                     icon={<Logout/>}
+                                     tooltipTitle={"Logout"}
+                                     sx={{color: "#1976D2"}}
+                                     onClick={handleLogout}/>
+
+                    <SpeedDialAction key={"delete"}
+                                     icon={<DeleteForever/>}
+                                     tooltipTitle={"Delete your account"}
+                                     sx={{color: "#E53935"}}
+                                     onClick={handleDelete}/>
+
+                </SpeedDial>
+
 
             </Box> : <Navigate to={"/login"}/>
     )
