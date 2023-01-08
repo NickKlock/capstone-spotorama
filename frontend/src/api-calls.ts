@@ -64,4 +64,5 @@ export function logoutUser() {
 
 export function updateUser(updatedUserRequest: UserRequest) {
     return axios.put("/api/users/", updatedUserRequest)
+        .then(response => response.data)
 }
