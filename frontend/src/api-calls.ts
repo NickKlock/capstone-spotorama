@@ -1,50 +1,43 @@
-import axios from "axios";
+import axios, {AxiosResponse} from "axios";
 import {Spot} from "./models/Spot";
-import {UserLoginRequest, UserRequest} from "./models/User";
+import {UserLoginRequest, UserRequest, UserSpot} from "./models/User";
 
-export function getAccessToken() {
+export function getAccessToken(): Promise<string> {
     return axios.get("/api/mapbox")
-        .then(response => response.data)
-        .catch(console.error)
+        .then((response: AxiosResponse<string>) => response.data)
 }
 
-export function postSpot(newSpot: Spot) {
+export function postSpot(newSpot: Spot): Promise<Spot> {
     return axios.post("/api/spots", newSpot)
-        .then(response => response.data)
-        .catch(console.error)
+        .then((response: AxiosResponse<Spot>) => response.data)
 }
 
-export function getAllSpots() {
+export function getAllSpots(): Promise<Spot[]> {
     return axios.get("/api/spots")
-        .then(response => response.data)
-        .catch(console.error)
+        .then((response: AxiosResponse<Spot[]>) => response.data)
 }
 
-export function getSpotById(id: string) {
+export function getSpotById(id: string): Promise<Spot> {
     return axios.get("/api/spots/" + id)
-        .then(response => response.data)
-        .catch(console.error)
+        .then((response: AxiosResponse<Spot>) => response.data)
 }
 
-export function addUser(newUser: UserRequest) {
+export function addUser(newUser: UserRequest): Promise<UserSpot> {
     return axios.post("/api/users/", newUser)
-        .then(response => response.data)
-        .catch(console.error)
+        .then((response: AxiosResponse<UserSpot>) => response.data)
 }
 
-export function whoAmI() {
+export function whoAmI(): Promise<UserSpot> {
     return axios.get("/api/users/me")
-        .then(response => response.data)
-        .catch(console.error)
+        .then((response: AxiosResponse<UserSpot>) => response.data)
 }
 
 export function getToken() {
     return axios.get("/csrf")
         .then(response => response.data)
-        .catch(console.error)
 }
 
-export function loginUser(loginUserRequest: UserLoginRequest) {
+export function loginUser(loginUserRequest: UserLoginRequest): Promise<UserSpot> {
     return axios.post("/api/users/login", undefined,
         {
             withCredentials: true,
@@ -54,15 +47,19 @@ export function loginUser(loginUserRequest: UserLoginRequest) {
                     username: loginUserRequest.username
                 }
         }
-    ).then(response => response.data)
-        .catch(console.error)
+    ).then((response: AxiosResponse<UserSpot>) => response.data)
 }
 
-export function logoutUser() {
+export function logoutUser(): Promise<AxiosResponse> {
     return axios.post("/api/users/logout")
 }
 
-export function updateUser(updatedUserRequest: UserRequest) {
+export function updateUser(updatedUserRequest: UserRequest): Promise<UserSpot> {
     return axios.put("/api/users/", updatedUserRequest)
-        .then(response => response.data)
+        .then((response: AxiosResponse<UserSpot>) => response.data)
+}
+
+export function deleteUser(id: string): Promise<UserSpot> {
+    return axios.delete("/api/users/" + id)
+        .then((response: AxiosResponse<UserSpot>) => response.data)
 }
