@@ -3,6 +3,7 @@ package com.github.nickklock.backend.controllers;
 import com.github.nickklock.backend.models.user.UserRequest;
 import com.github.nickklock.backend.models.user.UserSpot;
 import com.github.nickklock.backend.services.UserService;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -25,6 +26,12 @@ public class UserController {
     @PutMapping
     public ResponseEntity<UserSpot> update(@RequestBody UserRequest userRequest) {
         return new ResponseEntity<>(userService.updateUser(userRequest), HttpStatus.OK);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<HttpStatus> delete(@PathVariable String id, HttpSession httpSession) {
+        userService.deleteUser(id, httpSession);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @GetMapping("/me")

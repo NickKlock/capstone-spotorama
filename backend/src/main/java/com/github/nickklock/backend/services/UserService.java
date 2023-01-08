@@ -1,11 +1,13 @@
 package com.github.nickklock.backend.services;
 
 import com.github.nickklock.backend.exceptions.MyUsernameNotFoundException;
+import com.github.nickklock.backend.exceptions.NotTheRequestedUserException;
 import com.github.nickklock.backend.models.user.Author;
 import com.github.nickklock.backend.models.user.User;
 import com.github.nickklock.backend.models.user.UserRequest;
 import com.github.nickklock.backend.models.user.UserSpot;
 import com.github.nickklock.backend.repos.UserRepo;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -60,5 +62,20 @@ public class UserService implements UserDetailsService {
                 .withUsername(userRequest.username());
 
         return UserSpot.fromUser(userRepo.save(editedUser));
+    }
+
+    public void deleteUser(String id, HttpSession httpSession) {
+        User userByUsername = userRepo.
+                findByUsername(SecurityContextHolder.getContext().getAuthentication().getName())
+                .orElseThrow(MyUsernameNotFoundException::new);
+
+        if (id.equals(userByUsername.id())) {
+            userRepo.delete(userByUsername);
+            SecurityContextHolder.getContext().setAuthentication(null);
+            SecurityContextHolder.clearContext();
+            httpSession.invalidate();
+        } else {
+            throw new NotTheRequestedUserException();
+        }
     }
 }
