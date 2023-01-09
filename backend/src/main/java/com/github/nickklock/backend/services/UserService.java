@@ -7,6 +7,7 @@ import com.github.nickklock.backend.models.user.User;
 import com.github.nickklock.backend.models.user.UserRequest;
 import com.github.nickklock.backend.models.user.UserSpot;
 import com.github.nickklock.backend.repos.UserRepo;
+import com.github.nickklock.backend.utils.UserUtil;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -24,10 +25,12 @@ public class UserService implements UserDetailsService {
     private final UserRepo userRepo;
     private final IdService idService;
     private static final String anonymousUser = "anonymousUser";
+    private final UserUtil userUtil;
 
-    public UserService(UserRepo userRepo, IdService idService) {
+    public UserService(UserRepo userRepo, IdService idService, UserUtil userUtil) {
         this.userRepo = userRepo;
         this.idService = idService;
+        this.userUtil = userUtil;
     }
 
     public UserSpot createNewUser(UserRequest userRequest) {
@@ -62,7 +65,7 @@ public class UserService implements UserDetailsService {
                 .withPassword(userRequest.password())
                 .withUsername(userRequest.username());
 
-        return UserSpot.fromUser(userRepo.save(editedUser));
+        return userUtil.fromUser(userRepo.save(editedUser));
     }
 
     public UserSpot deleteUser(String id, HttpSession httpSession) {
