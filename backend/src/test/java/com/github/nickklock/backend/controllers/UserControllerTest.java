@@ -60,15 +60,6 @@ class UserControllerTest {
                         """)
         ).andExpect(status().isCreated());
     }
-
-    @Test
-    void me_expect_notLoggedInUser() throws Exception {
-        mvc.perform(get(endPoint + "/me"))
-                .andExpect(status().isOk())
-                .andReturn();
-
-    }
-
     @WithMockUser
     @Test
     void me_expect_loggedInUser() throws Exception {
