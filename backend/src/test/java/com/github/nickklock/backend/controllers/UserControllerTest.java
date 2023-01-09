@@ -1,6 +1,12 @@
 package com.github.nickklock.backend.controllers;
 
-import org.junit.jupiter.api.BeforeAll;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.github.nickklock.backend.models.user.Author;
+import com.github.nickklock.backend.models.user.User;
+import com.github.nickklock.backend.models.user.UserSpot;
+import com.github.nickklock.backend.repos.UserRepo;
+import com.github.nickklock.backend.utils.UserUtil;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,15 +14,14 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
-import org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import org.springframework.web.context.WebApplicationContext;
+import org.springframework.test.web.servlet.MvcResult;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import java.util.Collections;
+
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
@@ -27,23 +32,15 @@ class UserControllerTest {
     private final String endPoint = "/api/users/";
     @Autowired
     private MockMvc mvc;
+    @Autowired
+    private UserRepo userRepo;
+    @Autowired
+    private ObjectMapper objectMapper;
 
     @DynamicPropertySource
     static void setDynamicProperties(DynamicPropertyRegistry registry) {
         registry.add("mapbox.coordinate.to.country.base.url", () -> "/");
     }
-
-    @Autowired
-    private WebApplicationContext context;
-
-    @BeforeAll
-    public void setup() {
-        mvc = MockMvcBuilders
-                .webAppContextSetup(context)
-                .apply(SecurityMockMvcConfigurers.springSecurity()).
-                build();
-    }
-
 
     @Test
     void add_expect_status_created() throws Exception {
@@ -78,5 +75,49 @@ class UserControllerTest {
         mvc.perform(get(endPoint + "/me"))
                 .andExpect(status().isOk());
 
+    }
+
+    @WithMockUser
+    @Test
+    void update_expect_200_and_edited_user() throws Exception {
+        Author givenAuthor = new Author("nick", "n", "k", Collections.emptyList());
+        User givenUser = userRepo.save(new User("1", "test", "123", givenAuthor));
+        User givenUpdatedUser = givenUser.withPassword("def");
+
+        MvcResult mvcResult = mvc.perform(put(endPoint)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(givenUpdatedUser)))
+                .andExpect(status().isOk())
+                .andReturn();
+
+        UserSpot userSpotResult = objectMapper.readValue(mvcResult.getResponse().getContentAsString(), UserSpot.class);
+        UserUtil userUtil = new UserUtil();
+
+        Assertions.assertEquals(userUtil.fromUser(givenUpdatedUser), userSpotResult);
+    }
+
+    @WithMockUser("test")
+    @Test
+    void delete_expect_200() throws Exception {
+        Author givenAuthor = new Author("nick", "n", "k", Collections.emptyList());
+        User givenUser = userRepo.save(new User("1", "test", "123", givenAuthor));
+
+        mvc.perform(delete(endPoint + "/" + givenUser.id()))
+                .andExpect(status().isOk());
+
+    }
+
+    @WithMockUser
+    @Test
+    void login_expect_200() throws Exception {
+        mvc.perform(post(endPoint + "/login"))
+                .andExpect(status().isOk());
+    }
+
+    @WithMockUser
+    @Test
+    void logout_expect_200() throws Exception {
+        mvc.perform(post(endPoint + "/logout"))
+                .andExpect(status().isOk());
     }
 }
