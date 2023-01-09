@@ -8,7 +8,7 @@ import {Navigate, useNavigate} from "react-router-dom";
 type ProfileProps = {
     loggedInUser: UserSpot
     handleLogout(): Promise<void>
-    handleDeleteUser(id: String): Promise<void>
+    handleDeleteUser(id: string): Promise<void>
     handleEditUser(userRequest: UserRequest): Promise<void>
 }
 export default function Profile(props: ProfileProps) {
