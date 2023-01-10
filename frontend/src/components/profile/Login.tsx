@@ -2,7 +2,7 @@ import {Box, IconButton, Link, TextField, Typography} from "@mui/material";
 import {UserLoginRequest, UserSpot} from "../../models/User";
 import {LoginSharp} from "@mui/icons-material";
 import {ChangeEvent, useState} from "react";
-import {Navigate, useNavigate} from "react-router-dom";
+import {Navigate} from "react-router-dom";
 import {AlertModel} from "../../models/AlertModel";
 import CustomAlert from "../ui/CustomAlert";
 import {AxiosError} from "axios";
@@ -12,9 +12,7 @@ type LoginProps = {
     loggedInUser: UserSpot
 }
 export default function Login(props: LoginProps) {
-    const navigate = useNavigate()
     const [userLoginRequest, setUserLoginRequest] = useState<UserLoginRequest>({username: "", password: ""})
-
     const [alert, setAlert] = useState<AlertModel>({alertMessage: "", open: false, severity: "success"})
 
     function handleInputChange(event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) {
@@ -24,7 +22,11 @@ export default function Login(props: LoginProps) {
     function handleLogin() {
         props.handleLoginRequest(userLoginRequest)
             .then(() => {
-                navigate("/")
+                setAlert({
+                    severity: "success",
+                    alertMessage: "Successfully logged in",
+                    open: true
+                })
             })
             .catch((error: AxiosError) => {
                 if (!error.response) {
@@ -81,6 +83,6 @@ export default function Login(props: LoginProps) {
                              onClose={handleAlertClose}/>
 
 
-            </Box> : <Navigate to={"/profile"}/>
+            </Box> : <Navigate to={"/profile"} state={alert}/>
     )
 }
