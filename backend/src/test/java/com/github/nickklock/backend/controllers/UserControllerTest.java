@@ -5,7 +5,6 @@ import com.github.nickklock.backend.models.user.Author;
 import com.github.nickklock.backend.models.user.User;
 import com.github.nickklock.backend.models.user.UserSpot;
 import com.github.nickklock.backend.repos.UserRepo;
-import com.github.nickklock.backend.utils.UserUtil;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
@@ -82,9 +81,8 @@ class UserControllerTest {
                 .andReturn();
 
         UserSpot userSpotResult = objectMapper.readValue(mvcResult.getResponse().getContentAsString(), UserSpot.class);
-        UserUtil userUtil = new UserUtil();
 
-        Assertions.assertEquals(userUtil.fromUser(givenUpdatedUser), userSpotResult);
+        Assertions.assertEquals(new UserSpot(givenUpdatedUser), userSpotResult);
     }
 
     @WithMockUser("test")
