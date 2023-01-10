@@ -13,16 +13,9 @@ type LoginProps = {
 }
 export default function Login(props: LoginProps) {
     const navigate = useNavigate()
-    const [userLoginRequest, setUserLoginRequest] = useState<UserLoginRequest>(
-        {
-            username: "",
-            password: ""
-        })
-    const [alert, setAlert] = useState<AlertModel>({
-        alertMessage: "",
-        open: false,
-        severity: "success"
-    })
+    const [userLoginRequest, setUserLoginRequest] = useState<UserLoginRequest>({username: "", password: ""})
+
+    const [alert, setAlert] = useState<AlertModel>({alertMessage: "", open: false, severity: "success"})
 
     function handleInputChange(event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) {
         setUserLoginRequest({...userLoginRequest, [event.target.name]: event.target.value})
@@ -31,11 +24,6 @@ export default function Login(props: LoginProps) {
     function handleLogin() {
         props.handleLoginRequest(userLoginRequest)
             .then(() => {
-                setAlert({
-                    ...alert,
-                    alertMessage: "You got successfully logged in",
-                    open: true
-                })
                 navigate("/")
             })
             .catch((error: AxiosError) => {
