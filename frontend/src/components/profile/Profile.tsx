@@ -23,7 +23,6 @@ export default function Profile(props: ProfileProps) {
     const [showEditModal, setShowEditModal] = useState<boolean>(false)
     const [editedUser, setEditedUser] = useState<UserRequest>()
     const {setNavigateWithAlert, setNavigationAlert, setNavigationUrl} = useNavigationWithAlert();
-
     const location = useLocation();
 
     useEffect(() => {
