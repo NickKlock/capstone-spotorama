@@ -19,23 +19,13 @@ export default function Profile(props: ProfileProps) {
     const navigate = useNavigate()
     const [enableEdit, setEnableEdit] = useState<boolean>(false)
     const [alert, setAlert] = useState<AlertModel>({alertMessage: "", open: false, severity: "success"})
-    const [showModal, setShowModal] = useState<boolean>(false)
+    const [showDeleteModal, setShowDeleteModal] = useState<boolean>(false)
+    const [showEditModal, setShowEditModal] = useState<boolean>(false)
+    const [editedUser, setEditedUser] = useState<UserRequest>()
 
     function handleEditUser(userRequest: UserRequest) {
-        props.handleEditUser(userRequest)
-            .then(() => {
-                setEnableEdit(false)
-                setAlert({...alert, open: true, alertMessage: "Successfully edited yourself"})
-            }).catch((error: AxiosError) => {
-            if (!error.response) {
-                setAlert({
-                    ...alert,
-                    severity: "error",
-                    alertMessage: "An error occurred, please report to the admin ",
-                    open: true
-                })
-            }
-        })
+        setEditedUser(userRequest)
+        setShowEditModal(true)
     }
 
     function handleEditButtonClick() {
@@ -48,23 +38,58 @@ export default function Profile(props: ProfileProps) {
     }
 
     function handleDelete() {
-        setShowModal(true)
+        setShowDeleteModal(true)
     }
 
     function handleAlertClose() {
         setAlert({...alert, open: false})
     }
 
-    function handleModalButtonClick(role: string) {
+    function handleDeleteModalButtonClick(role: string) {
         switch (role) {
             case "confirm":
                 props.handleDeleteUser(props.loggedInUser.id)
                     .then(() => navigate("/"))
 
-                setShowModal(false)
+                setShowDeleteModal(false)
                 break
             case "cancel":
-                setShowModal(false)
+                setAlert({...alert, severity: "info", alertMessage: "Canceled the edit process", open: true})
+                setShowDeleteModal(false)
+                break
+        }
+    }
+
+    function handleEditModalButtonClick(role: string) {
+        switch (role) {
+            case "confirm":
+                if (editedUser) {
+                    props.handleEditUser(editedUser)
+                        .then(() => {
+                            setEnableEdit(false)
+                            setAlert({...alert, open: true, alertMessage: "Successfully edited yourself."})
+                        }).catch((error: AxiosError) => {
+                        if (!error.response) {
+                            setAlert({
+                                ...alert,
+                                severity: "error",
+                                alertMessage: "An error occurred, please report to the admin.",
+                                open: true
+                            })
+                        }
+                    })
+                }
+                setShowEditModal(false)
+                setAlert({
+                    ...alert,
+                    severity: "error",
+                    alertMessage: "An error occurred, please report to the admin.",
+                    open: true
+                })
+                break
+            case "cancel":
+                setShowEditModal(false)
+                setAlert({...alert, severity: "info", alertMessage: "Canceled the edit process", open: true})
                 break
         }
     }
@@ -107,10 +132,16 @@ export default function Profile(props: ProfileProps) {
                 </SpeedDial>
                 <CustomAlert severity={alert.severity} alertMessage={alert.alertMessage} open={alert.open}
                              onClose={handleAlertClose}/>
-                <ConfirmationModal open={showModal}
+
+                <ConfirmationModal open={showDeleteModal}
                                    title={"Are you sure?"}
                                    description={"Do you really want to delete your account?"}
-                                   onButtonClick={handleModalButtonClick}/>
+                                   onButtonClick={handleDeleteModalButtonClick}/>
+
+                <ConfirmationModal open={showEditModal}
+                                   title={"Are you sure?"}
+                                   description={"Do you really want to edit your account?"}
+                                   onButtonClick={handleEditModalButtonClick}/>
 
             </Box> : <Navigate to={"/login"}/>
     );
