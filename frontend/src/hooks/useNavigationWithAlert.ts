@@ -6,12 +6,14 @@ export default function useNavigationWithAlert() {
     const navigate = useNavigate()
     const [navigateWithAlert, setNavigateWithAlert] = useState<boolean>(false)
     const [navigationAlert, setNavigationAlert] = useState<AlertModel>()
+    const [navigationUrl, setNavigationUrl] = useState<string>()
 
     useEffect(() => {
-        if (navigateWithAlert && navigationAlert) {
-            navigate("/", {state: navigationAlert})
+        if (navigateWithAlert && navigationAlert && navigationUrl) {
+            navigate(navigationUrl, {state: navigationAlert})
         }
-    }, [navigateWithAlert, navigate, navigationAlert])
+    }, [navigateWithAlert, navigate, navigationAlert, navigationUrl])
 
-    return {setNavigateWithAlert, setNavigationAlert}
+
+    return {setNavigateWithAlert, setNavigationAlert, setNavigationUrl}
 }
