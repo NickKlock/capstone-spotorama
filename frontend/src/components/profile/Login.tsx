@@ -1,8 +1,8 @@
 import {Box, IconButton, Link, TextField, Typography} from "@mui/material";
 import {UserLoginRequest, UserSpot} from "../../models/User";
 import {LoginSharp} from "@mui/icons-material";
-import {ChangeEvent, useState} from "react";
-import {Navigate} from "react-router-dom";
+import {ChangeEvent, useEffect, useState} from "react";
+import {Navigate, useLocation} from "react-router-dom";
 import {AlertModel} from "../../models/AlertModel";
 import CustomAlert from "../ui/CustomAlert";
 import {AxiosError} from "axios";
@@ -14,6 +14,13 @@ type LoginProps = {
 export default function Login(props: LoginProps) {
     const [userLoginRequest, setUserLoginRequest] = useState<UserLoginRequest>({username: "", password: ""})
     const [alert, setAlert] = useState<AlertModel>({alertMessage: "", open: false, severity: "success"})
+    const location = useLocation();
+
+    useEffect(() => {
+        if (location.state) {
+            setAlert(location.state)
+        }
+    }, [location.state])
 
     function handleInputChange(event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) {
         setUserLoginRequest({...userLoginRequest, [event.target.name]: event.target.value})
