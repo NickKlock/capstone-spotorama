@@ -16,13 +16,13 @@ export default function CustomAlert(props: CustomAlertProps) {
                   onClose={handleClose}
                   autoHideDuration={6000}
                   anchorOrigin={{vertical: "bottom", horizontal: "left"}}
-                  sx={{bottom: 80}}
+                  sx={{bottom: 80, width: "50%"}}
         >
             <Fade>
                 <Alert variant={"filled"}
                        severity={props.severity}
                        onClose={handleClose}
-                       sx={{width: "100%"}}>
+                >
                     {props.alertMessage}
                 </Alert>
             </Fade>
