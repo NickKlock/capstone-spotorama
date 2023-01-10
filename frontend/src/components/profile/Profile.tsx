@@ -2,12 +2,13 @@ import {Box, SpeedDial, SpeedDialAction} from "@mui/material";
 import {UserRequest, UserSpot} from "../../models/User";
 import UserForm from "./UserForm";
 import {DeleteForever, Logout, ManageAccounts, Save} from "@mui/icons-material";
-import {useEffect, useState} from "react";
+import {useState} from "react";
 import {Navigate, useNavigate} from "react-router-dom";
 import {AlertModel} from "../../models/AlertModel";
 import CustomAlert from "../ui/CustomAlert";
 import {AxiosError} from "axios";
 import ConfirmationModal from "../ui/ConfirmationModal";
+import useNavigationWithAlert from "../../hooks/useNavigationWithAlert";
 
 type ProfileProps = {
     loggedInUser: UserSpot
@@ -22,13 +23,9 @@ export default function Profile(props: ProfileProps) {
     const [showDeleteModal, setShowDeleteModal] = useState<boolean>(false)
     const [showEditModal, setShowEditModal] = useState<boolean>(false)
     const [editedUser, setEditedUser] = useState<UserRequest>()
-    const [navigateWithAlert, setNavigateWithAlert] = useState<boolean>(false)
+    const {setNavigateWithAlert, setNavigationAlert} = useNavigationWithAlert();
 
-    useEffect(() => {
-        if (navigateWithAlert) {
-            navigate("/", {state: alert})
-        }
-    }, [navigateWithAlert, navigate, alert])
+
 
     function handleEditUser(userRequest: UserRequest) {
         setEditedUser(userRequest)
@@ -57,8 +54,7 @@ export default function Profile(props: ProfileProps) {
             case "confirm":
                 props.handleDeleteUser(props.loggedInUser.id)
                     .then(() => {
-                        setAlert({
-                            ...alert,
+                        setNavigationAlert({
                             severity: "success",
                             open: true,
                             alertMessage: "Successfully deleted your account."
