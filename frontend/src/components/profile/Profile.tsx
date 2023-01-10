@@ -4,6 +4,9 @@ import UserForm from "./UserForm";
 import {DeleteForever, Logout, ManageAccounts, Save} from "@mui/icons-material";
 import {useState} from "react";
 import {Navigate, useNavigate} from "react-router-dom";
+import {AlertModel} from "../../models/AlertModel";
+import CustomAlert from "../ui/CustomAlert";
+import {AxiosError} from "axios";
 
 type ProfileProps = {
     loggedInUser: UserSpot
@@ -14,11 +17,24 @@ type ProfileProps = {
 export default function Profile(props: ProfileProps) {
     const navigate = useNavigate()
     const [enableEdit, setEnableEdit] = useState<boolean>(false)
+    const [alert, setAlert] = useState<AlertModel>({alertMessage: "", open: false, severity: "success"})
 
 
     function handleEditUser(userRequest: UserRequest) {
         props.handleEditUser(userRequest)
-            .then(() => setEnableEdit(false))
+            .then(() => {
+                setEnableEdit(false)
+                setAlert({...alert, open: true, alertMessage: "Successfully edited yourself"})
+            }).catch((error: AxiosError) => {
+            if (!error.response) {
+                setAlert({
+                    ...alert,
+                    severity: "error",
+                    alertMessage: "An error occurred, please report to the admin ",
+                    open: true
+                })
+            }
+        })
     }
 
     function handleEditButtonClick() {
@@ -33,6 +49,10 @@ export default function Profile(props: ProfileProps) {
     function handleDelete() {
         props.handleDeleteUser(props.loggedInUser.id)
             .then(() => navigate("/"))
+    }
+
+    function handleAlertClose() {
+        setAlert({...alert, open: false})
     }
 
     return (
@@ -71,9 +91,10 @@ export default function Profile(props: ProfileProps) {
                                      onClick={handleDelete}/>
 
                 </SpeedDial>
-
+                <CustomAlert severity={alert.severity} alertMessage={alert.alertMessage} open={alert.open}
+                             onClose={handleAlertClose}/>
 
             </Box> : <Navigate to={"/login"}/>
-    )
+    );
 
 }
