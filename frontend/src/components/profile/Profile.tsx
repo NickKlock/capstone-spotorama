@@ -2,8 +2,8 @@ import {Box, SpeedDial, SpeedDialAction} from "@mui/material";
 import {UserRequest, UserSpot} from "../../models/User";
 import UserForm from "./UserForm";
 import {DeleteForever, Logout, ManageAccounts, Save} from "@mui/icons-material";
-import {useState} from "react";
-import {Navigate, useNavigate} from "react-router-dom";
+import {useEffect, useState} from "react";
+import {Navigate, useLocation} from "react-router-dom";
 import {AlertModel} from "../../models/AlertModel";
 import CustomAlert from "../ui/CustomAlert";
 import {AxiosError} from "axios";
@@ -17,14 +17,20 @@ type ProfileProps = {
     handleEditUser(userRequest: UserRequest): Promise<void>
 }
 export default function Profile(props: ProfileProps) {
-    const navigate = useNavigate()
     const [enableEdit, setEnableEdit] = useState<boolean>(false)
     const [alert, setAlert] = useState<AlertModel>({alertMessage: "", open: false, severity: "info"})
     const [showDeleteModal, setShowDeleteModal] = useState<boolean>(false)
     const [showEditModal, setShowEditModal] = useState<boolean>(false)
     const [editedUser, setEditedUser] = useState<UserRequest>()
-    const {setNavigateWithAlert, setNavigationAlert} = useNavigationWithAlert();
+    const {setNavigateWithAlert, setNavigationAlert, setNavigationUrl} = useNavigationWithAlert();
 
+    const location = useLocation();
+
+    useEffect(() => {
+        if (location.state) {
+            setAlert(location.state)
+        }
+    }, [location.state])
 
 
     function handleEditUser(userRequest: UserRequest) {
@@ -38,7 +44,15 @@ export default function Profile(props: ProfileProps) {
 
     function handleLogout() {
         props.handleLogout()
-            .then(() => navigate("/"))
+            .then(() => {
+                setNavigationUrl("/")
+                setNavigationAlert({
+                    severity: "success",
+                    open: true,
+                    alertMessage: "Successfully logged you out."
+                })
+                setNavigateWithAlert(true)
+            })
     }
 
     function handleDelete() {
@@ -54,6 +68,7 @@ export default function Profile(props: ProfileProps) {
             case "confirm":
                 props.handleDeleteUser(props.loggedInUser.id)
                     .then(() => {
+                        setNavigationUrl("/")
                         setNavigationAlert({
                             severity: "success",
                             open: true,
