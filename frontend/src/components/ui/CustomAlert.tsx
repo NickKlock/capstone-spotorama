@@ -14,9 +14,12 @@ export default function CustomAlert(props: CustomAlertProps) {
     return (
         <Snackbar open={props.open}
                   onClose={handleClose}
-                  autoHideDuration={6000}>
+                  autoHideDuration={6000}
+                  anchorOrigin={{vertical: "bottom", horizontal: "left"}}
+                  sx={{bottom: 80}}
+        >
             <Fade>
-                <Alert variant={"outlined"}
+                <Alert variant={"filled"}
                        severity={props.severity}
                        onClose={handleClose}
                        sx={{width: "100%"}}>
