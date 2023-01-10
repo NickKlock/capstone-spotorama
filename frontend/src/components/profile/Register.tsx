@@ -3,6 +3,10 @@ import {UserRequest, UserSpot} from "../../models/User";
 import {PersonAdd} from "@mui/icons-material";
 import {Navigate, useNavigate} from "react-router-dom";
 import UserForm from "./UserForm";
+import {useState} from "react";
+import {AlertModel} from "../../models/AlertModel";
+import CustomAlert from "../ui/CustomAlert";
+import {AxiosError} from "axios";
 
 type RegisterProps = {
     handleRegisterUser(newUser: UserRequest): Promise<void>
@@ -11,10 +15,29 @@ type RegisterProps = {
 
 export default function Register(props: RegisterProps) {
     const navigate = useNavigate()
+    const [alert, setAlert] = useState<AlertModel>({
+        alertMessage: "",
+        open: false,
+        severity: "success"
+    })
 
     function handleRegisterUser(userRequest: UserRequest) {
         props.handleRegisterUser(userRequest)
             .then(() => navigate("/login"))
+            .catch((error: AxiosError) => {
+                if (!error.response) {
+                    setAlert({
+                        ...alert,
+                        severity: "error",
+                        alertMessage: "An error occurred, please report to the admin ",
+                        open: true
+                    })
+                }
+            })
+    }
+
+    function handleClose() {
+        setAlert({...alert, open: false})
     }
 
     return (
@@ -29,6 +52,8 @@ export default function Register(props: RegisterProps) {
                           showEditButton={false}
                           marginTop={10}
                 />
+                <CustomAlert severity={alert.severity} alertMessage={alert.alertMessage} open={alert.open}
+                             onClose={handleClose}/>
             </Box> : <Navigate to={"/"}/>
     )
 }
