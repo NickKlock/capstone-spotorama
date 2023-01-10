@@ -7,6 +7,7 @@ import {Navigate, useNavigate} from "react-router-dom";
 import {AlertModel} from "../../models/AlertModel";
 import CustomAlert from "../ui/CustomAlert";
 import {AxiosError} from "axios";
+import ConfirmationModal from "../ui/ConfirmationModal";
 
 type ProfileProps = {
     loggedInUser: UserSpot
@@ -18,7 +19,7 @@ export default function Profile(props: ProfileProps) {
     const navigate = useNavigate()
     const [enableEdit, setEnableEdit] = useState<boolean>(false)
     const [alert, setAlert] = useState<AlertModel>({alertMessage: "", open: false, severity: "success"})
-
+    const [showModal, setShowModal] = useState<boolean>(false)
 
     function handleEditUser(userRequest: UserRequest) {
         props.handleEditUser(userRequest)
@@ -47,12 +48,25 @@ export default function Profile(props: ProfileProps) {
     }
 
     function handleDelete() {
-        props.handleDeleteUser(props.loggedInUser.id)
-            .then(() => navigate("/"))
+        setShowModal(true)
     }
 
     function handleAlertClose() {
         setAlert({...alert, open: false})
+    }
+
+    function handleModalButtonClick(role: string) {
+        switch (role) {
+            case "confirm":
+                props.handleDeleteUser(props.loggedInUser.id)
+                    .then(() => navigate("/"))
+
+                setShowModal(false)
+                break
+            case "cancel":
+                setShowModal(false)
+                break
+        }
     }
 
     return (
@@ -93,6 +107,10 @@ export default function Profile(props: ProfileProps) {
                 </SpeedDial>
                 <CustomAlert severity={alert.severity} alertMessage={alert.alertMessage} open={alert.open}
                              onClose={handleAlertClose}/>
+                <ConfirmationModal open={showModal}
+                                   title={"Are you sure?"}
+                                   description={"Do you really want to delete your account?"}
+                                   onButtonClick={handleModalButtonClick}/>
 
             </Box> : <Navigate to={"/login"}/>
     );
