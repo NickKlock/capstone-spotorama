@@ -8,4 +8,7 @@ public record UserSpot(
         String username,
         Author author
 ) {
+        public UserSpot(User user) {
+                this(user.id(), user.username(), user.author());
+        }
 }

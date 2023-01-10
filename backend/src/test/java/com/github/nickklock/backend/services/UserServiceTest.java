@@ -7,7 +7,6 @@ import com.github.nickklock.backend.models.user.User;
 import com.github.nickklock.backend.models.user.UserRequest;
 import com.github.nickklock.backend.models.user.UserSpot;
 import com.github.nickklock.backend.repos.UserRepo;
-import com.github.nickklock.backend.utils.UserUtil;
 import jakarta.servlet.http.HttpSession;
 import org.junit.jupiter.api.Test;
 import org.springframework.security.core.Authentication;
@@ -29,9 +28,8 @@ class UserServiceTest {
     private final IdService idService = mock(IdService.class);
     private final Authentication authentication = mock(Authentication.class);
     private final SecurityContext securityContext = mock(SecurityContext.class);
-    private final UserUtil userUtil = mock(UserUtil.class);
     private final HttpSession httpSession = mock(HttpSession.class);
-    private final UserService userService = new UserService(userRepo, idService, userUtil);
+    private final UserService userService = new UserService(userRepo, idService);
 
 
     @Test
@@ -98,10 +96,9 @@ class UserServiceTest {
                 givenAuthor);
         UserSpot expectedResult = new UserSpot("0", "nick", givenAuthor);
 
-        when(userUtil.fromUser(any())).thenReturn(expectedResult);
         when(userRepo.findByUsername("nick")).thenReturn(Optional.of(
                 givenUser));
-        when(userRepo.save(givenUser)).thenReturn(givenUser);
+        when(userRepo.save(any())).thenReturn(givenUser);
 
 
         UserSpot result = userService.updateUser(givenUserRequest);
