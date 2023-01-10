@@ -13,30 +13,33 @@ import Login from "./components/profile/Login";
 import Profile from "./components/profile/Profile";
 
 function App() {
-
     const {spots, addSpot} = useSpots()
-
     const {registerUser, loggedInUser, login, logout, edit, deletee} = useUser();
-
 
     return (
         <BrowserRouter>
             <Routes>
-                <Route element={<Homepage handleAddSpot={addSpot} spots={spots}/>} path={"/"}/>
+                <Route element={<Homepage handleAddSpot={addSpot}
+                                          spots={spots}/>}
+                       path={"/"}/>
 
                 <Route element={<Profile handleDeleteUser={deletee}
                                          handleEditUser={edit}
                                          handleLogout={logout}
-                                         loggedInUser={loggedInUser}/>} path={"/profile"}/>
+                                         loggedInUser={loggedInUser}/>}
+                       path={"/profile"}/>
 
                 <Route element={<TitleBarRoutes/>}>
-                    <Route element={<Login
-                        loggedInUser={loggedInUser}
-                        handleLoginRequest={login}/>} path={"/login"}/>
+                    <Route element={<Login loggedInUser={loggedInUser}
+                                           handleLoginRequest={login}/>}
+                           path={"/login"}/>
                     <Route element={<Register loggedInUser={loggedInUser}
-                                              handleRegisterUser={registerUser}/>} path={"/register"}/>
-                    <Route element={<SpotList spots={spots}/>} path={"/spots"}/>
-                    <Route element={<SpotDetail/>} path={"/spots/:id/details"}/>
+                                              handleRegisterUser={registerUser}/>}
+                           path={"/register"}/>
+                    <Route element={<SpotList spots={spots}/>}
+                           path={"/spots"}/>
+                    <Route element={<SpotDetail/>}
+                           path={"/spots/:id/details"}/>
                 </Route>
             </Routes>
 
