@@ -1,10 +1,10 @@
 import {Box, Drawer, Fab, SpeedDial, SpeedDialAction} from "@mui/material";
 import {Add, AddLocation, MyLocation, WhereToVote} from "@mui/icons-material";
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import AddSpot from "./AddSpot";
 import {Position} from "../models/Position";
 import {Spot} from "../models/Spot";
-import {useNavigate} from "react-router-dom";
+import {useLocation, useNavigate} from "react-router-dom";
 import {MapProvider} from "react-map-gl";
 import SpotMap from "./map/SpotMap";
 import CustomAlert from "./ui/CustomAlert";
@@ -22,11 +22,16 @@ export default function Homepage(props: HomepageProps) {
     const [hidePickLocation, setHidePickLocationButton] = useState<boolean>(true)
     const navigate = useNavigate()
     const [centerPosition, setCenterPosition] = useState<Position>()
-    const [alert, setAlert] = useState<AlertModel>({
-        alertMessage: "",
-        open: false,
-        severity: "success"
-    })
+    const [alert, setAlert] = useState<AlertModel>({alertMessage: "", open: false, severity: "success"})
+
+    const location = useLocation();
+
+    useEffect(() => {
+        if (location.state) {
+            setAlert(location.state)
+        }
+    }, [location.state])
+
 
     function handleCurrentPosition() {
         navigator.geolocation.getCurrentPosition((position) => {

@@ -2,7 +2,7 @@ import {Box, SpeedDial, SpeedDialAction} from "@mui/material";
 import {UserRequest, UserSpot} from "../../models/User";
 import UserForm from "./UserForm";
 import {DeleteForever, Logout, ManageAccounts, Save} from "@mui/icons-material";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import {Navigate, useNavigate} from "react-router-dom";
 import {AlertModel} from "../../models/AlertModel";
 import CustomAlert from "../ui/CustomAlert";
@@ -18,10 +18,17 @@ type ProfileProps = {
 export default function Profile(props: ProfileProps) {
     const navigate = useNavigate()
     const [enableEdit, setEnableEdit] = useState<boolean>(false)
-    const [alert, setAlert] = useState<AlertModel>({alertMessage: "", open: false, severity: "success"})
+    const [alert, setAlert] = useState<AlertModel>({alertMessage: "", open: false, severity: "info"})
     const [showDeleteModal, setShowDeleteModal] = useState<boolean>(false)
     const [showEditModal, setShowEditModal] = useState<boolean>(false)
     const [editedUser, setEditedUser] = useState<UserRequest>()
+    const [navigateWithAlert, setNavigateWithAlert] = useState<boolean>(false)
+
+    useEffect(() => {
+        if (navigateWithAlert) {
+            navigate("/", {state: alert})
+        }
+    }, [navigateWithAlert, navigate, alert])
 
     function handleEditUser(userRequest: UserRequest) {
         setEditedUser(userRequest)
@@ -49,7 +56,15 @@ export default function Profile(props: ProfileProps) {
         switch (role) {
             case "confirm":
                 props.handleDeleteUser(props.loggedInUser.id)
-                    .then(() => navigate("/"))
+                    .then(() => {
+                        setAlert({
+                            ...alert,
+                            severity: "success",
+                            open: true,
+                            alertMessage: "Successfully deleted your account."
+                        })
+                        setNavigateWithAlert(true)
+                    })
 
                 setShowDeleteModal(false)
                 break
@@ -67,7 +82,12 @@ export default function Profile(props: ProfileProps) {
                     props.handleEditUser(editedUser)
                         .then(() => {
                             setEnableEdit(false)
-                            setAlert({...alert, open: true, alertMessage: "Successfully edited yourself."})
+                            setAlert({
+                                ...alert,
+                                severity: "success",
+                                open: true,
+                                alertMessage: "Successfully edited yourself."
+                            })
                         }).catch((error: AxiosError) => {
                         if (!error.response) {
                             setAlert({
