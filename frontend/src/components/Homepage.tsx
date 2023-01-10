@@ -9,6 +9,7 @@ import {MapProvider} from "react-map-gl";
 import SpotMap from "./map/SpotMap";
 import CustomAlert from "./ui/CustomAlert";
 import {AlertModel} from "../models/AlertModel";
+import {AxiosError} from "axios";
 
 type HomepageProps = {
     spots: Spot[]
@@ -49,19 +50,20 @@ export default function Homepage(props: HomepageProps) {
                     alertMessage: "New spot saved successfully",
                     open: true
                 })
-            }).catch(error => {
-            if (error.statusCode === 401) {
-                setAlert({
-                    ...alert,
-                    severity: "error",
-                    alertMessage: "Please login to create new spots",
-                    open: true
-                })
-            } else {
+            }).catch((error: AxiosError) => {
+            if (!error.response) {
                 setAlert({
                     ...alert,
                     severity: "error",
                     alertMessage: "An error occurred, please report to the admin ",
+                    open: true
+                })
+            }
+            if (error.response!.status === 401) {
+                setAlert({
+                    ...alert,
+                    severity: "error",
+                    alertMessage: "Please login to create new spots",
                     open: true
                 })
             }
@@ -89,6 +91,10 @@ export default function Homepage(props: HomepageProps) {
 
     function handleCenterPosition(center: Position) {
         setCenterPosition(center)
+    }
+
+    function handleAlertClose() {
+        setAlert({...alert, open: false})
     }
 
     return (
@@ -144,7 +150,10 @@ export default function Homepage(props: HomepageProps) {
                          handleSave={handleSaveSpot}/>
             </Drawer>
 
-            <CustomAlert severity={alert.severity} alertMessage={alert.alertMessage} open={alert.open}/>
+            <CustomAlert severity={alert.severity}
+                         onClose={handleAlertClose}
+                         alertMessage={alert.alertMessage}
+                         open={alert.open}/>
         </Box>
     )
 }
