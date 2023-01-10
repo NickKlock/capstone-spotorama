@@ -1,12 +1,15 @@
 import {Box, Drawer, Fab, SpeedDial, SpeedDialAction} from "@mui/material";
 import {Add, AddLocation, MyLocation, WhereToVote} from "@mui/icons-material";
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import AddSpot from "./AddSpot";
 import {Position} from "../models/Position";
 import {Spot} from "../models/Spot";
-import {useNavigate} from "react-router-dom";
+import {useLocation, useNavigate} from "react-router-dom";
 import {MapProvider} from "react-map-gl";
 import SpotMap from "./map/SpotMap";
+import CustomAlert from "./ui/CustomAlert";
+import {AlertModel} from "../models/AlertModel";
+import {AxiosError} from "axios";
 
 type HomepageProps = {
     spots: Spot[]
@@ -19,6 +22,16 @@ export default function Homepage(props: HomepageProps) {
     const [hidePickLocation, setHidePickLocationButton] = useState<boolean>(true)
     const navigate = useNavigate()
     const [centerPosition, setCenterPosition] = useState<Position>()
+    const [alert, setAlert] = useState<AlertModel>({alertMessage: "", open: false, severity: "success"})
+
+    const location = useLocation();
+
+    useEffect(() => {
+        if (location.state) {
+            setAlert(location.state)
+        }
+    }, [location.state])
+
 
     function handleCurrentPosition() {
         navigator.geolocation.getCurrentPosition((position) => {
@@ -27,15 +40,38 @@ export default function Homepage(props: HomepageProps) {
         })
     }
 
-    function handleCancelAddSpot() {
+    function resetUi() {
         setOpenAddNewSpotDrawer(false)
         setHidePickLocationButton(true)
         setShowCenterMarker(false)
     }
 
     function handleSaveSpot(newSpot: Spot) {
-        props.handleAddSpot(newSpot).then(() => {
-            handleCancelAddSpot()
+        props.handleAddSpot(newSpot)
+            .then(() => {
+                resetUi()
+                setAlert({
+                    ...alert,
+                    alertMessage: "New spot saved successfully",
+                    open: true
+                })
+            }).catch((error: AxiosError) => {
+            if (!error.response) {
+                setAlert({
+                    ...alert,
+                    severity: "error",
+                    alertMessage: "An error occurred, please report to the admin ",
+                    open: true
+                })
+            }
+            if (error.response!.status === 401) {
+                setAlert({
+                    ...alert,
+                    severity: "error",
+                    alertMessage: "Please login to create new spots",
+                    open: true
+                })
+            }
         })
     }
 
@@ -58,8 +94,12 @@ export default function Homepage(props: HomepageProps) {
         navigate("/spots/" + id + "/details")
     }
 
-    function handleCenterPosition(center:Position) {
+    function handleCenterPosition(center: Position) {
         setCenterPosition(center)
+    }
+
+    function handleAlertClose() {
+        setAlert({...alert, open: false})
     }
 
     return (
@@ -111,9 +151,14 @@ export default function Homepage(props: HomepageProps) {
                 anchor={"bottom"}
                 open={openAddNewSpotDrawer}>
                 <AddSpot pickedLocation={pickedLocation}
-                         handleCancel={handleCancelAddSpot}
+                         handleCancel={resetUi}
                          handleSave={handleSaveSpot}/>
             </Drawer>
+
+            <CustomAlert severity={alert.severity}
+                         onClose={handleAlertClose}
+                         alertMessage={alert.alertMessage}
+                         open={alert.open}/>
         </Box>
     )
 }

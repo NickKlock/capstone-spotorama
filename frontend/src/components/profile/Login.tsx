@@ -1,28 +1,62 @@
 import {Box, IconButton, Link, TextField, Typography} from "@mui/material";
 import {UserLoginRequest, UserSpot} from "../../models/User";
 import {LoginSharp} from "@mui/icons-material";
-import {ChangeEvent, useState} from "react";
-import {Navigate, useNavigate} from "react-router-dom";
+import {ChangeEvent, useEffect, useState} from "react";
+import {Navigate, useLocation} from "react-router-dom";
+import {AlertModel} from "../../models/AlertModel";
+import CustomAlert from "../ui/CustomAlert";
+import {AxiosError} from "axios";
 
 type LoginProps = {
     handleLoginRequest(userLoginRequest: UserLoginRequest): Promise<void>
     loggedInUser: UserSpot
 }
 export default function Login(props: LoginProps) {
-    const navigate = useNavigate()
+    const [userLoginRequest, setUserLoginRequest] = useState<UserLoginRequest>({username: "", password: ""})
+    const [alert, setAlert] = useState<AlertModel>({alertMessage: "", open: false, severity: "success"})
+    const location = useLocation();
 
-    const [userLoginRequest, setUserLoginRequest] = useState<UserLoginRequest>(
-        {
-            username: "",
-            password: ""
-        })
+    useEffect(() => {
+        if (location.state) {
+            setAlert(location.state)
+        }
+    }, [location.state])
 
     function handleInputChange(event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) {
         setUserLoginRequest({...userLoginRequest, [event.target.name]: event.target.value})
     }
 
     function handleLogin() {
-        props.handleLoginRequest(userLoginRequest).then(() => navigate("/"))
+        props.handleLoginRequest(userLoginRequest)
+            .then(() => {
+                setAlert({
+                    severity: "success",
+                    alertMessage: "Successfully logged in",
+                    open: true
+                })
+            })
+            .catch((error: AxiosError) => {
+                if (!error.response) {
+                    setAlert({
+                        ...alert,
+                        severity: "error",
+                        alertMessage: "An error occurred, please report to the admin ",
+                        open: true
+                    })
+                }
+                if (error.response!.status === 401) {
+                    setAlert({
+                        ...alert,
+                        severity: "error",
+                        alertMessage: "Bad Login credentials",
+                        open: true
+                    })
+                }
+            })
+    }
+
+    function handleAlertClose() {
+        setAlert({...alert, open: false})
     }
 
     return (
@@ -52,8 +86,10 @@ export default function Login(props: LoginProps) {
                 <Link href={"/register"} underline={"hover"}>
                     {"Register an account"}
                 </Link>
+                <CustomAlert severity={alert.severity} alertMessage={alert.alertMessage} open={alert.open}
+                             onClose={handleAlertClose}/>
 
 
-            </Box> : <Navigate to={"/profile"}/>
+            </Box> : <Navigate to={"/profile"} state={alert}/>
     )
 }
