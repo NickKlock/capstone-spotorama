@@ -22,6 +22,7 @@ interface IInputFields {
     label: string,
     required: boolean,
     rules?: RegisterOptions
+    inputType: string
 }
 
 export default function UserForm(props: UserFormProps) {
@@ -38,7 +39,8 @@ export default function UserForm(props: UserFormProps) {
                     message: "This is not a valid e-mail address.",
                     value: /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/g
                 }
-            }
+            },
+            inputType: "text"
         },
         {
             name: "password",
@@ -58,7 +60,9 @@ export default function UserForm(props: UserFormProps) {
                     message: "Your password is to weak.",
                     value: /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{6,}$/gm
                 }
-            }
+            },
+            inputType: "password"
+
         },
         {
             name: "author.nickname",
@@ -66,7 +70,8 @@ export default function UserForm(props: UserFormProps) {
             required: true,
             rules: {
                 required: "This field is required"
-            }
+            },
+            inputType: "text"
         },
         {
             name: "author.firstName",
@@ -74,7 +79,9 @@ export default function UserForm(props: UserFormProps) {
             required: true,
             rules: {
                 required: "This field is required"
-            }
+            },
+            inputType: "text"
+
         },
         {
             name: "author.lastName",
@@ -82,7 +89,8 @@ export default function UserForm(props: UserFormProps) {
             required: true,
             rules: {
                 required: "This field is required"
-            }
+            },
+            inputType: "text"
         }
     ], [])
     const initialUser = useMemo(() => {
@@ -146,6 +154,7 @@ export default function UserForm(props: UserFormProps) {
                                            control={control}
                                            label={inputField.label}
                                            rules={inputField.rules}
+                                           inputType={inputField.inputType}
                                            editable={props.editable}/>
                         </ListItem>)}
 
