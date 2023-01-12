@@ -1,8 +1,9 @@
-import {Box, Button, FormControl, IconButton, List, ListItem, TextField, Typography} from "@mui/material";
-import CustomListItemTextInput from "../ui/CustomListItemTextInput";
+import {Box, Button, List, ListItem, Typography} from "@mui/material";
 import {UserRequest, UserSpot} from "../../models/User";
-import {ChangeEvent, ReactNode, useMemo, useState} from "react";
-import {Edit} from "@mui/icons-material";
+import {ReactNode, useMemo} from "react";
+import {RegisterOptions, useForm} from "react-hook-form";
+import FormTextInput from "../ui/FormTextInput";
+import {UserFormInputs} from "../../models/UserFormInputs";
 
 type UserFormProps = {
     loggedInUser: UserSpot
@@ -14,29 +15,81 @@ type UserFormProps = {
     editable: boolean
     marginTop: number
     showEditButton: boolean
-    onEditButtonClick?(): void
+}
+
+interface IInputFields {
+    name: "username" | "password" | "author" | "author.nickname" | "author.firstName" | "author.lastName" | "author.createdSpots",
+    label: string,
+    editable: boolean,
+    required: boolean,
+    rules?: RegisterOptions
 }
 
 export default function UserForm(props: UserFormProps) {
 
-    const authorInputFields = useMemo(() => [
+    const inputFields: IInputFields[] = useMemo(() => [
         {
-            name: "nickname",
+            name: "username",
+            label: "E-Mail address",
+            editable: true,
+            required: true,
+            rules: {
+                required: "This field is required",
+                pattern: {
+                    message: "This is not a valid e-mail address.",
+                    value: /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/g
+                }
+            }
+        },
+        {
+            name: "password",
+            label: "Password",
+            editable: true,
+            required: true,
+            rules: {
+                required: "This field is required",
+                minLength: {
+                    message: "Password is to short.",
+                    value: 6
+                },
+                maxLength: {
+                    message: "Password is to long",
+                    value: 12
+                },
+                pattern: {
+                    message: "Your password is to weak.",
+                    value: /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{6,}$/gm
+                }
+            }
+        },
+        {
+            name: "author.nickname",
             label: "Displayed name",
-            value: ""
+            editable: true,
+            required: true,
+            rules: {
+                required: "This field is required"
+            }
         },
         {
-            name: "firstName",
+            name: "author.firstName",
             label: "Name",
-            value: ""
+            editable: true,
+            required: true,
+            rules: {
+                required: "This field is required"
+            }
         },
         {
-            name: "lastName",
-            label: "Last name",
-            value: ""
+            name: "author.lastName",
+            label: "Lastname",
+            editable: true,
+            required: true,
+            rules: {
+                required: "This field is required"
+            }
         }
     ], [])
-
     const initialUserRequest = useMemo(() => {
         return {
             author: {
@@ -50,110 +103,68 @@ export default function UserForm(props: UserFormProps) {
         }
 
     }, [])
-
     useMemo(() => {
         if (props.loggedInUser.username !== "anonymousUser") {
             initialUserRequest.author = props.loggedInUser.author
             initialUserRequest.username = props.loggedInUser.username
-
-            authorInputFields[0].value = initialUserRequest.author.nickname
-            authorInputFields[1].value = initialUserRequest.author.firstName
-            authorInputFields[2].value = initialUserRequest.author.lastName
+            initialUserRequest.author = props.loggedInUser.author
         }
-    }, [authorInputFields, initialUserRequest, props.loggedInUser.author, props.loggedInUser.username])
+    }, [initialUserRequest, props.loggedInUser.author, props.loggedInUser.username])
 
-    const [userRequestForm, setUserRequestForm] = useState<UserRequest>(initialUserRequest)
-
-    function handleUserObjectInputChanges(event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) {
-        setUserRequestForm({...userRequestForm, [event.target.name]: event.target.value})
-    }
-
-    function handleAuthorObjectInputChanges(event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) {
-
-        setUserRequestForm(userRequestForm => ({
-            ...userRequestForm,
-            author: {
-                ...userRequestForm.author,
-                [event.target.name]: event.target.value
-            }
-        }))
-        let toEditInputField = authorInputFields.find(inputField => inputField.name === event.target.name)
-        if (toEditInputField) {
-            toEditInputField.value = event.target.value
+    const {handleSubmit, control, reset} = useForm<UserFormInputs>({
+        defaultValues: {
+            username: initialUserRequest.username,
+            password: initialUserRequest.password,
+            author: initialUserRequest.author
         }
+    });
+
+    function onSubmit(data: UserFormInputs) {
+        props.onFormButtonClick(data as UserRequest)
     }
 
-    function handleRegisterUser() {
-        props.onFormButtonClick(userRequestForm)
-    }
 
     return (
-        <Box flexWrap={"wrap"}
-             display={"flex"}
-             justifyContent={"space-between"}
-             alignItems={"center"}
-             flexDirection={"column"}
-             marginTop={props.marginTop}
-        >
+        <form onSubmit={handleSubmit(onSubmit)} noValidate={true}>
+            <Box flexWrap={"wrap"}
+                 display={"flex"}
+                 justifyContent={"space-between"}
+                 alignItems={"center"}
+                 flexDirection={"column"}
+                 marginTop={props.marginTop}
+            >
 
-            <Box display={"flex"} flexGrow={1}>
-                <Typography textAlign={"center"}
-                            variant={"h6"}>
-                    {props.formTitle}
-                </Typography>
+                <Box display={"flex"} flexGrow={1}>
+                    <Typography textAlign={"center"}
+                                variant={"h6"}>
+                        {props.formTitle}
+                    </Typography>
+                </Box>
 
+                <List>
+                    {inputFields.map((inputField) =>
+                        <ListItem key={"listItem-" + inputField.name}>
+                            <FormTextInput required={inputField.required}
+                                           key={inputField.name}
+                                           name={inputField.name}
+                                           control={control}
+                                           label={inputField.label}
+                                           rules={inputField.rules}
+                                           editable={inputField.editable}/>
+                        </ListItem>)}
 
-                {props.showEditButton &&
-                    <IconButton size={"small"}
-                                onClick={props.onEditButtonClick && props.onEditButtonClick}>
-                        <Edit/>
-                    </IconButton>}
+                </List>
+                <Button
+                    type={"submit"}
+                    color={props.color}
+                    startIcon={props.buttonIcon}
+                    variant={"contained"}
+                >
+                    {props.buttonText}
+                </Button>
 
             </Box>
+        </form>
 
-
-            <List>
-                <ListItem>
-                    <FormControl fullWidth={true} margin={"dense"}>
-                        <TextField name={"username"}
-                                   type={"email"}
-                                   label={"E-Mail"}
-                                   value={userRequestForm.username}
-                                   disabled={!props.editable}
-                                   onChange={handleUserObjectInputChanges}/>
-                    </FormControl>
-                </ListItem>
-
-                <ListItem>
-                    <FormControl fullWidth={true} margin={"dense"}>
-                        <TextField name={"password"}
-                                   type={"password"}
-                                   label={"Password"}
-                                   placeholder={"**********"}
-                                   value={userRequestForm.password}
-                                   disabled={!props.editable}
-                                   onChange={handleUserObjectInputChanges}/>
-                    </FormControl>
-                </ListItem>
-
-                {authorInputFields.map((inputField) =>
-                    <CustomListItemTextInput name={inputField.name}
-                                             label={inputField.label}
-                                             editable={props.editable}
-                                             onChange={handleAuthorObjectInputChanges}
-                                             value={inputField.value}
-                                             key={inputField.name}/>)}
-            </List>
-
-            <Button
-                color={props.color}
-                startIcon={props.buttonIcon}
-                variant={"contained"}
-                onClick={handleRegisterUser}
-            >
-                {props.buttonText}
-            </Button>
-
-        </Box>
     )
 }
