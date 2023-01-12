@@ -85,7 +85,7 @@ export default function UserForm(props: UserFormProps) {
             }
         }
     ], [])
-    const initialUserRequest = useMemo(() => {
+    const initialUser = useMemo(() => {
         return {
             author: {
                 createdSpots: [""],
@@ -98,19 +98,20 @@ export default function UserForm(props: UserFormProps) {
         }
 
     }, [])
+
     useMemo(() => {
         if (props.loggedInUser.username !== "anonymousUser") {
-            initialUserRequest.author = props.loggedInUser.author
-            initialUserRequest.username = props.loggedInUser.username
-            initialUserRequest.author = props.loggedInUser.author
+            initialUser.author = props.loggedInUser.author
+            initialUser.username = props.loggedInUser.username
+            initialUser.author = props.loggedInUser.author
         }
-    }, [initialUserRequest, props.loggedInUser.author, props.loggedInUser.username])
+    }, [initialUser, props.loggedInUser.author, props.loggedInUser.username])
 
     const {handleSubmit, control} = useForm<UserFormInputs>({
         defaultValues: {
-            username: initialUserRequest.username,
-            password: initialUserRequest.password,
-            author: initialUserRequest.author
+            username: initialUser.username,
+            password: initialUser.password,
+            author: initialUser.author
         }
     });
 
