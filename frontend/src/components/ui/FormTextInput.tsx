@@ -1,18 +1,18 @@
-import {Control, Controller, FieldErrors, RegisterOptions} from "react-hook-form";
+import {Control, Controller, RegisterOptions} from "react-hook-form";
 import {TextField} from "@mui/material";
 import {UserFormInputs} from "../../models/UserFormInputs";
 
 interface FormTextInputProps {
     required: boolean;
-    name: string,
-    control: Control,
+    name: "username" | "password" | "author" | "author.nickname" | "author.firstName" | "author.lastName" | "author.createdSpots"
+    control: Control<UserFormInputs>,
     label: string
-    rules: RegisterOptions
+    rules?: RegisterOptions
     editable: boolean
 }
 
 export default function FormTextInput(props: FormTextInputProps) {
-    const userFormInputsKey = props.name as keyof FieldErrors<UserFormInputs>
+    const userFormInputsKey = props.name as keyof UserFormInputs
     return (
         <Controller
             render={({field: {onChange, value}, fieldState: {error}, formState}) =>
