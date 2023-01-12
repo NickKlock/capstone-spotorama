@@ -9,6 +9,7 @@ interface FormTextInputProps {
     label: string
     rules?: RegisterOptions
     editable: boolean
+    inputType: string
 }
 
 export default function FormTextInput(props: FormTextInputProps) {
@@ -20,6 +21,7 @@ export default function FormTextInput(props: FormTextInputProps) {
                     label={props.label}
                     error={!!error}
                     onChange={onChange}
+                    type={props.inputType}
                     value={value}
                     helperText={error ? formState.errors[userFormInputsKey]?.message as string : null}
                     disabled={!props.editable}
