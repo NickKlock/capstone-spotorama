@@ -1,7 +1,7 @@
 import {Box, SpeedDial, SpeedDialAction} from "@mui/material";
 import {UserRequest, UserSpot} from "../../models/User";
 import UserForm from "./UserForm";
-import {DeleteForever, Logout, ManageAccounts, Save} from "@mui/icons-material";
+import {DeleteForever, EditAttributes, Logout, ManageAccounts, Save} from "@mui/icons-material";
 import {useEffect, useState} from "react";
 import {Navigate, useLocation} from "react-router-dom";
 import {AlertModel} from "../../models/AlertModel";
@@ -30,7 +30,6 @@ export default function Profile(props: ProfileProps) {
             setAlert(location.state)
         }
     }, [location.state])
-
 
     function handleEditUser(userRequest: UserRequest) {
         setEditedUser(userRequest)
@@ -135,7 +134,6 @@ export default function Profile(props: ProfileProps) {
                           onFormButtonClick={handleEditUser}
                           marginTop={2}
                           showEditButton={true}
-                          onEditButtonClick={handleEditButtonClick}
                 />
 
                 <SpeedDial ariaLabel={"user-actions"}
@@ -151,15 +149,24 @@ export default function Profile(props: ProfileProps) {
                                      icon={<Logout/>}
                                      tooltipTitle={"Logout"}
                                      sx={{color: "#1976D2"}}
+                                     tooltipOpen={true}
                                      onClick={handleLogout}/>
 
                     <SpeedDialAction key={"delete"}
                                      icon={<DeleteForever/>}
-                                     tooltipTitle={"Delete your account"}
+                                     tooltipTitle={"Delete"}
                                      sx={{color: "#E53935"}}
+                                     tooltipOpen={true}
                                      onClick={handleDelete}/>
 
+                    <SpeedDialAction key={"edit"}
+                                     icon={<EditAttributes/>}
+                                     tooltipTitle={"Edit"}
+                                     tooltipOpen={true}
+                                     onClick={handleEditButtonClick}/>
+
                 </SpeedDial>
+
                 <CustomAlert severity={alert.severity} alertMessage={alert.alertMessage} open={alert.open}
                              onClose={handleAlertClose}/>
 
