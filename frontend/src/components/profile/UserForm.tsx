@@ -20,7 +20,6 @@ type UserFormProps = {
 interface IInputFields {
     name: "username" | "password" | "author" | "author.nickname" | "author.firstName" | "author.lastName" | "author.createdSpots",
     label: string,
-    editable: boolean,
     required: boolean,
     rules?: RegisterOptions
 }
@@ -44,7 +43,6 @@ export default function UserForm(props: UserFormProps) {
         {
             name: "password",
             label: "Password",
-            editable: true,
             required: true,
             rules: {
                 required: "This field is required",
@@ -65,7 +63,6 @@ export default function UserForm(props: UserFormProps) {
         {
             name: "author.nickname",
             label: "Displayed name",
-            editable: true,
             required: true,
             rules: {
                 required: "This field is required"
@@ -74,7 +71,6 @@ export default function UserForm(props: UserFormProps) {
         {
             name: "author.firstName",
             label: "Name",
-            editable: true,
             required: true,
             rules: {
                 required: "This field is required"
@@ -83,7 +79,6 @@ export default function UserForm(props: UserFormProps) {
         {
             name: "author.lastName",
             label: "Lastname",
-            editable: true,
             required: true,
             rules: {
                 required: "This field is required"
@@ -111,7 +106,7 @@ export default function UserForm(props: UserFormProps) {
         }
     }, [initialUserRequest, props.loggedInUser.author, props.loggedInUser.username])
 
-    const {handleSubmit, control, reset} = useForm<UserFormInputs>({
+    const {handleSubmit, control} = useForm<UserFormInputs>({
         defaultValues: {
             username: initialUserRequest.username,
             password: initialUserRequest.password,
@@ -150,7 +145,7 @@ export default function UserForm(props: UserFormProps) {
                                            control={control}
                                            label={inputField.label}
                                            rules={inputField.rules}
-                                           editable={inputField.editable}/>
+                                           editable={props.editable}/>
                         </ListItem>)}
 
                 </List>
