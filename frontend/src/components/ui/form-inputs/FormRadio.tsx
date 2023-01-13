@@ -19,12 +19,11 @@ export default function FormRadio(props: FormRadioProps) {
             <FormControl
                 {...register(props.name)}
                 error={!!error}>
-                <FormLabel title={props.label}/>
+                <FormLabel>{props.label}</FormLabel>
                 <RadioGroup defaultValue={props.defaultValue}
                             name={props.name}
                             onChange={onChange}
-                            value={value}
-                >
+                            value={value}>
                     {props.options.map((option) =>
                         <FormControlLabel control={<Radio/>} label={option}/>)}
                 </RadioGroup>

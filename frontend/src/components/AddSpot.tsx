@@ -1,16 +1,4 @@
-import {
-    Box,
-    Button,
-    FormControl,
-    FormControlLabel,
-    FormLabel,
-    List,
-    ListItem,
-    Radio,
-    RadioGroup,
-    SelectChangeEvent,
-    Typography
-} from "@mui/material";
+import {Box, Button, List, ListItem, Typography} from "@mui/material";
 
 import {
     beachtypes,
@@ -23,13 +11,14 @@ import {
     windDirections
 } from "../models/SelectOptions";
 
-import {ChangeEvent, useMemo, useState} from "react";
+import {useMemo} from "react";
 import {Spot} from "../models/Spot";
 import {Position} from "../models/Position";
 import {FormProvider, RegisterOptions, useForm} from "react-hook-form";
 import FormTextInput from "./ui/form-inputs/FormTextInput";
 import FormSelect from "./ui/form-inputs/FormSelect";
 import FormSlider from "./ui/form-inputs/FormSlider";
+import FormRadio from "./ui/form-inputs/FormRadio";
 
 
 const parkingSliderMarks = [
@@ -100,13 +89,19 @@ export default function AddSpot(props: AddSpotProps) {
             name: "experiencesLevel",
             label: "For rider that are",
             data: experiencesLevel,
-            required: false
+            required: true,
+            rules: {
+                required: "This field is required"
+            }
         },
         {
             name: "hazards",
             label: "Hazards",
             data: hazards,
-            required: false
+            required: true,
+            rules: {
+                required: "This field is required"
+            }
         },
         {
             name: "bestMonths",
@@ -118,7 +113,10 @@ export default function AddSpot(props: AddSpotProps) {
             name: "bestDirections",
             label: "Best wind directions",
             data: windDirections,
-            required: false
+            required: true,
+            rules: {
+                required: "This field is required"
+            }
         },
         {
             name: "waterTemperature",
@@ -143,22 +141,9 @@ export default function AddSpot(props: AddSpotProps) {
         position: props.pickedLocation,
         restrooms: ""
     }
-    const [newSpot, setNewSpot] = useState<Spot>(initialSpot);
     const methods = useForm<Spot>({
         defaultValues: initialSpot
     });
-
-    // The final Event type comes from the mui Slider , and it's not compatible with the other events
-    function handleInputChange(event: SelectChangeEvent<string[]>
-        | ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-        | Event) {
-        if (event.target) {
-            // There is actually an event.target no matter what event gets fired, therefore we ignore es-lint in this case
-            // @ts-ignore
-            setNewSpot({...newSpot, [event.target.name]: event.target.value})
-        }
-
-    }
 
     function handleSave(data: any) {
         console.log(data)
@@ -218,19 +203,11 @@ export default function AddSpot(props: AddSpotProps) {
                                         marks={parkingSliderMarks}/>
                         </ListItem>
 
-
                         <ListItem>
-                            <FormControl>
-                                <FormLabel>Restrooms</FormLabel>
-                                <RadioGroup
-                                    defaultValue="No"
-                                    name="restrooms"
-                                    onChange={handleInputChange}
-                                >
-                                    <FormControlLabel value="yes" control={<Radio/>} label="Yes"/>
-                                    <FormControlLabel value="no" control={<Radio/>} label="No"/>
-                                </RadioGroup>
-                            </FormControl>
+                            <FormRadio label={"Restrooms"}
+                                       defaultValue={"no"}
+                                       name={"restrooms"}
+                                       options={["yes", "no"]}/>
                         </ListItem>
                     </List>
 
