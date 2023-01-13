@@ -1,7 +1,6 @@
 import {Controller, RegisterOptions, useFormContext} from "react-hook-form";
 import {TextField} from "@mui/material";
-import {UserFormInputs} from "../../models/FormInputTypes";
-import {Spot} from "../../models/Spot";
+import {SpotFormInputs, UserFormInputs} from "../../models/FormInputTypes";
 
 interface FormTextInputProps {
     required: boolean;
@@ -15,7 +14,7 @@ interface FormTextInputProps {
 export default function FormTextInput(props: FormTextInputProps) {
     const {control, register} = useFormContext();
 
-    let userFormInputsKey = props.name as keyof UserFormInputs | Spot
+    const userFormInputsKey = props.name as keyof UserFormInputs | SpotFormInputs
 
     return (
         <Controller
