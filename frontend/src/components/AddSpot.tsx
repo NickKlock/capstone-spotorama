@@ -42,7 +42,7 @@ type AddSpotProps = {
     handleSave(newSpot: Spot): void
 }
 
-interface textFieldInput {
+interface TextFieldInput {
     name: "username" | "password" | "author" | "author.nickname" | "author.firstName" | "author.lastName" | "author.createdSpots" | "name",
     label: string,
     required: boolean,
@@ -51,7 +51,7 @@ interface textFieldInput {
 }
 
 export default function AddSpot(props: AddSpotProps) {
-    const textFieldInputs: textFieldInput[] = useMemo(() => [
+    const textFieldInputs: TextFieldInput[] = useMemo(() => [
         {
             name: "name",
             label: "Spotname",
@@ -175,7 +175,7 @@ export default function AddSpot(props: AddSpotProps) {
                 >
                     <List sx={{width: "100%"}}>
                         {textFieldInputs.map((inputField) =>
-                            <ListItem>
+                            <ListItem key={"text-input-" + inputField.name}>
                                 <FormTextInput required={inputField.required}
                                                name={inputField.name}
                                                label={inputField.label}
@@ -185,7 +185,7 @@ export default function AddSpot(props: AddSpotProps) {
                             </ListItem>)}
 
                         {selectInputs.map((selectInput) =>
-                            <ListItem>
+                            <ListItem key={"select-input-" + selectInput.name}>
                                 <FormSelect required={selectInput.required}
                                             name={selectInput.name}
                                             label={selectInput.label}
