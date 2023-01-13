@@ -195,6 +195,7 @@ export default function AddSpot(props: AddSpotProps) {
 
                         <ListItem>
                             <FormSlider name={"parkingSpace"}
+                                        label={"Available parking space"}
                                         minValue={0}
                                         maxValue={2}
                                         defaultValue={0}
@@ -210,8 +211,8 @@ export default function AddSpot(props: AddSpotProps) {
                         </ListItem>
                     </List>
 
-                    <Button onClick={methods.handleSubmit(handleSave)}>Save</Button>
-                    <Button onClick={handleCancel}>Close</Button>
+                    <Button variant={"contained"} onClick={methods.handleSubmit(handleSave)}>Save</Button>
+                    <Button variant={"contained"} onClick={handleCancel}>Close</Button>
                 </Box>
             </Box>
         </FormProvider>

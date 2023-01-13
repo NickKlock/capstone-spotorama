@@ -1,5 +1,5 @@
 import {Controller, RegisterOptions, useFormContext} from "react-hook-form";
-import {Box, FormHelperText, Slider} from "@mui/material";
+import {Box, FormHelperText, FormLabel, Slider} from "@mui/material";
 import {Spot} from "../../../models/Spot";
 
 type FormSliderProps = {
@@ -10,6 +10,7 @@ type FormSliderProps = {
     step: number
     marks: { value: number; label: string; }[]
     rules?: RegisterOptions
+    label: string
 
 }
 export default function FormSlider(props: FormSliderProps) {
@@ -19,6 +20,7 @@ export default function FormSlider(props: FormSliderProps) {
     return (
         <Controller render={({field: {onChange, value}, fieldState: {error}, formState}) =>
             <Box marginTop={1} width={"100%"}>
+                <FormLabel>{props.label}</FormLabel>
                 <Slider
                     {...register(props.name)}
                     name={props.name}
