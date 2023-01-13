@@ -26,6 +26,7 @@ export default function FormTextInput(props: FormTextInputProps) {
                     onChange={onChange}
                     type={props.inputType}
                     value={value}
+                    sx={{width: "100%"}}
                     // @ts-ignore
                     helperText={error ? formState.errors[userFormInputsKey]?.message as string : null}
                     disabled={!props.editable}
