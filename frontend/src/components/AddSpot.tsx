@@ -27,7 +27,6 @@ import {ChangeEvent, useMemo, useState} from "react";
 import {Spot} from "../models/Spot";
 import {Position} from "../models/Position";
 import {FormProvider, RegisterOptions, useForm} from "react-hook-form";
-import {SpotFormInputs} from "../models/FormInputTypes";
 import FormTextInput from "./ui/FormTextInput";
 import FormSelect from "./ui/FormSelect";
 import FormSlider from "./ui/FormSlider";
@@ -145,7 +144,7 @@ export default function AddSpot(props: AddSpotProps) {
         restrooms: ""
     }
     const [newSpot, setNewSpot] = useState<Spot>(initialSpot);
-    const methods = useForm<SpotFormInputs>({
+    const methods = useForm<Spot>({
         defaultValues: initialSpot
     });
 

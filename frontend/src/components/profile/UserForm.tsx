@@ -3,7 +3,6 @@ import {UserRequest, UserSpot} from "../../models/User";
 import {ReactNode, useMemo} from "react";
 import {FormProvider, RegisterOptions, useForm} from "react-hook-form";
 import FormTextInput from "../ui/FormTextInput";
-import {UserFormInputs} from "../../models/FormInputTypes";
 
 type UserFormProps = {
     loggedInUser: UserSpot
@@ -115,7 +114,7 @@ export default function UserForm(props: UserFormProps) {
         }
     }, [initialUser, props.loggedInUser.author, props.loggedInUser.username])
 
-    const methods = useForm<UserFormInputs>({
+    const methods = useForm<UserRequest>({
         defaultValues: {
             username: initialUser.username,
             password: initialUser.password,

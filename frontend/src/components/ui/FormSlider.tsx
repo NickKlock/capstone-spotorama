@@ -1,6 +1,6 @@
 import {Controller, RegisterOptions, useFormContext} from "react-hook-form";
 import {Box, FormHelperText, Slider} from "@mui/material";
-import {SpotFormInputs} from "../../models/FormInputTypes";
+import {Spot} from "../../models/Spot";
 
 type FormSliderProps = {
     name: string
@@ -14,7 +14,7 @@ type FormSliderProps = {
 }
 export default function FormSlider(props: FormSliderProps) {
     const {control, register} = useFormContext();
-    const userFormInputsKey = props.name as keyof SpotFormInputs
+    const userFormInputsKey = props.name as keyof Spot
 
     return (
         <Controller render={({field: {onChange, value}, fieldState: {error}, formState}) =>
