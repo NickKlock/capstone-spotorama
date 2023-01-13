@@ -9,7 +9,7 @@ type FormSelectProps = {
     rules?: RegisterOptions
     editable: boolean
     inputType: string
-    data: any
+    data: string[]
 }
 export default function FormSelect(props: FormSelectProps) {
     const {control, register} = useFormContext();
