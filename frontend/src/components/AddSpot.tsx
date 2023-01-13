@@ -141,6 +141,7 @@ export default function AddSpot(props: AddSpotProps) {
         position: props.pickedLocation,
         restrooms: ""
     }
+
     const methods = useForm<Spot>({
         defaultValues: initialSpot
     });
@@ -174,6 +175,11 @@ export default function AddSpot(props: AddSpotProps) {
                     width={"80%"}
                 >
                     <List sx={{width: "100%"}}>
+
+                        <ListItem>
+                            <input {...methods.register("spotImage")} accept={"image/*"} type={"file"}/>
+                        </ListItem>
+
                         {textFieldInputs.map((inputField) =>
                             <ListItem key={"text-input-" + inputField.name}>
                                 <FormTextInput required={inputField.required}
