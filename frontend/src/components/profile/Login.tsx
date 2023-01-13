@@ -4,7 +4,7 @@ import {LoginSharp} from "@mui/icons-material";
 import {ChangeEvent, useEffect, useState} from "react";
 import {Navigate, useLocation} from "react-router-dom";
 import {AlertModel} from "../../models/AlertModel";
-import CustomAlert from "../ui/CustomAlert";
+import CustomAlert from "../ui/custom-mui-components/CustomAlert";
 import {AxiosError} from "axios";
 
 type LoginProps = {

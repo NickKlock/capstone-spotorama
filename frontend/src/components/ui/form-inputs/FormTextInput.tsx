@@ -1,7 +1,7 @@
 import {Controller, RegisterOptions, useFormContext} from "react-hook-form";
 import {TextField} from "@mui/material";
-import {Spot} from "../../models/Spot";
-import {UserRequest} from "../../models/User";
+import {Spot} from "../../../models/Spot";
+import {UserRequest} from "../../../models/User";
 
 interface FormTextInputProps {
     required: boolean;

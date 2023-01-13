@@ -3,7 +3,7 @@ import Homepage from "./components/Homepage";
 import {BrowserRouter, Route, Routes} from "react-router-dom";
 import SpotDetail from "./components/SpotDetail";
 import useSpots from "./hooks/useSpots";
-import SpotList from "./components/spot_list/SpotList";
+import SpotList from "./components/spot-list/SpotList";
 import BottomNavigationBar from "./components/BottomNavigationBar";
 import TitleBarRoutes from "./components/TitleBarRoutes";
 import {Box} from "@mui/material";

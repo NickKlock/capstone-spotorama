@@ -1,6 +1,6 @@
 import {Controller, RegisterOptions, useFormContext} from "react-hook-form";
-import CustomSelect from "./CustomSelect";
-import {Spot} from "../../models/Spot";
+import CustomSelect from "../custom-mui-components/CustomSelect";
+import {Spot} from "../../../models/Spot";
 
 type FormSelectProps = {
     required: boolean;

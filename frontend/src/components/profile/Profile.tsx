@@ -5,9 +5,9 @@ import {DeleteForever, EditAttributes, Logout, ManageAccounts, Save} from "@mui/
 import {useEffect, useState} from "react";
 import {Navigate, useLocation} from "react-router-dom";
 import {AlertModel} from "../../models/AlertModel";
-import CustomAlert from "../ui/CustomAlert";
+import CustomAlert from "../ui/custom-mui-components/CustomAlert";
 import {AxiosError} from "axios";
-import ConfirmationModal from "../ui/ConfirmationModal";
+import ConfirmationModal from "../ui/custom-mui-components/ConfirmationModal";
 import useNavigationWithAlert from "../../hooks/useNavigationWithAlert";
 
 type ProfileProps = {

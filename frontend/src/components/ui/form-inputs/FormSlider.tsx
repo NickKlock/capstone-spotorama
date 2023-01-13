@@ -1,6 +1,6 @@
 import {Controller, RegisterOptions, useFormContext} from "react-hook-form";
 import {Box, FormHelperText, Slider} from "@mui/material";
-import {Spot} from "../../models/Spot";
+import {Spot} from "../../../models/Spot";
 
 type FormSliderProps = {
     name: string

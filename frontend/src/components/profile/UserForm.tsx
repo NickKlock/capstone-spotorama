@@ -2,7 +2,7 @@ import {Box, Button, List, ListItem, Typography} from "@mui/material";
 import {UserRequest, UserSpot} from "../../models/User";
 import {ReactNode, useMemo} from "react";
 import {FormProvider, RegisterOptions, useForm} from "react-hook-form";
-import FormTextInput from "../ui/FormTextInput";
+import FormTextInput from "../ui/form-inputs/FormTextInput";
 
 type UserFormProps = {
     loggedInUser: UserSpot
