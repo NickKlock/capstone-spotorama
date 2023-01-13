@@ -25,12 +25,12 @@ import {
 } from "../models/SelectOptions";
 
 import {ChangeEvent, useMemo, useState} from "react";
-import CustomSelect from "./ui/CustomSelect";
 import {Spot} from "../models/Spot";
 import {Position} from "../models/Position";
 import {FormProvider, RegisterOptions, useForm} from "react-hook-form";
 import {SpotFormInputs} from "../models/FormInputTypes";
 import FormTextInput from "./ui/FormTextInput";
+import FormSelect from "./ui/FormSelect";
 
 
 const parkingSliderMarks = [
@@ -77,15 +77,61 @@ export default function AddSpot(props: AddSpotProps) {
 
     const selectInputs = useMemo(() => [
         {
-            name: "",
-            label: "",
-            data: [""]
+            name: "disciplines",
+            label: "Disciplines",
+            data: disciplines,
+            required: true,
+            rules: {
+                required: "This field is required"
+            }
+        },
+        {
+            name: "waveTypes",
+            label: "WaveTypes",
+            data: wavetypes,
+            required: false
+        },
+        {
+            name: "beachTypes",
+            label: "Beach condition",
+            data: beachtypes,
+            required: false
+        },
+        {
+            name: "experiencesLevel",
+            label: "For rider that are",
+            data: experiencesLevel,
+            required: false
+        },
+        {
+            name: "hazards",
+            label: "Hazards",
+            data: hazards,
+            required: false
+        },
+        {
+            name: "bestMonths",
+            label: "Best in those months",
+            data: months,
+            required: false
+        },
+        {
+            name: "bestDirections",
+            label: "Best wind directions",
+            data: windDirections,
+            required: false
+        },
+        {
+            name: "waterTemperature",
+            label: "Predominant water temperature",
+            data: waterTemperatures,
+            required: false
         }
     ], [])
 
     const initialSpot: Spot = {
         id: "",
-        name: "empty",
+        name: "",
         disciplines: [],
         waveTypes: [],
         beachTypes: [],
@@ -96,7 +142,7 @@ export default function AddSpot(props: AddSpotProps) {
         waterTemperature: [],
         parkingSpace: "FEW",
         position: props.pickedLocation,
-        restrooms: "no"
+        restrooms: ""
     }
     const [newSpot, setNewSpot] = useState<Spot>(initialSpot);
     const methods = useForm<SpotFormInputs>({
@@ -153,15 +199,14 @@ export default function AddSpot(props: AddSpotProps) {
                                                inputType={inputField.inputType}/>
                             </ListItem>)}
 
-                        <ListItem>
-                            <CustomSelect
-                                fieldName={"disciplines"}
-                                label={"Disciplines"}
-                                selectedValue={newSpot.disciplines}
-                                data={disciplines}
-                                handleSelectChange={handleInputChange}
-                            />
-                        </ListItem>
+                        {selectInputs.map((selectInput) =>
+                            <ListItem>
+                                <FormSelect required={selectInput.required}
+                                            name={selectInput.name}
+                                            label={selectInput.label}
+                                            data={selectInput.data}
+                                            rules={selectInput.rules}/>
+                            </ListItem>)}
 
                         <ListItem>
                             <Box marginTop={1}>
@@ -189,75 +234,6 @@ export default function AddSpot(props: AddSpotProps) {
                                     <FormControlLabel value="no" control={<Radio/>} label="No"/>
                                 </RadioGroup>
                             </FormControl>
-                        </ListItem>
-
-                        <ListItem>
-                            <CustomSelect
-                                fieldName={"waveTypes"}
-                                selectedValue={newSpot.waveTypes}
-                                data={wavetypes}
-                                label={"Wavetype"}
-                                handleSelectChange={handleInputChange}
-                            />
-                        </ListItem>
-
-                        <ListItem>
-                            <CustomSelect
-                                fieldName={"beachTypes"}
-                                selectedValue={newSpot.beachTypes}
-                                data={beachtypes}
-                                label={"Beach"}
-                                handleSelectChange={handleInputChange}
-                            />
-                        </ListItem>
-
-                        <ListItem>
-                            <CustomSelect
-                                fieldName={"experiencesLevel"}
-                                selectedValue={newSpot.experiencesLevel}
-                                data={experiencesLevel}
-                                label={"For rider that are"}
-                                handleSelectChange={handleInputChange}
-                            />
-                        </ListItem>
-
-                        <ListItem>
-                            <CustomSelect
-                                fieldName={"hazards"}
-                                selectedValue={newSpot.hazards}
-                                data={hazards}
-                                label={"Hazards"}
-                                handleSelectChange={handleInputChange}
-                            />
-                        </ListItem>
-
-                        <ListItem>
-                            <CustomSelect
-                                fieldName={"bestMonths"}
-                                selectedValue={newSpot.bestMonths}
-                                data={months}
-                                label={"Best in those months"}
-                                handleSelectChange={handleInputChange}
-                            />
-                        </ListItem>
-
-                        <ListItem>
-                            <CustomSelect
-                                fieldName={"bestDirections"}
-                                selectedValue={newSpot.bestDirections}
-                                data={windDirections}
-                                label={"Best wind directions"}
-                                handleSelectChange={handleInputChange}
-                            />
-                        </ListItem>
-                        <ListItem>
-                            <CustomSelect
-                                fieldName={"waterTemperature"}
-                                selectedValue={newSpot.waterTemperature}
-                                data={waterTemperatures}
-                                label={"Main Water Temperature"}
-                                handleSelectChange={handleInputChange}
-                            />
                         </ListItem>
                     </List>
 
