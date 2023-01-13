@@ -8,7 +8,14 @@ export function getAccessToken(): Promise<string> {
 }
 
 export function postSpot(newSpot: Spot): Promise<Spot> {
-    return axios.post("/api/spots", newSpot)
+    let formData = new FormData()
+
+    if (newSpot.spotImage) {
+        formData.append("file", newSpot.spotImage[0])
+    }
+    formData.append("spot", JSON.stringify(newSpot))
+
+    return axios.post("/api/spots", formData)
         .then((response: AxiosResponse<Spot>) => response.data)
 }
 
