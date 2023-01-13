@@ -21,6 +21,7 @@ public record Spot(
         List<WaterTemperature> waterTemperature,
         ParkingSpace parkingSpace,
         Position position,
-        String restrooms
+        String restrooms,
+        Photo spotImage
 ) {
 }

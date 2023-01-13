@@ -1,9 +1,13 @@
 package com.github.nickklock.backend.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.github.nickklock.backend.models.enums.*;
+import lombok.With;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
+@With
 public record SpotRequest(
         String name,
         List<Discipline> disciplines,
@@ -16,6 +20,8 @@ public record SpotRequest(
         List<WaterTemperature> waterTemperature,
         ParkingSpace parkingSpace,
         Position position,
-        String restrooms
+        String restrooms,
+        @JsonIgnore
+        MultipartFile spotImage
 ) {
 }
