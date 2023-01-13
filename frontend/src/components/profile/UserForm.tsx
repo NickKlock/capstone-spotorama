@@ -157,7 +157,7 @@ export default function UserForm(props: UserFormProps) {
                     color={props.color}
                     startIcon={props.buttonIcon}
                     variant={"contained"}
-                    onClick={methods.handleSubmit(data => props.onFormButtonClick(data))}
+                    onClick={methods.handleSubmit(props.onFormButtonClick)}
                 >
                     {props.buttonText}
                 </Button>
