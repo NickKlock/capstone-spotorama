@@ -21,9 +21,7 @@ type CustomSelectProps = {
     helperText: string | null
     required: boolean
 }
-//error
-//helperText
-//required
+
 export default function CustomSelect(props: CustomSelectProps) {
 
     function handleSelectChange(event: SelectChangeEvent<string[]>) {
@@ -49,8 +47,7 @@ export default function CustomSelect(props: CustomSelectProps) {
                             <Chip key={value} label={value}/>
                         ))}
                     </Box>
-                )}
-            >
+                )}>
                 {props.data.map((item) => (
                     <MenuItem
                         key={item}
