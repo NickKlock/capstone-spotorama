@@ -9,7 +9,6 @@ import {
     Radio,
     RadioGroup,
     SelectChangeEvent,
-    Slider,
     Typography
 } from "@mui/material";
 
@@ -31,6 +30,7 @@ import {FormProvider, RegisterOptions, useForm} from "react-hook-form";
 import {SpotFormInputs} from "../models/FormInputTypes";
 import FormTextInput from "./ui/FormTextInput";
 import FormSelect from "./ui/FormSelect";
+import FormSlider from "./ui/FormSlider";
 
 
 const parkingSliderMarks = [
@@ -161,8 +161,9 @@ export default function AddSpot(props: AddSpotProps) {
 
     }
 
-    function handleSave() {
-        props.handleSave(newSpot)
+    function handleSave(data: any) {
+        console.log(data)
+        //props.handleSave(newSpot)
     }
 
 
@@ -176,6 +177,7 @@ export default function AddSpot(props: AddSpotProps) {
                  display={"flex"}
                  justifyContent={"space-between"}
                  alignItems={"center"}
+                 marginTop={1}
                  flexDirection={"column"}>
                 <Typography textAlign={"center"} variant={"h6"}>Create a new spot</Typography>
                 <Box
@@ -188,7 +190,7 @@ export default function AddSpot(props: AddSpotProps) {
                     flexDirection={"column"}
                     width={"80%"}
                 >
-                    <List>
+                    <List sx={{width: "100%"}}>
                         {textFieldInputs.map((inputField) =>
                             <ListItem>
                                 <FormTextInput required={inputField.required}
@@ -209,18 +211,14 @@ export default function AddSpot(props: AddSpotProps) {
                             </ListItem>)}
 
                         <ListItem>
-                            <Box marginTop={1}>
-                                <Typography gutterBottom={true}>Parking space: {newSpot.parkingSpace}</Typography>
-                                <Slider name={"parkingSpace"}
-                                        onChange={handleInputChange}
-                                        min={0}
-                                        max={2}
+                            <FormSlider name={"parkingSpace"}
+                                        minValue={0}
+                                        maxValue={2}
                                         defaultValue={0}
                                         step={1}
-                                        valueLabelDisplay={"off"}
                                         marks={parkingSliderMarks}/>
-                            </Box>
                         </ListItem>
+
 
                         <ListItem>
                             <FormControl>
@@ -237,7 +235,7 @@ export default function AddSpot(props: AddSpotProps) {
                         </ListItem>
                     </List>
 
-                    <Button onClick={handleSave}>Save</Button>
+                    <Button onClick={methods.handleSubmit(handleSave)}>Save</Button>
                     <Button onClick={handleCancel}>Close</Button>
                 </Box>
             </Box>
