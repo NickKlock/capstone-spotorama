@@ -3,11 +3,11 @@ import {
     Discipline,
     ExperiencesLevel,
     Hazard,
+    Month,
+    ParkingSpace,
     WaterTemperature,
     WaveType,
-    Month,
-    WindDirection,
-    ParkingSpace
+    WindDirection
 } from "./SpotSubTypes";
 import {Position} from "./Position";
 
@@ -25,4 +25,5 @@ export type Spot= {
     parkingSpace: ParkingSpace;
     position: Position;
     restrooms: string;
+    spotImage?: FileList;
 }
