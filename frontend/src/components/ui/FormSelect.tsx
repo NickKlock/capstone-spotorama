@@ -7,8 +7,6 @@ type FormSelectProps = {
     name: string
     label: string
     rules?: RegisterOptions
-    editable: boolean
-    inputType: string
     data: string[]
 }
 export default function FormSelect(props: FormSelectProps) {
