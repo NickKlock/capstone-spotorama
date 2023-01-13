@@ -34,7 +34,7 @@ export default function CustomSelect(props: CustomSelectProps) {
         <FormControl fullWidth={true}
                      margin={"dense"}>
 
-            <InputLabel>{props.label}</InputLabel>
+            <InputLabel required={props.required}>{props.label}</InputLabel>
 
             <Select
                 name={props.fieldName}
@@ -42,7 +42,6 @@ export default function CustomSelect(props: CustomSelectProps) {
                 input={<OutlinedInput label={props.label}/>}
                 value={props.selectedValue}
                 onChange={handleSelectChange}
-                required={props.required}
                 error={!!props.error}
                 renderValue={(selected: string[]) => (
                     <Box display={"flex"} flexWrap={"wrap"} gap={0.5}>
