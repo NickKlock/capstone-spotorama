@@ -25,7 +25,7 @@ export default function FormRadio(props: FormRadioProps) {
                             onChange={onChange}
                             value={value}>
                     {props.options.map((option) =>
-                        <FormControlLabel control={<Radio/>} label={option}/>)}
+                        <FormControlLabel key={"radio-" + option} control={<Radio/>} label={option}/>)}
                 </RadioGroup>
                 <FormHelperText>{error ? formState.errors[spotFormInputKey]?.message as string : null}</FormHelperText>
             </FormControl>}
