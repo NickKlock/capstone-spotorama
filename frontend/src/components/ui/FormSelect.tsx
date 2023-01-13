@@ -1,6 +1,6 @@
 import {Controller, RegisterOptions, useFormContext} from "react-hook-form";
-import {SpotFormInputs} from "../../models/FormInputTypes";
 import CustomSelect from "./CustomSelect";
+import {Spot} from "../../models/Spot";
 
 type FormSelectProps = {
     required: boolean;
@@ -12,7 +12,7 @@ type FormSelectProps = {
 export default function FormSelect(props: FormSelectProps) {
     const {control, register} = useFormContext();
 
-    const spotFormInputKey = props.name as keyof SpotFormInputs
+    const spotFormInputKey = props.name as keyof Spot
 
     return (
         <Controller
