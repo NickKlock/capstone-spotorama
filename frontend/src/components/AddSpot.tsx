@@ -145,9 +145,8 @@ export default function AddSpot(props: AddSpotProps) {
         defaultValues: initialSpot
     });
 
-    function handleSave(data: any) {
-        console.log(data)
-        //props.handleSave(newSpot)
+    function handleSave(data: Spot) {
+        props.handleSave(data)
     }
 
 
