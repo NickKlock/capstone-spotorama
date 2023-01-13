@@ -1,9 +1,9 @@
 import {Box, Button, List, ListItem, Typography} from "@mui/material";
 import {UserRequest, UserSpot} from "../../models/User";
 import {ReactNode, useMemo} from "react";
-import {RegisterOptions, useForm} from "react-hook-form";
+import {FormProvider, RegisterOptions, useForm} from "react-hook-form";
 import FormTextInput from "../ui/FormTextInput";
-import {UserFormInputs} from "../../models/UserFormInputs";
+import {UserFormInputs} from "../../models/FormInputTypes";
 
 type UserFormProps = {
     loggedInUser: UserSpot
@@ -115,7 +115,7 @@ export default function UserForm(props: UserFormProps) {
         }
     }, [initialUser, props.loggedInUser.author, props.loggedInUser.username])
 
-    const {handleSubmit, control} = useForm<UserFormInputs>({
+    const methods = useForm<UserFormInputs>({
         defaultValues: {
             username: initialUser.username,
             password: initialUser.password,
@@ -123,13 +123,8 @@ export default function UserForm(props: UserFormProps) {
         }
     });
 
-    function onSubmit(data: UserFormInputs) {
-        props.onFormButtonClick(data as UserRequest)
-    }
-
-
     return (
-        <form onSubmit={handleSubmit(onSubmit)} noValidate={true}>
+        <FormProvider {...methods}>
             <Box flexWrap={"wrap"}
                  display={"flex"}
                  justifyContent={"space-between"}
@@ -151,7 +146,6 @@ export default function UserForm(props: UserFormProps) {
                             <FormTextInput required={inputField.required}
                                            key={inputField.name}
                                            name={inputField.name}
-                                           control={control}
                                            label={inputField.label}
                                            rules={inputField.rules}
                                            inputType={inputField.inputType}
@@ -164,12 +158,14 @@ export default function UserForm(props: UserFormProps) {
                     color={props.color}
                     startIcon={props.buttonIcon}
                     variant={"contained"}
+                    onClick={methods.handleSubmit(data => props.onFormButtonClick(data))}
                 >
                     {props.buttonText}
                 </Button>
 
             </Box>
-        </form>
+        </FormProvider>
+
 
     )
 }
