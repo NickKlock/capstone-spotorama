@@ -1,7 +1,7 @@
 import {Spot} from "../../models/Spot";
 
 import {useNavigate} from "react-router-dom";
-import CustomCard from "../ui/CustomCard";
+import CustomCard from "../ui/custom-mui-components/CustomCard";
 
 type SpotItemProps = {
     spot: Spot

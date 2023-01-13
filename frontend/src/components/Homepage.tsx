@@ -7,7 +7,7 @@ import {Spot} from "../models/Spot";
 import {useLocation, useNavigate} from "react-router-dom";
 import {MapProvider} from "react-map-gl";
 import SpotMap from "./map/SpotMap";
-import CustomAlert from "./ui/CustomAlert";
+import CustomAlert from "./ui/custom-mui-components/CustomAlert";
 import {AlertModel} from "../models/AlertModel";
 import {AxiosError} from "axios";
 

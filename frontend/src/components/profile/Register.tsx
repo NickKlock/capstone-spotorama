@@ -5,7 +5,7 @@ import {Navigate} from "react-router-dom";
 import UserForm from "./UserForm";
 import {useState} from "react";
 import {AlertModel} from "../../models/AlertModel";
-import CustomAlert from "../ui/CustomAlert";
+import CustomAlert from "../ui/custom-mui-components/CustomAlert";
 import {AxiosError} from "axios";
 import useNavigationWithAlert from "../../hooks/useNavigationWithAlert";
 

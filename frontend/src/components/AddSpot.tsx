@@ -27,9 +27,9 @@ import {ChangeEvent, useMemo, useState} from "react";
 import {Spot} from "../models/Spot";
 import {Position} from "../models/Position";
 import {FormProvider, RegisterOptions, useForm} from "react-hook-form";
-import FormTextInput from "./ui/FormTextInput";
-import FormSelect from "./ui/FormSelect";
-import FormSlider from "./ui/FormSlider";
+import FormTextInput from "./ui/form-inputs/FormTextInput";
+import FormSelect from "./ui/form-inputs/FormSelect";
+import FormSlider from "./ui/form-inputs/FormSlider";
 
 
 const parkingSliderMarks = [

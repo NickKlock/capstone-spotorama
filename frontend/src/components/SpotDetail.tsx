@@ -1,11 +1,7 @@
 import {useParams} from "react-router-dom";
-import {
-    Box,
-    CircularProgress,
-    Stack,
-} from "@mui/material";
+import {Box, CircularProgress, Stack,} from "@mui/material";
 import useSpot from "../hooks/useSpot";
-import CustomAccordion from "./ui/CustomAccordion";
+import CustomAccordion from "./ui/custom-mui-components/CustomAccordion";
 import {
     Attractions,
     BeachAccess,
@@ -14,7 +10,8 @@ import {
     LocalParking,
     MilitaryTech,
     PriorityHigh,
-    Waves, Wc
+    Waves,
+    Wc
 } from "@mui/icons-material";
 
 
