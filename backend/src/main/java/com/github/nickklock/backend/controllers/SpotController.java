@@ -22,7 +22,8 @@ public class SpotController {
 
     @PostMapping
     public ResponseEntity<Spot>
-    addSpot(@RequestPart("spot") String newSpot, @RequestPart("file") MultipartFile file) throws IOException {
+    addSpot(@RequestPart("spot") String newSpot, @RequestPart(value = "file", required = false) MultipartFile file)
+            throws IOException {
         return new ResponseEntity<>(spotService.add(newSpot, file), HttpStatus.CREATED);
     }
 
