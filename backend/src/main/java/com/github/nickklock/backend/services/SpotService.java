@@ -27,11 +27,16 @@ public class SpotService {
 
     public Spot add(String newSpotAsString, MultipartFile file) throws IOException {
         SpotRequest newSpotRequest = string2JsonService.parseJsonToClass(newSpotAsString, SpotRequest.class);
+        SpotRequest spotRequestWithSpotImage;
 
-        SpotRequest spotRequestWithSpotImage = newSpotRequest.withSpotImage(file);
-
-        String spotImageBase64encoded = imageService.
-                encodeImageToBase64(spotRequestWithSpotImage.spotImage().getBytes());
+        String spotImageBase64encoded = null;
+        if (file != null) {
+            spotRequestWithSpotImage = newSpotRequest.withSpotImage(file);
+            spotImageBase64encoded = imageService.
+                    encodeImageToBase64(spotRequestWithSpotImage.spotImage().getBytes());
+        } else {
+            spotRequestWithSpotImage = newSpotRequest;
+        }
 
         Position positionFromRawData = createPositionFromRawData
                 (newSpotRequest.position().lng(), newSpotRequest.position().lat());
