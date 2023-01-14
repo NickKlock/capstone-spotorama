@@ -10,7 +10,9 @@ import com.github.nickklock.backend.models.geocoding.CountryByCord;
 import com.github.nickklock.backend.models.geocoding.Feature;
 import com.github.nickklock.backend.repos.SpotRepo;
 import org.junit.jupiter.api.Test;
+import org.springframework.mock.web.MockMultipartFile;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -25,28 +27,37 @@ class SpotServiceTest {
 
     MapboxClient mapboxClient = mock(MapboxClient.class);
     MapboxService mapboxService = mock(MapboxService.class);
-    SpotService spotService = new SpotService(spotRepo, idService, mapboxClient, mapboxService);
+
+    ImageService imageService = mock(ImageService.class);
+    String2JsonService string2JsonService = mock(String2JsonService.class);
+    SpotService spotService =
+            new SpotService(spotRepo, idService, mapboxClient, mapboxService, imageService, string2JsonService);
+
+    final MockMultipartFile spotMultiPart = new MockMultipartFile("spot", "".getBytes());
 
     @Test
-    void add_expect_spot_verify_use_of_spotRepo_and_mapbox_client() {
+    void add_expect_spot_verify_use_of_spotRepo_and_mapbox_client() throws IOException {
+
         SpotRequest spotRequest = new SpotRequest("test", new ArrayList<>(),
                 new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(),
                 new ArrayList<>(), new ArrayList<>(), new ArrayList<>(),
-                ParkingSpace.FEW, new Position(0, 0, null), "Yes");
+                ParkingSpace.FEW, new Position(0, 0, null), "Yes", spotMultiPart);
 
 
         Spot givenSpot = new Spot("0", "test", new ArrayList<>(),
                 new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(),
                 new ArrayList<>(), new ArrayList<>(), new ArrayList<>(),
-                ParkingSpace.FEW, new Position(0, 0, "Germany"), "Yes");
+                ParkingSpace.FEW, new Position(0, 0, "Germany"), "Yes", "");
 
+        when(string2JsonService.parseJsonToClass(anyString(), any())).thenReturn(spotRequest);
+        when(imageService.encodeImageToBase64(any())).thenReturn("");
         when(mapboxClient.countryByCords(any(), any(), any()))
                 .thenReturn(new CountryByCord(List.of(new Feature("Germany"))));
 
         when(spotRepo.save(givenSpot)).thenReturn(givenSpot);
         when(idService.generateId()).thenReturn("0");
 
-        Spot result = spotService.add(spotRequest);
+        Spot result = spotService.add("", spotRequest.spotImage());
 
         assertEquals(givenSpot, result);
         verify(spotRepo).save(givenSpot);
@@ -56,7 +67,7 @@ class SpotServiceTest {
 
     @Test
     void getById_expect_throws_exception() {
-        assertThrows(NoSuchSpotException.class, ()-> spotService.getById("0"));
+        assertThrows(NoSuchSpotException.class, () -> spotService.getById("0"));
         verify(spotRepo).findById("0");
     }
 
@@ -65,7 +76,7 @@ class SpotServiceTest {
         when(spotRepo.findById("0")).thenReturn(Optional.of(new Spot("0", "test", new ArrayList<>(),
                 new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(),
                 new ArrayList<>(), new ArrayList<>(), new ArrayList<>(),
-                ParkingSpace.FEW, new Position(0, 0, "Germany"), "Yes")));
+                ParkingSpace.FEW, new Position(0, 0, "Germany"), "Yes", "")));
 
         Spot result = spotService.getById("0");
 
