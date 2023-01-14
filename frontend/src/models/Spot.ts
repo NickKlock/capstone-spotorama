@@ -26,4 +26,5 @@ export type Spot= {
     position: Position;
     restrooms: string;
     spotImage?: FileList;
+    imageBase64Encoded?: string
 }
