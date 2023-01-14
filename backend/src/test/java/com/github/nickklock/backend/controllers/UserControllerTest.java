@@ -20,11 +20,12 @@ import org.springframework.test.web.servlet.MvcResult;
 
 import java.util.Collections;
 
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
-@AutoConfigureMockMvc(addFilters = false)
+@AutoConfigureMockMvc
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class UserControllerTest {
 
@@ -75,14 +76,16 @@ class UserControllerTest {
                                 "nickname": "admin"
                             }
                         }
-                        """)
+                        """).with(csrf())
         ).andExpect(status().isBadRequest());
     }
+
 
     @Test
     void add_expect_expect_400_because_password_fails() throws Exception {
         mvc.perform(post(endPoint)
                 .contentType(MediaType.APPLICATION_JSON)
+                .with(csrf())
                 .content("""
                         {
                         "username": "nick@nick.de",
@@ -115,6 +118,7 @@ class UserControllerTest {
 
         MvcResult mvcResult = mvc.perform(put(endPoint)
                         .contentType(MediaType.APPLICATION_JSON)
+                        .with(csrf())
                         .content(objectMapper.writeValueAsString(givenUpdatedUser)))
                 .andExpect(status().isOk())
                 .andReturn();
@@ -130,7 +134,7 @@ class UserControllerTest {
         Author givenAuthor = new Author("nick", "n", "k", Collections.emptyList());
         User givenUser = userRepo.save(new User("1", "test", "123", givenAuthor));
 
-        mvc.perform(delete(endPoint + "/" + givenUser.id()))
+        mvc.perform(delete(endPoint + "/" + givenUser.id()).with(csrf()))
                 .andExpect(status().isOk());
 
     }
@@ -138,14 +142,14 @@ class UserControllerTest {
     @WithMockUser
     @Test
     void login_expect_200() throws Exception {
-        mvc.perform(post(endPoint + "/login"))
+        mvc.perform(post(endPoint + "/login").with(csrf()))
                 .andExpect(status().isOk());
     }
 
     @WithMockUser
     @Test
     void logout_expect_200() throws Exception {
-        mvc.perform(post(endPoint + "/logout"))
+        mvc.perform(post(endPoint + "/logout").with(csrf()))
                 .andExpect(status().isOk());
     }
 }
