@@ -1,11 +1,14 @@
 package com.github.nickklock.backend.models;
 
 import com.github.nickklock.backend.models.enums.*;
+import com.mongodb.lang.Nullable;
+import lombok.With;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.List;
 
+@With
 @Document("spots")
 public record Spot(
         @Id
@@ -22,6 +25,7 @@ public record Spot(
         ParkingSpace parkingSpace,
         Position position,
         String restrooms,
-        Photo spotImage
+        @Nullable
+        String imageBase64Encoded
 ) {
 }
