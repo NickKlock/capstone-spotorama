@@ -1,5 +1,5 @@
 import {Marker, useMap} from "react-map-gl";
-import {useEffect} from "react";
+import {useEffect, useState} from "react";
 import {Position} from "../../models/Position";
 
 type ControlsProps={
@@ -8,30 +8,32 @@ type ControlsProps={
     centerLng:number | undefined
     centerLat:number | undefined
 }
-export default function Controls(props:ControlsProps){
+export default function Controls(props:ControlsProps) {
     const {spotmap} = useMap()
+    const [lng, setLng] = useState<number>(0)
+    const [lat, setLat] = useState<number>(0)
 
+    function onMove() {
+        if (spotmap) {
+            setLat(spotmap?.getCenter().lat)
+            setLng(spotmap?.getCenter().lng)
 
-    useEffect(()=>{
-        if (!spotmap) return undefined;
-
-        function onMove(){
-            if (spotmap){
-
-                props.handleCenterCoordinatesChange({
-                    lat:parseFloat(spotmap?.getCenter().lat.toFixed(3)),
-                    lng:parseFloat(spotmap?.getCenter().lng.toFixed(3))
-                })
-            }
+            props.handleCenterCoordinatesChange({
+                lat: parseFloat(spotmap?.getCenter().lat.toFixed(4)),
+                lng: parseFloat(spotmap?.getCenter().lng.toFixed(4))
+            })
         }
-        spotmap.on("move",onMove)
-        onMove()
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    },[spotmap])
+    }
 
-    if (props.showCenterMarker){
-        return(
-            <Marker longitude={props.centerLng} latitude={props.centerLat}/>
+    useEffect(() => {
+        if (!spotmap) return;
+        spotmap.on("move", onMove)
+        onMove()
+    })
+
+    if (props.showCenterMarker) {
+        return (
+            <Marker longitude={lng} latitude={lat}/>
         )
     }else {
         return <></>
