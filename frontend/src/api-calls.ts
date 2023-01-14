@@ -39,11 +39,6 @@ export function whoAmI(): Promise<UserSpot> {
         .then((response: AxiosResponse<UserSpot>) => response.data)
 }
 
-export function getToken() {
-    return axios.get("/csrf")
-        .then(response => response.data)
-}
-
 export function loginUser(loginUserRequest: UserLoginRequest): Promise<UserSpot> {
     return axios.post("/api/users/login", undefined,
         {
