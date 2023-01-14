@@ -14,11 +14,12 @@ import {
 import {useMemo} from "react";
 import {Spot} from "../models/Spot";
 import {Position} from "../models/Position";
-import {FormProvider, RegisterOptions, useForm} from "react-hook-form";
+import {Controller, FormProvider, RegisterOptions, useForm} from "react-hook-form";
 import FormTextInput from "./ui/form-inputs/FormTextInput";
 import FormSelect from "./ui/form-inputs/FormSelect";
 import FormSlider from "./ui/form-inputs/FormSlider";
 import FormRadio from "./ui/form-inputs/FormRadio";
+import ImageSelect from "./ui/custom-mui-components/ImageSelect";
 
 
 const parkingSliderMarks = [
@@ -139,7 +140,7 @@ export default function AddSpot(props: AddSpotProps) {
         waterTemperature: [],
         parkingSpace: "FEW",
         position: props.pickedLocation,
-        restrooms: ""
+        restrooms: "",
     }
 
     const methods = useForm<Spot>({
@@ -147,7 +148,8 @@ export default function AddSpot(props: AddSpotProps) {
     });
 
     function handleSave(data: Spot) {
-        props.handleSave(data)
+        console.log(data)
+        // props.handleSave(data)
     }
 
 
@@ -177,7 +179,12 @@ export default function AddSpot(props: AddSpotProps) {
                     <List sx={{width: "100%"}}>
 
                         <ListItem>
-                            <input {...methods.register("spotImage")} accept={"image/*"} type={"file"}/>
+                            <Controller
+                                render={({field: {onChange}}) =>
+                                    <ImageSelect
+                                        onChange={onChange}
+                                        name={"spotImage"}/>}
+                                name={"spotImage"}/>
                         </ListItem>
 
                         {textFieldInputs.map((inputField) =>
