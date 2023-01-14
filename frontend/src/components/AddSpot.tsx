@@ -148,8 +148,7 @@ export default function AddSpot(props: AddSpotProps) {
     });
 
     function handleSave(data: Spot) {
-        console.log(data)
-        // props.handleSave(data)
+        props.handleSave(data)
     }
 
 
