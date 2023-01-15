@@ -72,7 +72,7 @@ class SpotControllerTest {
                                 "waterTemperature":["COLD"],
                                 "parkingSpace":0,
                                 "position":{"lat":54.7690,"lng":9.9642},
-                                "restrooms":"yes"
+                                "restrooms":0
                                 }
                                 """)
 
