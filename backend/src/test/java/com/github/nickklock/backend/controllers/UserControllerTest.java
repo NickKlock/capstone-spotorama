@@ -48,7 +48,7 @@ class UserControllerTest {
                 .content("""
                         {
                         "username": "nick@nick.de",
-                        "password": "123",
+                        "password": "123fghHjasd!",
                         "author": {
                                 "createdSpots": [],
                                 "firstName": "Nick",
@@ -59,6 +59,45 @@ class UserControllerTest {
                         """)
         ).andExpect(status().isCreated());
     }
+
+    @Test
+    void add_expect_expect_400_because_email_fails() throws Exception {
+        mvc.perform(post(endPoint)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("""
+                        {
+                        "username": "nicknick.de",
+                        "password": "123",
+                        "author": {
+                                "createdSpots": [],
+                                "firstName": "Nick",
+                                "lastName": "Klockgether",
+                                "nickname": "admin"
+                            }
+                        }
+                        """)
+        ).andExpect(status().isBadRequest());
+    }
+
+    @Test
+    void add_expect_expect_400_because_password_fails() throws Exception {
+        mvc.perform(post(endPoint)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("""
+                        {
+                        "username": "nick@nick.de",
+                        "password": "123",
+                        "author": {
+                                "createdSpots": [],
+                                "firstName": "Nick",
+                                "lastName": "Klockgether",
+                                "nickname": "admin"
+                            }
+                        }
+                        """)
+        ).andExpect(status().isBadRequest());
+    }
+
     @WithMockUser
     @Test
     void me_expect_loggedInUser() throws Exception {
@@ -71,8 +110,8 @@ class UserControllerTest {
     @Test
     void update_expect_200_and_edited_user() throws Exception {
         Author givenAuthor = new Author("nick", "n", "k", Collections.emptyList());
-        User givenUser = userRepo.save(new User("1", "test", "123", givenAuthor));
-        User givenUpdatedUser = givenUser.withPassword("def");
+        User givenUser = userRepo.save(new User("1", "test@test.de", "123!", givenAuthor));
+        User givenUpdatedUser = givenUser.withPassword("1234Asdg!");
 
         MvcResult mvcResult = mvc.perform(put(endPoint)
                         .contentType(MediaType.APPLICATION_JSON)
