@@ -14,6 +14,8 @@ export default function FormRadio(props: FormRadioProps) {
     const {control, register} = useFormContext();
 
     const spotFormInputKey = props.name as keyof Spot
+
+
     return (
         <Controller render={({field: {onChange, value}, fieldState: {error}, formState}) =>
             <FormControl
@@ -22,10 +24,17 @@ export default function FormRadio(props: FormRadioProps) {
                 <FormLabel>{props.label}</FormLabel>
                 <RadioGroup defaultValue={props.defaultValue}
                             name={props.name}
-                            onChange={onChange}
-                            value={value}>
-                    {props.options.map((option) =>
-                        <FormControlLabel key={"radio-" + option} control={<Radio/>} label={option}/>)}
+                            value={value}
+                            onChange={onChange}>
+
+                    {props.options.map(option => <FormControlLabel
+                        control={<Radio/>}
+                        name={option}
+                        label={option}
+                        value={option}
+                        key={"radio-" + option}/>)}
+
+
                 </RadioGroup>
                 <FormHelperText>{error ? formState.errors[spotFormInputKey]?.message as string : null}</FormHelperText>
             </FormControl>}
