@@ -4,6 +4,7 @@ import com.github.nickklock.backend.models.user.UserRequest;
 import com.github.nickklock.backend.models.user.UserSpot;
 import com.github.nickklock.backend.services.UserService;
 import jakarta.servlet.http.HttpSession;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -19,12 +20,12 @@ public class UserController {
     }
 
     @PostMapping
-    public ResponseEntity<UserSpot> add(@RequestBody UserRequest userRequest) {
+    public ResponseEntity<UserSpot> add(@RequestBody @Valid UserRequest userRequest) {
         return new ResponseEntity<>(userService.createNewUser(userRequest), HttpStatus.CREATED);
     }
 
     @PutMapping
-    public ResponseEntity<UserSpot> update(@RequestBody UserRequest userRequest) {
+    public ResponseEntity<UserSpot> update(@RequestBody @Valid UserRequest userRequest) {
         return new ResponseEntity<>(userService.updateUser(userRequest), HttpStatus.OK);
     }
 
