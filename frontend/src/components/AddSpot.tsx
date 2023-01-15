@@ -205,7 +205,7 @@ export default function AddSpot(props: AddSpotProps) {
 
                         <ListItem>
                             <FormRadio label={"Restrooms"}
-                                       defaultValue={"no"}
+                                       defaultValue={""}
                                        name={"restrooms"}
                                        options={["yes", "no"]}/>
                         </ListItem>
