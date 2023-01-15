@@ -57,7 +57,7 @@ class UserControllerTest {
                                 "nickname": "admin"
                             }
                         }
-                        """)
+                        """).with(csrf())
         ).andExpect(status().isCreated());
     }
 
