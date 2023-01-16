@@ -61,7 +61,7 @@ class UserControllerTest {
     }
 
     @Test
-    void add_expect_expect_400_because_email_fails() throws Exception {
+    void add_expect_400_because_email_fails() throws Exception {
         mvc.perform(post(endPoint)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content("""
