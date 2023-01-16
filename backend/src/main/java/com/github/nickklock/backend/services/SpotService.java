@@ -25,38 +25,42 @@ public class SpotService {
     private final ImageService imageService;
     private final String2JsonService string2JsonService;
 
-    public Spot add(String newSpotAsString, MultipartFile file) throws IOException {
-        SpotRequest newSpotRequest = string2JsonService.parseJsonToClass(newSpotAsString, SpotRequest.class);
-        SpotRequest spotRequestWithSpotImage;
+    public Spot add(String newSpotAsString, MultipartFile file) {
+        try {
+            SpotRequest newSpotRequest = string2JsonService.parseJsonToClass(newSpotAsString, SpotRequest.class);
+            SpotRequest spotRequestWithSpotImage;
 
-        String spotImageBase64encoded = null;
-        if (file != null) {
-            spotRequestWithSpotImage = newSpotRequest.withSpotImage(file);
-            spotImageBase64encoded = imageService.
-                    encodeImageToBase64(spotRequestWithSpotImage.spotImage().getBytes());
-        } else {
-            spotRequestWithSpotImage = newSpotRequest;
+            String spotImageBase64encoded = null;
+            if (file != null) {
+                spotRequestWithSpotImage = newSpotRequest.withSpotImage(file);
+                spotImageBase64encoded = imageService.
+                        encodeImageToBase64(spotRequestWithSpotImage.spotImage().getBytes());
+            } else {
+                spotRequestWithSpotImage = newSpotRequest;
+            }
+
+            Position positionFromRawData = createPositionFromRawData
+                    (newSpotRequest.position().lng(), newSpotRequest.position().lat());
+
+            Spot spotWithId = new Spot(idService.generateId(),
+                    spotRequestWithSpotImage.name(),
+                    spotRequestWithSpotImage.disciplines(),
+                    spotRequestWithSpotImage.waveTypes(),
+                    spotRequestWithSpotImage.beachTypes(),
+                    spotRequestWithSpotImage.experiencesLevel(),
+                    spotRequestWithSpotImage.hazards(),
+                    spotRequestWithSpotImage.bestMonths(),
+                    spotRequestWithSpotImage.bestDirections(),
+                    spotRequestWithSpotImage.waterTemperature(),
+                    spotRequestWithSpotImage.parkingSpace(),
+                    positionFromRawData,
+                    spotRequestWithSpotImage.restrooms(),
+                    spotImageBase64encoded);
+
+            return spotRepo.save(spotWithId);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
-
-        Position positionFromRawData = createPositionFromRawData
-                (newSpotRequest.position().lng(), newSpotRequest.position().lat());
-
-        Spot spotWithId = new Spot(idService.generateId(),
-                spotRequestWithSpotImage.name(),
-                spotRequestWithSpotImage.disciplines(),
-                spotRequestWithSpotImage.waveTypes(),
-                spotRequestWithSpotImage.beachTypes(),
-                spotRequestWithSpotImage.experiencesLevel(),
-                spotRequestWithSpotImage.hazards(),
-                spotRequestWithSpotImage.bestMonths(),
-                spotRequestWithSpotImage.bestDirections(),
-                spotRequestWithSpotImage.waterTemperature(),
-                spotRequestWithSpotImage.parkingSpace(),
-                positionFromRawData,
-                spotRequestWithSpotImage.restrooms(),
-                spotImageBase64encoded);
-
-        return spotRepo.save(spotWithId);
 
     }
 
