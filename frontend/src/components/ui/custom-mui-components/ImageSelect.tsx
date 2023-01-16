@@ -15,7 +15,7 @@ export default function ImageSelect(props: FileSelectProps) {
             reader.readAsDataURL(event.target.files[0])
             reader.onloadend = () => {
                 if (typeof reader.result === "string") {
-                    setImageURL(reader.result as string)
+                    setImageURL(reader.result)
                 }
             }
             props.onChange(event.target.files)
