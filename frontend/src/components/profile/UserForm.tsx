@@ -16,7 +16,7 @@ type UserFormProps = {
     showEditButton: boolean
 }
 
-interface IInputFields {
+type InputFields = {
     name: "username" | "password" | "author" | "author.nickname" | "author.firstName" | "author.lastName" | "author.createdSpots",
     label: string,
     required: boolean,
@@ -26,7 +26,7 @@ interface IInputFields {
 
 export default function UserForm(props: UserFormProps) {
 
-    const inputFields: IInputFields[] = useMemo(() => [
+    const inputFields: InputFields[] = useMemo(() => [
         {
             name: "username",
             label: "E-Mail address",

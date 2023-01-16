@@ -42,7 +42,7 @@ type AddSpotProps = {
     handleSave(newSpot: Spot): void
 }
 
-interface TextFieldInput {
+type TextFieldInput = {
     name: "username" | "password" | "author" | "author.nickname" | "author.firstName" | "author.lastName" | "author.createdSpots" | "name",
     label: string,
     required: boolean,
