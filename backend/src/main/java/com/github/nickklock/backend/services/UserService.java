@@ -56,8 +56,8 @@ public class UserService implements UserDetailsService {
                         new Author(anonymousUser, "", "", Collections.emptyList())));
     }
 
-    public UserSpot updateUser(UserRequest userRequest) {
-        User user = userRepo.findByUsername(userRequest.username()).orElseThrow(MyUsernameNotFoundException::new);
+    public UserSpot updateUser(String id, UserRequest userRequest) {
+        User user = userRepo.findById(id).orElseThrow(MyUsernameNotFoundException::new);
         User editedUser = user.withAuthor(userRequest.author())
                 .withPassword(userRequest.password())
                 .withUsername(userRequest.username());

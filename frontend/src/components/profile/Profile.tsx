@@ -14,7 +14,7 @@ type ProfileProps = {
     loggedInUser: UserSpot
     handleLogout(): Promise<void>
     handleDeleteUser(id: string): Promise<void>
-    handleEditUser(userRequest: UserRequest): Promise<void>
+    handleEditUser(id: string, userRequest: UserRequest): Promise<void>
 }
 export default function Profile(props: ProfileProps) {
     const [enableEdit, setEnableEdit] = useState<boolean>(false)
@@ -88,7 +88,7 @@ export default function Profile(props: ProfileProps) {
         switch (role) {
             case "confirm":
                 if (editedUser) {
-                    props.handleEditUser(editedUser)
+                    props.handleEditUser(props.loggedInUser.id, editedUser)
                         .then(() => {
                             setEnableEdit(false)
                             setAlert({

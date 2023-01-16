@@ -116,7 +116,7 @@ class UserControllerTest {
         User givenUser = userRepo.save(new User("1", "test@test.de", "123!", givenAuthor));
         User givenUpdatedUser = givenUser.withPassword("1234Asdg!");
 
-        MvcResult mvcResult = mvc.perform(put(endPoint)
+        MvcResult mvcResult = mvc.perform(put(endPoint + "/1")
                         .contentType(MediaType.APPLICATION_JSON)
                         .with(csrf())
                         .content(objectMapper.writeValueAsString(givenUpdatedUser)))

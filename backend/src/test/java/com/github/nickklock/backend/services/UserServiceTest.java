@@ -84,7 +84,7 @@ class UserServiceTest {
     void updateUser_expect_MyUsernameNotFoundException() {
         UserRequest givenUserRequest = new UserRequest("", "", null);
         assertThrows(MyUsernameNotFoundException.class, () ->
-                userService.updateUser(givenUserRequest));
+                userService.updateUser("0", givenUserRequest));
     }
 
     @Test
@@ -96,12 +96,12 @@ class UserServiceTest {
                 givenAuthor);
         UserSpot expectedResult = new UserSpot("0", "nick", givenAuthor);
 
-        when(userRepo.findByUsername("nick")).thenReturn(Optional.of(
+        when(userRepo.findById("0")).thenReturn(Optional.of(
                 givenUser));
         when(userRepo.save(any())).thenReturn(givenUser);
 
 
-        UserSpot result = userService.updateUser(givenUserRequest);
+        UserSpot result = userService.updateUser("0", givenUserRequest);
         assertEquals(expectedResult, result);
     }
 

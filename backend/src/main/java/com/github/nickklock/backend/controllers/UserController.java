@@ -24,9 +24,9 @@ public class UserController {
         return new ResponseEntity<>(userService.createNewUser(userRequest), HttpStatus.CREATED);
     }
 
-    @PutMapping
-    public ResponseEntity<UserSpot> update(@RequestBody @Valid UserRequest userRequest) {
-        return new ResponseEntity<>(userService.updateUser(userRequest), HttpStatus.OK);
+    @PutMapping("/{id}")
+    public ResponseEntity<UserSpot> update(@PathVariable String id, @RequestBody @Valid UserRequest userRequest) {
+        return new ResponseEntity<>(userService.updateUser(id, userRequest), HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")

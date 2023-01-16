@@ -56,8 +56,8 @@ export function logoutUser(): Promise<AxiosResponse> {
     return axios.post("/api/users/logout")
 }
 
-export function updateUser(updatedUserRequest: UserRequest): Promise<UserSpot> {
-    return axios.put("/api/users/", updatedUserRequest)
+export function updateUser(id: string, updatedUserRequest: UserRequest): Promise<UserSpot> {
+    return axios.put("/api/users/" + id, updatedUserRequest)
         .then((response: AxiosResponse<UserSpot>) => response.data)
 }
 
