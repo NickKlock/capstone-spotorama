@@ -50,7 +50,7 @@ class SpotControllerTest {
     void addSpot_expect_status_created() throws Exception {
         MockMultipartFile spot = new MockMultipartFile("spot", """
                 {
-                        "id": "92c9e0f7-dd0c-4a93-be8f-e1e763586d2b",
+                        "id": "",
                         "name": "a",
                         "disciplines": [
                             "KITESURFING"
