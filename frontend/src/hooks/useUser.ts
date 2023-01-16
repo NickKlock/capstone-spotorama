@@ -37,8 +37,8 @@ export default function useUser() {
             .catch(console.error)
     }
 
-    function edit(userRequest: UserRequest): Promise<void> {
-        return updateUser(userRequest)
+    function edit(id: string, userRequest: UserRequest): Promise<void> {
+        return updateUser(id, userRequest)
             .then(data => setLoggedInUser(data))
     }
 
