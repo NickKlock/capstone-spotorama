@@ -11,9 +11,9 @@ import org.springframework.data.mongodb.core.mapping.Document;
 public record User(
         @Id
         String id,
-        @ValidPassword
-        String username,
         @Email
+        String username,
+        @ValidPassword
         String password,
         Author author
 ) {
