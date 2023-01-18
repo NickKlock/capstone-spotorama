@@ -1,7 +1,7 @@
 package com.github.nickklock.backend.services;
 
-import com.github.nickklock.backend.exceptions.MyUsernameNotFoundException;
 import com.github.nickklock.backend.exceptions.NotTheRequestedUserException;
+import com.github.nickklock.backend.exceptions.UserNotFoundException;
 import com.github.nickklock.backend.models.user.Author;
 import com.github.nickklock.backend.models.user.User;
 import com.github.nickklock.backend.models.user.UserRequest;
@@ -54,7 +54,7 @@ public class UserService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         User user = userRepo.findByUsername(username)
-                .orElseThrow(MyUsernameNotFoundException::new);
+                .orElseThrow(UserNotFoundException::new);
         return new org.springframework.security.core.userdetails.User(user.username(), user.password(), List.of());
     }
 
@@ -76,11 +76,11 @@ public class UserService implements UserDetailsService {
                     encodeImageToBase64(file.getBytes());
         }
 
-        User user = userRepo.findById(id).orElseThrow(MyUsernameNotFoundException::new);
+        User user = userRepo.findById(id).orElseThrow(UserNotFoundException::new);
         User editedUser = user
                 .withAuthor(userRequest.author())
                 .withAvatarBase64Encoded(avatarImageBase64encoded)
-                .withPassword(userRequest.password())
+                .withPassword(Argon2PasswordEncoder.defaultsForSpringSecurity_v5_8().encode(userRequest.password()))
                 .withUsername(userRequest.username());
 
         return new UserSpot(userRepo.save(editedUser));
@@ -89,7 +89,7 @@ public class UserService implements UserDetailsService {
     public UserSpot deleteUser(String id, HttpSession httpSession) {
         User userByUsername = userRepo.
                 findByUsername(SecurityContextHolder.getContext().getAuthentication().getName())
-                .orElseThrow(MyUsernameNotFoundException::new);
+                .orElseThrow(UserNotFoundException::new);
 
         if (id.equals(userByUsername.id())) {
             userRepo.delete(userByUsername);
