@@ -16,8 +16,8 @@ public class GlobalExceptionHandler {
     private static final String messageString = "message";
     private static final String errorString = "error";
 
-    @ExceptionHandler(MyUsernameNotFoundException.class)
-    public ResponseEntity<Map<String, Object>> handleUserNameNotFoundException(MyUsernameNotFoundException e) {
+    @ExceptionHandler(UserNotFoundException.class)
+    public ResponseEntity<Map<String, Object>> handleUserNameNotFoundException(UserNotFoundException e) {
 
         Map<String, Object> responseBody = new LinkedHashMap<>();
         responseBody.put(timeStampString, LocalDateTime.now());

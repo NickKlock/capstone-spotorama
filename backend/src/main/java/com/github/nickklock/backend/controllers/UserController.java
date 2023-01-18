@@ -32,7 +32,7 @@ public class UserController {
     public ResponseEntity<UserSpot>
     update(@PathVariable String id,
            @RequestPart("userRequest") String userRequest,
-           @RequestPart("file") MultipartFile file) throws IOException {
+           @RequestPart(value = "file", required = false) MultipartFile file) throws IOException {
         return new ResponseEntity<>(userService.updateUser(id, userRequest, file), HttpStatus.OK);
     }
 

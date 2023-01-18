@@ -1,7 +1,7 @@
 package com.github.nickklock.backend.services;
 
-import com.github.nickklock.backend.exceptions.MyUsernameNotFoundException;
 import com.github.nickklock.backend.exceptions.NotTheRequestedUserException;
+import com.github.nickklock.backend.exceptions.UserNotFoundException;
 import com.github.nickklock.backend.models.user.Author;
 import com.github.nickklock.backend.models.user.User;
 import com.github.nickklock.backend.models.user.UserRequest;
@@ -57,9 +57,9 @@ class UserServiceTest {
 
     @Test
     void loadUserByUsername_expect_MyUsernameNotFoundException() {
-        when(userRepo.findByUsername("nick")).thenThrow(new MyUsernameNotFoundException());
+        when(userRepo.findByUsername("nick")).thenThrow(new UserNotFoundException());
 
-        assertThrows(MyUsernameNotFoundException.class, () -> userRepo.findByUsername("nick"));
+        assertThrows(UserNotFoundException.class, () -> userRepo.findByUsername("nick"));
     }
 
     @Test
@@ -88,7 +88,7 @@ class UserServiceTest {
     @Test
     void updateUser_expect_MyUsernameNotFoundException() {
         UserRequest givenUserRequest = new UserRequest("", "", null, null);
-        assertThrows(MyUsernameNotFoundException.class, () ->
+        assertThrows(UserNotFoundException.class, () ->
                 userService.updateUser("0", givenUserRequest.toString(), null));
     }
 
@@ -118,7 +118,7 @@ class UserServiceTest {
         when(authentication.getName()).thenReturn("nick");
         when(securityContext.getAuthentication()).thenReturn(authentication);
         SecurityContextHolder.setContext(securityContext);
-        assertThrows(MyUsernameNotFoundException.class, () ->
+        assertThrows(UserNotFoundException.class, () ->
                 userService.deleteUser("", httpSession));
     }
 
