@@ -1,4 +1,4 @@
-import {Box, Button, List, ListItem, Typography} from "@mui/material";
+import {Box, Button, List, ListItem} from "@mui/material";
 import {UserRequest, UserSpot} from "../../models/User";
 import {ReactNode, useMemo} from "react";
 import {Controller, FormProvider, RegisterOptions, useForm} from "react-hook-form";
@@ -15,6 +15,7 @@ type UserFormProps = {
     editable: boolean
     marginTop: number
     showEditButton: boolean
+    displayAvatarMode: "register" | "profile"
 }
 
 type InputFields = {
@@ -133,23 +134,37 @@ export default function UserForm(props: UserFormProps) {
                  marginTop={props.marginTop}
             >
 
-                <Box display={"flex"} flexGrow={1}>
-                    <Typography textAlign={"center"}
-                                variant={"h6"}>
-                        {props.formTitle}
-                    </Typography>
-                </Box>
-
                 <List>
 
-                    <ListItem>
-                        <Controller
-                            render={({field: {onChange}}) =>
-                                <ImageSelect
-                                    onChange={onChange}
-                                    name={"avatar"}/>}
-                            name={"avatar"}/>
-                    </ListItem>
+                    {props.displayAvatarMode === "register" || props.editable ?
+                        <ListItem>
+                            <Controller
+                                render={({field: {onChange}}) =>
+                                    <ImageSelect
+                                        onChange={onChange}
+                                        name={"avatar"}/>}
+                                name={"avatar"}/>
+                        </ListItem> :
+                        props.loggedInUser.avatarBase64Encoded === null || undefined ?
+                            <></> :
+                            <ListItem sx={{justifyContent: "center"}}>
+                                <Box width={"100px"} height={"100px"} position={"relative"} overflow={"hidden"}
+                                     borderRadius={"50%"}>
+                                    <img
+                                        style={{
+                                            display: "inline",
+                                            margin: "0 auto",
+                                            marginLeft: "-25%",
+                                            height: "100%",
+                                            width: "auto"
+                                        }}
+                                        alt={""}
+                                        src={`data:image/jpeg;base64,${props.loggedInUser.avatarBase64Encoded}`}/>
+
+                                </Box>
+                            </ListItem>
+                    }
+
 
                     {inputFields.map((inputField) =>
                         <ListItem key={"listItem-" + inputField.name}>
@@ -165,6 +180,7 @@ export default function UserForm(props: UserFormProps) {
                 </List>
                 <Button
                     type={"submit"}
+                    disabled={!props.editable}
                     color={props.color}
                     startIcon={props.buttonIcon}
                     variant={"contained"}

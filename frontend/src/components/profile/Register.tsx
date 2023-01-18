@@ -61,6 +61,7 @@ export default function Register(props: RegisterProps) {
                           onFormButtonClick={handleRegisterUser}
                           showEditButton={false}
                           marginTop={10}
+                          displayAvatarMode={"register"}
                 />
                 <CustomAlert severity={alert.severity} alertMessage={alert.alertMessage} open={alert.open}
                              onClose={handleClose}/>
