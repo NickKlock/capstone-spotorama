@@ -1,8 +1,9 @@
 import {Box, Button, List, ListItem, Typography} from "@mui/material";
 import {UserRequest, UserSpot} from "../../models/User";
 import {ReactNode, useMemo} from "react";
-import {FormProvider, RegisterOptions, useForm} from "react-hook-form";
+import {Controller, FormProvider, RegisterOptions, useForm} from "react-hook-form";
 import FormTextInput from "../ui/form-inputs/FormTextInput";
+import ImageSelect from "../ui/custom-mui-components/ImageSelect";
 
 type UserFormProps = {
     loggedInUser: UserSpot
@@ -140,6 +141,16 @@ export default function UserForm(props: UserFormProps) {
                 </Box>
 
                 <List>
+
+                    <ListItem>
+                        <Controller
+                            render={({field: {onChange}}) =>
+                                <ImageSelect
+                                    onChange={onChange}
+                                    name={"avatar"}/>}
+                            name={"avatar"}/>
+                    </ListItem>
+
                     {inputFields.map((inputField) =>
                         <ListItem key={"listItem-" + inputField.name}>
                             <FormTextInput required={inputField.required}
