@@ -11,12 +11,15 @@ import org.junit.jupiter.api.TestInstance;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
+import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import java.util.Collections;
 
@@ -43,22 +46,30 @@ class UserControllerTest {
     }
 
     @Test
-    void add_expect_status_created() throws Exception {
-        mvc.perform(post(endPoint)
-                .contentType(MediaType.APPLICATION_JSON)
-                .content("""
-                        {
-                        "username": "nick@nick.de",
-                        "password": "123fghHjasd!",
-                        "author": {
-                                "createdSpots": [],
-                                "firstName": "Nick",
-                                "lastName": "Klockgether",
-                                "nickname": "admin"
-                            }
-                        }
-                        """).with(csrf())
-        ).andExpect(status().isCreated());
+    void add_user_expect_status_created() {
+
+        MockMultipartFile user = new MockMultipartFile("userRequest", """
+                {
+                   "username": "nick@nick.de",
+                   "password": "123fghHjasd!",
+                   "author": {
+                           "createdSpots": [""],
+                           "firstName": "Nick",
+                           "lastName": "Klockgether",
+                           "nickname": "admin"
+                       }
+                   }
+                   """.getBytes());
+        MockMultipartFile file = new MockMultipartFile("file", "".getBytes());
+        try {
+            mvc.perform(MockMvcRequestBuilders.multipart(endPoint)
+                            .file(user)
+                            .file(file)
+                            .with(csrf()))
+                    .andExpect(status().isCreated());
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Test
@@ -113,11 +124,25 @@ class UserControllerTest {
     @Test
     void update_expect_200_and_edited_user() throws Exception {
         Author givenAuthor = new Author("nick", "n", "k", Collections.emptyList());
-        User givenUser = userRepo.save(new User("1", "test@test.de", "123!", givenAuthor));
+        User givenUser = userRepo.save(new User("1", "test@test.de", "123!", givenAuthor, ""));
         User givenUpdatedUser = givenUser.withPassword("1234Asdg!");
 
-        MvcResult mvcResult = mvc.perform(put(endPoint + "/1")
-                        .contentType(MediaType.APPLICATION_JSON)
+        MockMultipartFile user = new MockMultipartFile("userRequest", """
+                {
+                        "username": "test@test.de",
+                        "password": "1234Asdg!",
+                        "author": {
+                                "createdSpots": [],
+                                "firstName": "n",
+                                "lastName": "k",
+                                "nickname": "nick"
+                            }
+                        }""".getBytes());
+        MockMultipartFile file = new MockMultipartFile("file", "".getBytes());
+
+        MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.multipart(HttpMethod.PUT, endPoint + "/1")
+                        .file(user)
+                        .file(file)
                         .with(csrf())
                         .content(objectMapper.writeValueAsString(givenUpdatedUser)))
                 .andExpect(status().isOk())
@@ -132,7 +157,7 @@ class UserControllerTest {
     @Test
     void delete_expect_200() throws Exception {
         Author givenAuthor = new Author("nick", "n", "k", Collections.emptyList());
-        User givenUser = userRepo.save(new User("1", "test", "123", givenAuthor));
+        User givenUser = userRepo.save(new User("1", "test", "123", givenAuthor, ""));
 
         mvc.perform(delete(endPoint + "/" + givenUser.id()).with(csrf()))
                 .andExpect(status().isOk());
