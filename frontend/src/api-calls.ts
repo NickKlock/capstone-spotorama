@@ -71,7 +71,7 @@ export function updateUser(id: string, updatedUserRequest: UserRequest): Promise
     }
     formData.append("userRequest", JSON.stringify(updatedUserRequest))
 
-    return axios.put("/api/users/" + id, updatedUserRequest)
+    return axios.put("/api/users/" + id, formData)
         .then((response: AxiosResponse<UserSpot>) => response.data)
 }
 
