@@ -13,6 +13,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 
+import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -29,22 +30,26 @@ class UserServiceTest {
     private final Authentication authentication = mock(Authentication.class);
     private final SecurityContext securityContext = mock(SecurityContext.class);
     private final HttpSession httpSession = mock(HttpSession.class);
-    private final UserService userService = new UserService(userRepo, idService);
+    private final ImageService imageService = mock(ImageService.class);
+    private final String2JsonService string2JsonService = mock(String2JsonService.class);
+    private final UserService userService = new UserService(userRepo, idService, imageService, string2JsonService);
 
 
     @Test
-    void createNewUser_expect_expected_user() {
+    void createNewUser_expect_expected_user() throws IOException {
         UserRequest givenUserRequest = new UserRequest("nick", "123",
-                new Author("admin", "nick", "klockgether", List.of()));
+                new Author("admin", "nick", "klockgether", List.of()), null);
 
-        UserSpot expectedUserSpot = new UserSpot("0", givenUserRequest.username(), givenUserRequest.author());
+        UserSpot expectedUserSpot = new UserSpot("0", givenUserRequest.username(), givenUserRequest.author(), null);
 
         when(idService.generateId()).thenReturn("0");
 
         when(userRepo.save(any()))
-                .thenReturn(new User("0", givenUserRequest.username(), givenUserRequest.password(), givenUserRequest.author()));
+                .thenReturn(new User("0", givenUserRequest.username(), givenUserRequest.password(), givenUserRequest.author(), null));
 
-        UserSpot result = userService.createNewUser(givenUserRequest);
+        when(string2JsonService.parseJsonToClass(any(), any())).thenReturn(givenUserRequest);
+
+        UserSpot result = userService.createNewUser(givenUserRequest.toString(), null);
 
         assertEquals("0", result.id());
         assertEquals(expectedUserSpot, result);
@@ -74,7 +79,7 @@ class UserServiceTest {
         SecurityContextHolder.setContext(securityContext);
         when(userRepo.findByUsername("nick")).thenReturn(Optional.of(
                 new User("0", "nick", "123",
-                        new Author("nick", "", "", Collections.emptyList()))));
+                        new Author("nick", "", "", Collections.emptyList()), "")));
 
         UserSpot result = userService.getUserSpotBySecurityContext();
         assertEquals("nick", result.username());
@@ -82,26 +87,29 @@ class UserServiceTest {
 
     @Test
     void updateUser_expect_MyUsernameNotFoundException() {
-        UserRequest givenUserRequest = new UserRequest("", "", null);
+        UserRequest givenUserRequest = new UserRequest("", "", null, null);
         assertThrows(MyUsernameNotFoundException.class, () ->
-                userService.updateUser("0", givenUserRequest));
+                userService.updateUser("0", givenUserRequest.toString(), null));
     }
 
     @Test
-    void updateUser_expect_userSpot() {
+    void updateUser_expect_userSpot() throws IOException {
         Author givenAuthor = new Author("nick", "nick", "", Collections.emptyList());
         UserRequest givenUserRequest = new UserRequest("nick", "1",
-                givenAuthor);
+                givenAuthor, null);
+
         User givenUser = new User("0", "nick", "123",
-                givenAuthor);
-        UserSpot expectedResult = new UserSpot("0", "nick", givenAuthor);
+                givenAuthor, "");
+
+        UserSpot expectedResult = new UserSpot("0", "nick", givenAuthor, "");
 
         when(userRepo.findById("0")).thenReturn(Optional.of(
                 givenUser));
         when(userRepo.save(any())).thenReturn(givenUser);
+        when(string2JsonService.parseJsonToClass(any(), any())).thenReturn(givenUserRequest);
 
 
-        UserSpot result = userService.updateUser("0", givenUserRequest);
+        UserSpot result = userService.updateUser("0", givenUserRequest.toString(), null);
         assertEquals(expectedResult, result);
     }
 
@@ -118,7 +126,7 @@ class UserServiceTest {
     void deleteUser_expect_NotTheRequestedUserException() {
         Author givenAuthor = new Author("nick", "nick", "", Collections.emptyList());
         User givenUser = new User("0", "nick", "123",
-                givenAuthor);
+                givenAuthor, "");
 
         when(authentication.getName()).thenReturn("nick");
         when(securityContext.getAuthentication()).thenReturn(authentication);
@@ -132,7 +140,7 @@ class UserServiceTest {
     @Test
     void deleteUser_expect_proper_response() {
         Author givenAuthor = new Author("nick", "nick", "", Collections.emptyList());
-        User user = new User("nick", "user", "password", givenAuthor);
+        User user = new User("nick", "user", "password", givenAuthor, "");
         userRepo.save(user);
 
         when(authentication.getName()).thenReturn("nick");
