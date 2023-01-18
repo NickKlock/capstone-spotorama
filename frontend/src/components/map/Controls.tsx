@@ -13,23 +13,27 @@ export default function Controls(props:ControlsProps) {
     const [lng, setLng] = useState<number>(0)
     const [lat, setLat] = useState<number>(0)
 
-    function onMove() {
-        if (spotmap) {
-            setLat(spotmap?.getCenter().lat)
-            setLng(spotmap?.getCenter().lng)
-
-            props.handleCenterCoordinatesChange({
-                lat: parseFloat(spotmap?.getCenter().lat.toFixed(4)),
-                lng: parseFloat(spotmap?.getCenter().lng.toFixed(4))
-            })
-        }
-    }
 
     useEffect(() => {
         if (!spotmap) return;
+
+        function onMove() {
+            if (spotmap) {
+                setLat(spotmap?.getCenter().lat)
+                setLng(spotmap?.getCenter().lng)
+
+                props.handleCenterCoordinatesChange({
+                    lat: parseFloat(spotmap?.getCenter().lat.toFixed(4)),
+                    lng: parseFloat(spotmap?.getCenter().lng.toFixed(4))
+                })
+            }
+        }
+
         spotmap.on("move", onMove)
         onMove()
-    })
+
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [spotmap])
 
     if (props.showCenterMarker) {
         return (
