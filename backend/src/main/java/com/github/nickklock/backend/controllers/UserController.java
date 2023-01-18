@@ -1,13 +1,15 @@
 package com.github.nickklock.backend.controllers;
 
-import com.github.nickklock.backend.models.user.UserRequest;
 import com.github.nickklock.backend.models.user.UserSpot;
 import com.github.nickklock.backend.services.UserService;
 import jakarta.servlet.http.HttpSession;
-import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
 
 @RestController
 @RequestMapping("api/users/")
@@ -19,14 +21,19 @@ public class UserController {
         this.userService = userService;
     }
 
-    @PostMapping
-    public ResponseEntity<UserSpot> add(@RequestBody @Valid UserRequest userRequest) {
-        return new ResponseEntity<>(userService.createNewUser(userRequest), HttpStatus.CREATED);
+    @PostMapping(produces = {MediaType.APPLICATION_JSON_VALUE}, consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
+    public ResponseEntity<UserSpot>
+    add(@RequestPart("userRequest") String userRequest,
+        @RequestPart("file") MultipartFile file) throws IOException {
+        return new ResponseEntity<>(userService.createNewUser(userRequest, file), HttpStatus.CREATED);
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<UserSpot> update(@PathVariable String id, @RequestBody @Valid UserRequest userRequest) {
-        return new ResponseEntity<>(userService.updateUser(id, userRequest), HttpStatus.OK);
+    @PutMapping(path = "/{id}", produces = {MediaType.APPLICATION_JSON_VALUE}, consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
+    public ResponseEntity<UserSpot>
+    update(@PathVariable String id,
+           @RequestPart("userRequest") String userRequest,
+           @RequestPart("file") MultipartFile file) throws IOException {
+        return new ResponseEntity<>(userService.updateUser(id, userRequest, file), HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
