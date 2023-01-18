@@ -23,13 +23,13 @@ function App() {
                                           spots={spots}/>}
                        path={"/"}/>
 
-                <Route element={<Profile handleDeleteUser={deletee}
-                                         handleEditUser={edit}
-                                         handleLogout={logout}
-                                         loggedInUser={loggedInUser}/>}
-                       path={"/profile"}/>
 
                 <Route element={<TitleBarRoutes/>}>
+                    <Route element={<Profile handleDeleteUser={deletee}
+                                             handleEditUser={edit}
+                                             handleLogout={logout}
+                                             loggedInUser={loggedInUser}/>}
+                           path={"/profile"}/>
                     <Route element={<Login loggedInUser={loggedInUser}
                                            handleLoginRequest={login}/>}
                            path={"/login"}/>
