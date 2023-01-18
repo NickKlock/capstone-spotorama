@@ -15,7 +15,8 @@ public record User(
         String username,
         @ValidPassword
         String password,
-        Author author
+        Author author,
+        String avatarBase64Encoded
 ) {
 
 }
