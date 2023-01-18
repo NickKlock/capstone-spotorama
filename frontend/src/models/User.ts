@@ -1,4 +1,5 @@
 export type UserRequest = {
+    avatar?: FileList;
     username: string;
     password: string;
     author: Author;
@@ -15,6 +16,7 @@ export type UserSpot = {
     id: string;
     username: string;
     author: Author;
+    avatarBase64Encoded?: string
 }
 
 export type UserLoginRequest = {
