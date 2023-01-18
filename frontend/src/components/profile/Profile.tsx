@@ -132,8 +132,9 @@ export default function Profile(props: ProfileProps) {
                           buttonIcon={<Save/>}
                           buttonText={"Save"}
                           onFormButtonClick={handleEditUser}
-                          marginTop={2}
+                          marginTop={10}
                           showEditButton={true}
+                          displayAvatarMode={"profile"}
                 />
 
                 <SpeedDial ariaLabel={"user-actions"}
