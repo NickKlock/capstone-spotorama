@@ -30,6 +30,13 @@ export function getSpotById(id: string): Promise<Spot> {
 }
 
 export function addUser(newUser: UserRequest): Promise<UserSpot> {
+    let formData = new FormData()
+
+    if (newUser.avatar) {
+        formData.append("file", newUser.avatar[0])
+    }
+    formData.append("userRequest", JSON.stringify(newUser))
+
     return axios.post("/api/users/", newUser)
         .then((response: AxiosResponse<UserSpot>) => response.data)
 }
@@ -57,6 +64,13 @@ export function logoutUser(): Promise<AxiosResponse> {
 }
 
 export function updateUser(id: string, updatedUserRequest: UserRequest): Promise<UserSpot> {
+    let formData = new FormData()
+
+    if (updatedUserRequest.avatar) {
+        formData.append("file", updatedUserRequest.avatar[0])
+    }
+    formData.append("userRequest", JSON.stringify(updatedUserRequest))
+
     return axios.put("/api/users/" + id, updatedUserRequest)
         .then((response: AxiosResponse<UserSpot>) => response.data)
 }
