@@ -57,8 +57,6 @@ public class GlobalExceptionHandler {
         responseBody.put(messageString, "Sorry! The request could be handled!");
         responseBody.put(errorString, e.getMessage());
 
-        e.printStackTrace();
-
         return new ResponseEntity<>(responseBody, HttpStatus.BAD_REQUEST);
     }
 
