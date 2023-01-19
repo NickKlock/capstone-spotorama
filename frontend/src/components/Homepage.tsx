@@ -1,5 +1,5 @@
-import {Box, Drawer, Fab, SpeedDial, SpeedDialAction} from "@mui/material";
-import {Add, AddLocation, MyLocation, WhereToVote} from "@mui/icons-material";
+import {Box, Drawer, Fab, SpeedDial, SpeedDialAction, SpeedDialIcon} from "@mui/material";
+import {AddLocation, Cancel, MyLocation, WhereToVote} from "@mui/icons-material";
 import React, {useEffect, useState} from "react";
 import AddSpot from "./AddSpot";
 import {Position} from "../models/Position";
@@ -118,7 +118,10 @@ export default function Homepage(props: HomepageProps) {
 
 
             {!hidePickLocation &&
-                <Fab color={"success"} variant={"extended"} hidden={true} onClick={handleChoosePosition} sx={{
+                <Fab color={"secondary"}
+                     variant={"extended"}
+                     hidden={true}
+                     onClick={handleChoosePosition} sx={{
                     left: 20,
                     position: 'fixed',
                     bottom: 80
@@ -134,7 +137,16 @@ export default function Homepage(props: HomepageProps) {
                     position: 'fixed',
                     bottom: 80
                 }}
-                icon={<Add/>}
+                FabProps={{
+                    sx: {
+                        bgcolor: "secondary.main",
+                        "&:hover": {
+                            bgcolor: "secondary.main"
+                        }
+                    }
+                }}
+                onClose={resetUi}
+                icon={<SpeedDialIcon openIcon={<Cancel/>}/>}
             >
                 <SpeedDialAction key={"currentpostion"}
                                  icon={<MyLocation/>}
