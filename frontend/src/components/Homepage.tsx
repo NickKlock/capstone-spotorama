@@ -104,15 +104,18 @@ export default function Homepage(props: HomepageProps) {
 
     return (
         <Box>
-            <MapProvider>
-                <SpotMap showCenterMarker={showCenterMarker}
-                         handleSpotPopupButtonClick={handleNavigateToSpotDetails}
-                         spots={props.spots}
-                         handleCenterPositionChange={handleCenterPosition}
-                         centerLng={centerPosition?.lng}
-                         centerLat={centerPosition?.lat}
-                />
-            </MapProvider>
+            <Box position={"fixed"} height={"calc(100% - 56px)"} width={"100%"}>
+                <MapProvider>
+                    <SpotMap showCenterMarker={showCenterMarker}
+                             handleSpotPopupButtonClick={handleNavigateToSpotDetails}
+                             spots={props.spots}
+                             handleCenterPositionChange={handleCenterPosition}
+                             centerLng={centerPosition?.lng}
+                             centerLat={centerPosition?.lat}
+                    />
+                </MapProvider>
+            </Box>
+
 
             {!hidePickLocation &&
                 <Fab color={"success"} variant={"extended"} hidden={true} onClick={handleChoosePosition} sx={{
