@@ -1,4 +1,4 @@
-import {Box, Button, List, ListItem, Typography} from "@mui/material";
+import {Box, ButtonGroup, List, ListItem, Typography} from "@mui/material";
 
 import {
     beachtypes,
@@ -20,6 +20,7 @@ import FormSelect from "./ui/form-inputs/FormSelect";
 import FormSlider from "./ui/form-inputs/FormSlider";
 import FormRadio from "./ui/form-inputs/FormRadio";
 import ImageSelect from "./ui/custom-mui-components/ImageSelect";
+import ColorizedThemeSubColorsButton from "./ui/custom-mui-components/ColorizedThemeSubColorsButton";
 
 
 const parkingSliderMarks = [
@@ -222,9 +223,22 @@ export default function AddSpot(props: AddSpotProps) {
                                        options={["yes", "no"]}/>
                         </ListItem>
                     </List>
+                    <ButtonGroup variant={"contained"}
+                                 fullWidth={true}
+                                 sx={{marginBottom: 5}}
+                                 orientation={"vertical"}>
 
-                    <Button variant={"contained"} onClick={methods.handleSubmit(handleSave)}>Save</Button>
-                    <Button variant={"contained"} onClick={handleCancel}>Close</Button>
+                        <ColorizedThemeSubColorsButton variant={"light"}
+                                                       palletColor={"primary"}
+                                                       onClick={methods.handleSubmit(handleSave)}
+                                                       text={"Save"}/>
+
+                        <ColorizedThemeSubColorsButton text={"Cancel"}
+                                                       variant={"dark"}
+                                                       palletColor={"secondary"}
+                                                       onClick={handleCancel}/>
+                    </ButtonGroup>
+
                 </Box>
             </Box>
         </FormProvider>
