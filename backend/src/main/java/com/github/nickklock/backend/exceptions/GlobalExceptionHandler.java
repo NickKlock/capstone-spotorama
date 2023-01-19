@@ -12,17 +12,17 @@ import java.util.Map;
 @ControllerAdvice
 public class GlobalExceptionHandler {
 
-    private static final String timeStampString = "timestamp";
-    private static final String messageString = "message";
-    private static final String errorString = "error";
+    private static final String TIMESTAMP = "timestamp";
+    private static final String MESSAGE = "message";
+    private static final String ERROR = "error";
 
     @ExceptionHandler(UserNotFoundException.class)
     public ResponseEntity<Map<String, Object>> handleUserNameNotFoundException(UserNotFoundException e) {
 
         Map<String, Object> responseBody = new LinkedHashMap<>();
-        responseBody.put(timeStampString, LocalDateTime.now());
-        responseBody.put(messageString, "User not found");
-        responseBody.put(errorString, e.getMessage());
+        responseBody.put(TIMESTAMP, LocalDateTime.now());
+        responseBody.put(MESSAGE, "User not found");
+        responseBody.put(ERROR, e.getMessage());
 
         return new ResponseEntity<>(responseBody, HttpStatus.NOT_FOUND);
     }
@@ -31,9 +31,9 @@ public class GlobalExceptionHandler {
     public ResponseEntity<Map<String, Object>> handleUserNameNotFoundException(NoSuchSpotException e) {
 
         Map<String, Object> responseBody = new LinkedHashMap<>();
-        responseBody.put(timeStampString, LocalDateTime.now());
-        responseBody.put(messageString, "The requested Spot does not exist");
-        responseBody.put(errorString, e.getMessage());
+        responseBody.put(TIMESTAMP, LocalDateTime.now());
+        responseBody.put(MESSAGE, "The requested Spot does not exist");
+        responseBody.put(ERROR, e.getMessage());
 
         return new ResponseEntity<>(responseBody, HttpStatus.NOT_FOUND);
     }
@@ -42,9 +42,9 @@ public class GlobalExceptionHandler {
     public ResponseEntity<Map<String, Object>> handleUserNameNotFoundException(NotTheRequestedUserException e) {
 
         Map<String, Object> responseBody = new LinkedHashMap<>();
-        responseBody.put(timeStampString, LocalDateTime.now());
-        responseBody.put(messageString, "Permission problem");
-        responseBody.put(errorString, e.getMessage());
+        responseBody.put(TIMESTAMP, LocalDateTime.now());
+        responseBody.put(MESSAGE, "Permission problem");
+        responseBody.put(ERROR, e.getMessage());
 
         return new ResponseEntity<>(responseBody, HttpStatus.BAD_REQUEST);
     }
@@ -53,9 +53,9 @@ public class GlobalExceptionHandler {
     public ResponseEntity<Map<String, Object>> handleGeneralException(Exception e) {
         Map<String, Object> responseBody = new LinkedHashMap<>();
 
-        responseBody.put(timeStampString, LocalDateTime.now());
-        responseBody.put(messageString, "Sorry! The request could be handled!");
-        responseBody.put(errorString, e.getMessage());
+        responseBody.put(TIMESTAMP, LocalDateTime.now());
+        responseBody.put(MESSAGE, "Sorry! The request could be handled!");
+        responseBody.put(ERROR, e.getMessage());
 
         return new ResponseEntity<>(responseBody, HttpStatus.BAD_REQUEST);
     }
