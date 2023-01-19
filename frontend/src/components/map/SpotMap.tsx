@@ -42,6 +42,7 @@ export default function SpotMap(props: SpootMap) {
         }
     }
 
+
     return (
         <Map
             id={"spotmap"}
@@ -50,7 +51,8 @@ export default function SpotMap(props: SpootMap) {
                 latitude: 50.9988,
                 zoom: 3.5
             }}
-            style={{width: "100vw", height: "100vh"}}
+
+            style={{width: "100%", height: "100%"}}
             mapStyle="mapbox://styles/mapbox/satellite-streets-v12"
             mapboxAccessToken={"pk.eyJ1Ijoibmlja2tsb2NrIiwiYSI6ImNsYm5kZTBqcDBxcnIzb3BxdGg5cDlxcmYifQ.ZQHKwQswuvyOW4_1ZBZONg"}
         >
