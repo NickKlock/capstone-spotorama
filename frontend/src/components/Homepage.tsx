@@ -1,6 +1,6 @@
-import {Box, Drawer, Fab, SpeedDial, SpeedDialAction, SpeedDialIcon} from "@mui/material";
+import {Box, CloseReason, Drawer, Fab, SpeedDial, SpeedDialAction, SpeedDialIcon} from "@mui/material";
 import {AddLocation, Cancel, MyLocation, WhereToVote} from "@mui/icons-material";
-import React, {useEffect, useState} from "react";
+import React, {SyntheticEvent, useEffect, useState} from "react";
 import AddSpot from "./AddSpot";
 import {Position} from "../models/Position";
 import {Spot} from "../models/Spot";
@@ -15,6 +15,7 @@ type HomepageProps = {
     spots: Spot[]
     handleAddSpot(newSpot: Spot): Promise<void>
 }
+
 export default function Homepage(props: HomepageProps) {
     const [openAddNewSpotDrawer, setOpenAddNewSpotDrawer] = useState<boolean>(false)
     const [pickedLocation, setPickedLocation] = useState<Position>({lat: 0, lng: 0})
@@ -40,7 +41,17 @@ export default function Homepage(props: HomepageProps) {
         })
     }
 
-    function resetUi() {
+    function resetUi(event?: SyntheticEvent<{}, Event> | {}, reason?: CloseReason | "escapeKeyDown" | "backdropClick") {
+
+
+        if (reason &&
+            reason !== "toggle" &&
+            // @ts-ignore  ignoring es-lint since reason could be backdropClick
+            reason !== "backdropClick" &&
+            reason !== "escapeKeyDown") {
+
+            return;
+        }
         setOpenAddNewSpotDrawer(false)
         setHidePickLocationButton(true)
         setShowCenterMarker(false)
@@ -49,7 +60,7 @@ export default function Homepage(props: HomepageProps) {
     function handleSaveSpot(newSpot: Spot) {
         props.handleAddSpot(newSpot)
             .then(() => {
-                resetUi()
+                resetUi(undefined)
                 setAlert({
                     ...alert,
                     alertMessage: "New spot saved successfully",
@@ -163,7 +174,14 @@ export default function Homepage(props: HomepageProps) {
             </SpeedDial>
 
             <Drawer
-                anchor={"bottom"}
+                anchor={"right"}
+                PaperProps={{
+                    sx: {
+                        width: "70%",
+                        height: "calc(100% - 56px)"
+                    }
+                }}
+                onClose={resetUi}
                 open={openAddNewSpotDrawer}>
                 <AddSpot pickedLocation={pickedLocation}
                          handleCancel={resetUi}
