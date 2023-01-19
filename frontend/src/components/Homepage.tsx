@@ -60,7 +60,7 @@ export default function Homepage(props: HomepageProps) {
     function handleSaveSpot(newSpot: Spot) {
         props.handleAddSpot(newSpot)
             .then(() => {
-                resetUi(undefined)
+                resetUi()
                 setAlert({
                     ...alert,
                     alertMessage: "New spot saved successfully",
