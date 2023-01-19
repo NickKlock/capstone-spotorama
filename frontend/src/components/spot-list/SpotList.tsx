@@ -1,6 +1,6 @@
 import {Spot} from "../../models/Spot";
 import SpotItem from "./SpotItem";
-import {Accordion, AccordionDetails, AccordionSummary, Stack, TextField, Typography} from "@mui/material";
+import {Accordion, AccordionDetails, AccordionSummary, Paper, Stack, TextField, Typography} from "@mui/material";
 import {ChangeEvent, useEffect, useState} from "react";
 import {ExpandMore} from "@mui/icons-material";
 
@@ -43,24 +43,27 @@ export default function SpotList(props: SpotListProps) {
             .filter(([countryName]) => countryName.toLowerCase().includes(searchTerm))
 
         return (
-            <Stack
-                direction={"column"}
-                spacing={2}
-                marginTop={10}>
-                <TextField type={"search"} onChange={handleSearchInputChange} placeholder={"Search for a country"}/>
+            <Paper>
+                <Stack
+                    direction={"column"}
+                    spacing={2}
+                    marginTop={"56.5px"}>
+                    <TextField type={"search"} onChange={handleSearchInputChange} placeholder={"Search for a country"}/>
 
-                {filteredCountries.map(([countryName, spots]) =>
-                    <Accordion key={countryName}>
-                        <AccordionSummary expandIcon={<ExpandMore/>}>
-                            <Typography>{countryName}</Typography>
-                        </AccordionSummary>
-                        <AccordionDetails>
-                            <Stack direction={"column"} spacing={1}>
-                                {spots.map((spot) => <SpotItem spot={spot} key={spot.id}/>)}
-                            </Stack>
-                        </AccordionDetails>
-                    </Accordion>)}
-            </Stack>)
+                    {filteredCountries.map(([countryName, spots]) =>
+                        <Accordion key={countryName}>
+                            <AccordionSummary expandIcon={<ExpandMore/>}>
+                                <Typography>{countryName}</Typography>
+                            </AccordionSummary>
+                            <AccordionDetails>
+                                <Stack direction={"column"} spacing={1}>
+                                    {spots.map((spot) => <SpotItem spot={spot} key={spot.id}/>)}
+                                </Stack>
+                            </AccordionDetails>
+                        </Accordion>)}
+                </Stack>
+            </Paper>
+        )
     } else {
 
         return (
