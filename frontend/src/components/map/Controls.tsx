@@ -32,6 +32,7 @@ export default function Controls(props:ControlsProps) {
         spotmap.on("move", onMove)
         onMove()
 
+        //disabling es lint because the props are always changing and we don't want an endless loop here
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [spotmap])
 
