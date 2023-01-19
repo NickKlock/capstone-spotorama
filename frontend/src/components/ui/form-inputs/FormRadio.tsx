@@ -34,7 +34,6 @@ export default function FormRadio(props: FormRadioProps) {
                         value={option}
                         key={"radio-" + option}/>)}
 
-
                 </RadioGroup>
                 <FormHelperText>{error ? formState.errors[spotFormInputKey]?.message as string : null}</FormHelperText>
             </FormControl>}
