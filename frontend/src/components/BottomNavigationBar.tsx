@@ -14,7 +14,7 @@ export default function BottomNavigationBar() {
 
     return (<Paper sx={{position: 'fixed', height: 56, bottom: 0, left: 0, right: 0}} elevation={3}>
             <Box>
-                <BottomNavigation value={currentPath}>
+                <BottomNavigation value={currentPath} showLabels={true}>
                     <BottomNavigationAction component={Link}
                                             to={'/'}
                                             value={'/'}
