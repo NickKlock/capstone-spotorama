@@ -6,6 +6,7 @@ import {Box, IconButton, Typography} from "@mui/material";
 import {ArrowForward, Explore, Kitesurfing, Waves} from "@mui/icons-material";
 import Controls from "./Controls";
 import {Position} from "../../models/Position";
+import "./PopOver.css"
 
 type SpootMap = {
     spots: Spot[]
@@ -17,7 +18,6 @@ type SpootMap = {
 }
 export default function SpotMap(props: SpootMap) {
     const [popupData, setPopupData] = useState<Spot | null>(null)
-
     function handPopupClose() {
         setPopupData(null)
     }
@@ -71,7 +71,6 @@ export default function SpotMap(props: SpootMap) {
                        latitude={popupData.position.lat}
                        offset={25}
                        onClose={handPopupClose}>
-                    <Box>
                         <Typography variant={"h6"} textAlign={"center"}>{popupData.name}</Typography>
                         <Typography><Kitesurfing/> {popupData.disciplines.join(", ").toLowerCase()}</Typography>
                         <Typography> <Explore/> {popupData.bestDirections.join(", ")}</Typography>
@@ -81,8 +80,6 @@ export default function SpotMap(props: SpootMap) {
                                 <ArrowForward/>
                             </IconButton>
                         </Box>
-
-                    </Box>
                 </Popup>
             )}
         </Map>
