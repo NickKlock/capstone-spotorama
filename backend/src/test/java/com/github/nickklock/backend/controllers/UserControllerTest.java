@@ -46,7 +46,7 @@ class UserControllerTest {
     }
 
     @Test
-    void add_user_expect_status_created() {
+    void add_user_expect_status_created() throws Exception {
 
         MockMultipartFile user = new MockMultipartFile("userRequest", """
                 {
@@ -61,15 +61,11 @@ class UserControllerTest {
                    }
                    """.getBytes());
         MockMultipartFile file = new MockMultipartFile("file", "".getBytes());
-        try {
-            mvc.perform(MockMvcRequestBuilders.multipart(endPoint)
-                            .file(user)
-                            .file(file)
-                            .with(csrf()))
-                    .andExpect(status().isCreated());
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+        mvc.perform(MockMvcRequestBuilders.multipart(endPoint)
+                        .file(user)
+                        .file(file)
+                        .with(csrf()))
+                .andExpect(status().isCreated());
     }
 
     @Test
