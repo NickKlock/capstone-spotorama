@@ -1,6 +1,6 @@
 package com.github.nickklock.backend.client;
 
-import com.github.nickklock.backend.models.geocoding.CountryByCord;
+import com.github.nickklock.backend.models.mapbox.geocoding.CountryByCord;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.service.annotation.GetExchange;
 

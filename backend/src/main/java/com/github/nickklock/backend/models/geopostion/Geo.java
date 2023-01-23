@@ -1,4 +1,4 @@
-package com.github.nickklock.backend.models;
+package com.github.nickklock.backend.models.geopostion;
 
 
 import java.util.Arrays;

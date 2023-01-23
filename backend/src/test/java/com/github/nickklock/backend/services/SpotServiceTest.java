@@ -2,12 +2,12 @@ package com.github.nickklock.backend.services;
 
 import com.github.nickklock.backend.client.MapboxClient;
 import com.github.nickklock.backend.exceptions.NoSuchSpotException;
-import com.github.nickklock.backend.models.Position;
-import com.github.nickklock.backend.models.Spot;
-import com.github.nickklock.backend.models.SpotRequest;
 import com.github.nickklock.backend.models.enums.ParkingSpace;
-import com.github.nickklock.backend.models.geocoding.CountryByCord;
-import com.github.nickklock.backend.models.geocoding.Feature;
+import com.github.nickklock.backend.models.geopostion.Position;
+import com.github.nickklock.backend.models.mapbox.geocoding.CountryByCord;
+import com.github.nickklock.backend.models.mapbox.geocoding.Feature;
+import com.github.nickklock.backend.models.spot.Spot;
+import com.github.nickklock.backend.models.spot.SpotRequest;
 import com.github.nickklock.backend.repos.SpotRepo;
 import org.junit.jupiter.api.Test;
 import org.springframework.mock.web.MockMultipartFile;
