@@ -6,6 +6,7 @@ import com.github.nickklock.backend.models.geopostion.Geo;
 import com.github.nickklock.backend.models.geopostion.Position;
 import com.github.nickklock.backend.models.mapbox.geocoding.CountryByCord;
 import com.github.nickklock.backend.models.spot.Spot;
+import com.github.nickklock.backend.models.spot.SpotMinimal;
 import com.github.nickklock.backend.models.spot.SpotRequest;
 import com.github.nickklock.backend.repos.SpotRepo;
 import lombok.AllArgsConstructor;
@@ -57,13 +58,16 @@ public class SpotService {
                     spotRequestWithSpotImage.restrooms(),
                     spotImageBase64encoded);
 
-            return spotRepo.save(spotWithId);
+        return spotRepo.save(spotWithId);
 
 
     }
 
-    public List<Spot> list() {
-        return spotRepo.findAll();
+    public List<SpotMinimal> list() {
+        return spotRepo.findAll()
+                .stream()
+                .map(SpotMinimal::new)
+                .toList();
     }
 
     public Spot getById(String id) {
@@ -80,7 +84,7 @@ public class SpotService {
         }));
     }
 
-    public List<Spot> getSpotsAroundCurrentPosition(double userLng, double userLat, double radiusInKilometer) {
+    public List<SpotMinimal> getSpotsAroundCurrentPosition(double userLng, double userLat, double radiusInKilometer) {
         return spotRepo.findByLocationWithin(userLng, userLat, radiusInKilometer / 6371);
     }
 

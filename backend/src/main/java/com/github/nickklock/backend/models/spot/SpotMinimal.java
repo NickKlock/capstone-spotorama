@@ -15,4 +15,7 @@ public record SpotMinimal(
         List<WaveType> waveTypes,
         Position position
 ) {
+    public SpotMinimal(Spot spot) {
+        this(spot.id(), spot.name(), spot.disciplines(), spot.bestDirections(), spot.waveTypes(), spot.position());
+    }
 }
