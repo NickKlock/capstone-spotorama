@@ -2,11 +2,11 @@ package com.github.nickklock.backend.services;
 
 import com.github.nickklock.backend.client.MapboxClient;
 import com.github.nickklock.backend.exceptions.NoSuchSpotException;
-import com.github.nickklock.backend.models.Geo;
-import com.github.nickklock.backend.models.Position;
-import com.github.nickklock.backend.models.Spot;
-import com.github.nickklock.backend.models.SpotRequest;
-import com.github.nickklock.backend.models.geocoding.CountryByCord;
+import com.github.nickklock.backend.models.geopostion.Geo;
+import com.github.nickklock.backend.models.geopostion.Position;
+import com.github.nickklock.backend.models.mapbox.geocoding.CountryByCord;
+import com.github.nickklock.backend.models.spot.Spot;
+import com.github.nickklock.backend.models.spot.SpotRequest;
 import com.github.nickklock.backend.repos.SpotRepo;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -80,8 +80,8 @@ public class SpotService {
         }));
     }
 
-    public List<Spot> getSpotsAroundCurrentPosition(double userLng, double userLat) {
-        return spotRepo.findByLocationWithin(userLng, userLat, 20.0 / 6371);
+    public List<Spot> getSpotsAroundCurrentPosition(double userLng, double userLat, double radiusInKilometer) {
+        return spotRepo.findByLocationWithin(userLng, userLat, radiusInKilometer / 6371);
     }
 
 

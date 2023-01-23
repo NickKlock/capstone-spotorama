@@ -1,4 +1,4 @@
-package com.github.nickklock.backend.models.geocoding;
+package com.github.nickklock.backend.models.mapbox.geocoding;
 
 import java.util.List;
 

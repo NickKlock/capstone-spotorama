@@ -1,8 +1,8 @@
 package com.github.nickklock.backend.controllers;
 
-import com.github.nickklock.backend.models.Position;
-import com.github.nickklock.backend.models.Spot;
 import com.github.nickklock.backend.models.enums.ParkingSpace;
+import com.github.nickklock.backend.models.geopostion.Position;
+import com.github.nickklock.backend.models.spot.Spot;
 import com.github.nickklock.backend.repos.SpotRepo;
 import mockwebserver3.MockResponse;
 import mockwebserver3.MockWebServer;
