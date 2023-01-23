@@ -3,6 +3,7 @@ package com.github.nickklock.backend.services;
 import com.github.nickklock.backend.client.MapboxClient;
 import com.github.nickklock.backend.exceptions.NoSuchSpotException;
 import com.github.nickklock.backend.models.enums.ParkingSpace;
+import com.github.nickklock.backend.models.geopostion.Geo;
 import com.github.nickklock.backend.models.geopostion.Position;
 import com.github.nickklock.backend.models.mapbox.geocoding.CountryByCord;
 import com.github.nickklock.backend.models.mapbox.geocoding.Feature;
@@ -41,13 +42,17 @@ class SpotServiceTest {
         SpotRequest spotRequest = new SpotRequest("test", new ArrayList<>(),
                 new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(),
                 new ArrayList<>(), new ArrayList<>(), new ArrayList<>(),
-                ParkingSpace.FEW, new Position(0, 0, null), "Yes", spotMultiPart);
+                ParkingSpace.FEW,
+                new Position("Germany",
+                        new Geo("Point", new double[]{0, 0})), "Yes", spotMultiPart);
 
 
         Spot givenSpot = new Spot("0", "test", new ArrayList<>(),
                 new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(),
                 new ArrayList<>(), new ArrayList<>(), new ArrayList<>(),
-                ParkingSpace.FEW, new Position(0, 0, "Germany"), "Yes", "");
+                ParkingSpace.FEW,
+                new Position("Germany",
+                        new Geo("Point", new double[]{0, 0})), "Yes", "");
 
         when(string2JsonService.parseJsonToClass(anyString(), any())).thenReturn(spotRequest);
         when(imageService.encodeImageToBase64(any())).thenReturn("");
@@ -73,13 +78,17 @@ class SpotServiceTest {
         SpotRequest spotRequest = new SpotRequest("test", new ArrayList<>(),
                 new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(),
                 new ArrayList<>(), new ArrayList<>(), new ArrayList<>(),
-                ParkingSpace.FEW, new Position(0, 0, null), "Yes", null);
+                ParkingSpace.FEW,
+                new Position("Germany",
+                        new Geo("Point", new double[]{0, 0})), "Yes", null);
 
 
         Spot givenSpot = new Spot("0", "test", new ArrayList<>(),
                 new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(),
                 new ArrayList<>(), new ArrayList<>(), new ArrayList<>(),
-                ParkingSpace.FEW, new Position(0, 0, "Germany"), "Yes", null);
+                ParkingSpace.FEW,
+                new Position("Germany",
+                        new Geo("Point", new double[]{0, 0})), "Yes", null);
 
         when(string2JsonService.parseJsonToClass(anyString(), any())).thenReturn(spotRequest);
         when(mapboxClient.countryByCords(any(), any(), any()))
@@ -108,7 +117,9 @@ class SpotServiceTest {
         when(spotRepo.findById("0")).thenReturn(Optional.of(new Spot("0", "test", new ArrayList<>(),
                 new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(),
                 new ArrayList<>(), new ArrayList<>(), new ArrayList<>(),
-                ParkingSpace.FEW, new Position(0, 0, "Germany"), "Yes", "")));
+                ParkingSpace.FEW,
+                new Position("Germany",
+                        new Geo("Point", new double[]{0, 0})), "Yes", "")));
 
         Spot result = spotService.getById("0");
 
@@ -132,7 +143,10 @@ class SpotServiceTest {
 
     @Test
     void createPositionFromRawData() {
-        Position expectedResult = new Position(0, 0, "Germany");
+        Position expectedResult =
+                new Position("Germany",
+                        new Geo("Point", new double[]{0, 0}));
+
         CountryByCord givenCountryByCord = new CountryByCord(List.of(new Feature("Germany")));
 
         when(mapboxClient.countryByCords(any(), any(), any())).thenReturn(givenCountryByCord);

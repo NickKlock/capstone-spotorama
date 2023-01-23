@@ -1,6 +1,7 @@
 package com.github.nickklock.backend.controllers;
 
 import com.github.nickklock.backend.models.enums.ParkingSpace;
+import com.github.nickklock.backend.models.geopostion.Geo;
 import com.github.nickklock.backend.models.geopostion.Position;
 import com.github.nickklock.backend.models.spot.Spot;
 import com.github.nickklock.backend.repos.SpotRepo;
@@ -70,10 +71,15 @@ class SpotControllerTest {
                         "waterTemperature": [],
                         "parkingSpace": "FEW",
                         "position": {
-                            "lng": 11.566,
-                            "lat": 52.635,
-                            "country": "Germany"
-                        },
+                                    "country": "Germany",
+                                    "geo": {
+                                        "type": "Point",
+                                        "coordinates": [
+                                            53.604,
+                                            8.894
+                                        ]
+                                    }
+                                },
                         "restrooms": 0,
                         "imageBase64Encoded": ""
                     }
@@ -120,8 +126,11 @@ class SpotControllerTest {
         spotRepo.save(new Spot("0", "test", new ArrayList<>(),
                 new ArrayList<>(), new ArrayList<>(), new ArrayList<>(),
                 new ArrayList<>(), new ArrayList<>(), new ArrayList<>(),
-                new ArrayList<>(), ParkingSpace.FEW, new Position(0, 0, "Germany"),
+                new ArrayList<>(), ParkingSpace.FEW,
+                new Position("Germany",
+                        new Geo("Point", new double[]{0, 0})),
                 "yes", ""));
+
         mvc.perform(get(endPoint + "/0"))
                 .andExpect(status().isOk());
     }
