@@ -1,6 +1,7 @@
 package com.github.nickklock.backend.controllers;
 
 import com.github.nickklock.backend.models.spot.Spot;
+import com.github.nickklock.backend.models.spot.SpotMinimal;
 import com.github.nickklock.backend.services.SpotService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -28,7 +29,7 @@ public class SpotController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Spot>> listSpots() {
+    public ResponseEntity<List<SpotMinimal>> listSpots() {
         return new ResponseEntity<>(spotService.list(), HttpStatus.OK);
     }
 
@@ -38,7 +39,7 @@ public class SpotController {
     }
 
     @GetMapping("/around-user-position")
-    public ResponseEntity<List<Spot>> getSpotsAroundUser(
+    public ResponseEntity<List<SpotMinimal>> getSpotsAroundUser(
             @RequestParam(value = "lng", required = false, defaultValue = "56.0") double lng,
             @RequestParam(value = "lat", required = false, defaultValue = "56.0") double lat,
             @RequestParam(value = "rad") double rad) {
