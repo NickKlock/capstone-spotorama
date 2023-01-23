@@ -1,8 +1,8 @@
-import {Box, IconButton, Link, TextField, Typography} from "@mui/material";
+import {Box, Button, IconButton, TextField, Typography} from "@mui/material";
 import {UserLoginRequest, UserSpot} from "../../models/User";
 import {LoginSharp} from "@mui/icons-material";
 import {ChangeEvent, useEffect, useState} from "react";
-import {Navigate, useLocation} from "react-router-dom";
+import {Navigate, useLocation, useNavigate} from "react-router-dom";
 import {AlertModel} from "../../models/AlertModel";
 import CustomAlert from "../ui/custom-mui-components/CustomAlert";
 import {AxiosError} from "axios";
@@ -15,6 +15,7 @@ export default function Login(props: LoginProps) {
     const [userLoginRequest, setUserLoginRequest] = useState<UserLoginRequest>({username: "", password: ""})
     const [alert, setAlert] = useState<AlertModel>({alertMessage: "", open: false, severity: "success"})
     const location = useLocation();
+    const navigate = useNavigate()
 
     useEffect(() => {
         if (location.state) {
@@ -59,6 +60,10 @@ export default function Login(props: LoginProps) {
         setAlert({...alert, open: false})
     }
 
+    function handleNavigateToRegister() {
+        navigate("/register")
+    }
+
     return (
         props.loggedInUser.username === "anonymousUser" ?
             <Box flexDirection={"column"}
@@ -83,9 +88,7 @@ export default function Login(props: LoginProps) {
                 <IconButton onClick={handleLogin} color={"secondary"}>
                     <LoginSharp/>
                 </IconButton>
-                <Link href={"/register"} underline={"hover"}>
-                    {"Register an account"}
-                </Link>
+                <Button variant={"text"} onClick={handleNavigateToRegister}> Register an account</Button>
                 <CustomAlert severity={alert.severity} alertMessage={alert.alertMessage} open={alert.open}
                              onClose={handleAlertClose}/>
 
