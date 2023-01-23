@@ -160,6 +160,27 @@ class UserControllerTest {
 
     }
 
+    @WithMockUser("test")
+    @Test
+    void delete_expect_404() throws Exception {
+        mvc.perform(delete(endPoint + "/" + 1).with(csrf()))
+                .andExpect(status().isNotFound());
+    }
+
+    @WithMockUser("test")
+    @Test
+    void delete_expect_400() throws Exception {
+        Author givenAuthor = new Author("nick", "n", "k", Collections.emptyList());
+        userRepo.save(new User("1", "test", "123", givenAuthor, ""));
+
+        Author givenAuthor1 = new Author("h", "h", "h", Collections.emptyList());
+        User givenUser1 = userRepo.save(new User("h", "hanna", "123", givenAuthor1, ""));
+
+        mvc.perform(delete(endPoint + "/" + givenUser1.id()).with(csrf()))
+                .andExpect(status().isBadRequest());
+    }
+
+
     @WithMockUser
     @Test
     void login_expect_200() throws Exception {
