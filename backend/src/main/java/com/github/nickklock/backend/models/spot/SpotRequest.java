@@ -1,7 +1,8 @@
-package com.github.nickklock.backend.models;
+package com.github.nickklock.backend.models.spot;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.github.nickklock.backend.models.enums.*;
+import com.github.nickklock.backend.models.geopostion.Position;
 import lombok.With;
 import org.springframework.web.multipart.MultipartFile;
 

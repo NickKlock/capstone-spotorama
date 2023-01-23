@@ -1,6 +1,7 @@
-package com.github.nickklock.backend.models;
+package com.github.nickklock.backend.models.spot;
 
 import com.github.nickklock.backend.models.enums.*;
+import com.github.nickklock.backend.models.geopostion.Position;
 import com.mongodb.lang.Nullable;
 import lombok.With;
 import org.springframework.data.annotation.Id;

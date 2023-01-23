@@ -1,6 +1,6 @@
 package com.github.nickklock.backend.repos;
 
-import com.github.nickklock.backend.models.Spot;
+import com.github.nickklock.backend.models.spot.Spot;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.data.mongodb.repository.Query;
 import org.springframework.stereotype.Repository;
