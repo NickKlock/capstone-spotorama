@@ -1,10 +1,10 @@
-import {Spot} from "../../models/Spot";
+import {SpotMinimal} from "../../models/Spot";
 
 import {useNavigate} from "react-router-dom";
 import CustomCard from "../ui/custom-mui-components/CustomCard";
 
 type SpotItemProps = {
-    spot: Spot
+    spot: SpotMinimal
 }
 export default function SpotItem(props: SpotItemProps) {
     const navigate = useNavigate()
