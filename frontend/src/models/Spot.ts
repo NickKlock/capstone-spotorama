@@ -28,3 +28,12 @@ export type Spot= {
     spotImage?: FileList;
     imageBase64Encoded?: string
 }
+
+export type SpotMinimal = {
+    id: string;
+    name: string;
+    disciplines: Discipline[];
+    bestDirections: WindDirection[];
+    waveTypes: WaveType[];
+    position: Position;
+}
