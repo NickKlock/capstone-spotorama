@@ -1,15 +1,16 @@
 import {useEffect, useState} from "react";
-import {Spot} from "../models/Spot";
-import {getAllSpots, postSpot} from "../api-calls";
+import {Spot, SpotMinimal} from "../models/Spot";
+import {getAllSpotsMinimal, postSpot} from "../api-calls";
 
 export default function useSpots() {
-    const [spots, setSpots] = useState<Spot[]>([])
+    const [spots, setSpots] = useState<SpotMinimal[]>([])
 
     useEffect(() => {
-        getAllSpots().then(data => setSpots(data))
+        getAllSpotsMinimal()
+            .then((allSpotsAsMinimal: SpotMinimal[]) => setSpots(allSpotsAsMinimal))
     }, [])
 
-    function addSpot(newSpot: Spot):Promise<void> {
+    function addSpot(newSpot: Spot): Promise<void> {
         return postSpot(newSpot)
             .then(response => setSpots([...spots, response]))
     }
