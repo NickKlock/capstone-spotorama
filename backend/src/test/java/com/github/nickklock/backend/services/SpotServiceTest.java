@@ -30,9 +30,9 @@ class SpotServiceTest {
     MapboxService mapboxService = mock(MapboxService.class);
 
     ImageService imageService = mock(ImageService.class);
-    String2JsonService string2JsonService = mock(String2JsonService.class);
+
     SpotService spotService =
-            new SpotService(spotRepo, idService, mapboxClient, mapboxService, imageService, string2JsonService);
+            new SpotService(spotRepo, idService, mapboxClient, mapboxService, imageService);
 
     final MockMultipartFile spotMultiPart = new MockMultipartFile("spot", "".getBytes());
 
@@ -54,21 +54,20 @@ class SpotServiceTest {
                 new Position("Germany",
                         new Geo("Point", new double[]{0, 0})), "Yes", "");
 
-        when(string2JsonService.parseJsonToClass(anyString(), any())).thenReturn(spotRequest);
         when(imageService.encodeImageToBase64(any())).thenReturn("");
         when(mapboxClient.countryByCords(any(), any(), any()))
                 .thenReturn(new CountryByCord(List.of(new Feature("Germany"))));
 
         when(spotRepo.save(givenSpot)).thenReturn(givenSpot);
+
         when(idService.generateId()).thenReturn("0");
 
-        Spot result = spotService.add("", spotRequest.spotImage());
+        Spot result = spotService.add(spotRequest, spotRequest.spotImage());
 
         assertEquals(givenSpot, result);
         verify(spotRepo).save(givenSpot);
         verify(mapboxClient).countryByCords(any(), any(), any());
         verify(imageService).encodeImageToBase64(any());
-        verify(string2JsonService).parseJsonToClass(any(), any());
 
     }
 
@@ -90,20 +89,17 @@ class SpotServiceTest {
                 new Position("Germany",
                         new Geo("Point", new double[]{0, 0})), "Yes", null);
 
-        when(string2JsonService.parseJsonToClass(anyString(), any())).thenReturn(spotRequest);
         when(mapboxClient.countryByCords(any(), any(), any()))
                 .thenReturn(new CountryByCord(List.of(new Feature("Germany"))));
 
         when(spotRepo.save(givenSpot)).thenReturn(givenSpot);
         when(idService.generateId()).thenReturn("0");
 
-        Spot result = spotService.add("", spotRequest.spotImage());
+        Spot result = spotService.add(spotRequest, spotRequest.spotImage());
 
         assertEquals(givenSpot, result);
         verify(spotRepo).save(givenSpot);
         verify(mapboxClient).countryByCords(any(), any(), any());
-        verify(string2JsonService).parseJsonToClass(any(), any());
-
     }
 
     @Test
