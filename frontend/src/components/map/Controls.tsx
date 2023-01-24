@@ -23,8 +23,11 @@ export default function Controls(props:ControlsProps) {
                 setLng(spotmap?.getCenter().lng)
 
                 props.handleCenterCoordinatesChange({
-                    lat: parseFloat(spotmap?.getCenter().lat.toFixed(4)),
-                    lng: parseFloat(spotmap?.getCenter().lng.toFixed(4))
+                    country: "",
+                    geo: {
+                        type: "Point",
+                        coordinates: [spotmap?.getCenter().lng, spotmap?.getCenter().lat]
+                    }
                 })
             }
         }

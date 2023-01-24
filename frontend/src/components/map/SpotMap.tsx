@@ -1,6 +1,6 @@
 import Map, {GeolocateControl, Marker, Popup} from 'react-map-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
-import {Spot} from "../../models/Spot";
+import {SpotMinimal} from "../../models/Spot";
 import {useState} from "react";
 import {Box, IconButton, Typography} from "@mui/material";
 import {ArrowForward, Explore, Kitesurfing, Waves} from "@mui/icons-material";
@@ -8,16 +8,17 @@ import Controls from "./Controls";
 import {Position} from "../../models/Position";
 import "./PopOver.css"
 
-type SpootMap = {
-    spots: Spot[]
-    handleSpotPopupButtonClick(id:string):void
-    showCenterMarker:boolean
-    handleCenterPositionChange(center:Position):void
-    centerLng:number | undefined
-    centerLat:number | undefined
+type SpotMapProps = {
+    spots: SpotMinimal[]
+    handleSpotPopupButtonClick(id: string): void
+    showCenterMarker: boolean
+    handleCenterPositionChange(center: Position): void
+    centerLng: number | undefined
+    centerLat: number | undefined
 }
-export default function SpotMap(props: SpootMap) {
-    const [popupData, setPopupData] = useState<Spot | null>(null)
+export default function SpotMap(props: SpotMapProps) {
+    const [popupData, setPopupData] = useState<SpotMinimal | null>(null)
+
     function handPopupClose() {
         setPopupData(null)
     }
@@ -25,8 +26,8 @@ export default function SpotMap(props: SpootMap) {
     const spotMarkers = props.spots.map((spot) =>
         <Marker
             key={spot.id}
-            longitude={spot.position.lng}
-            latitude={spot.position.lat}
+            longitude={spot.position.geo.coordinates[0]}
+            latitude={spot.position.geo.coordinates[1]}
             anchor={"bottom"}
             onClick={e => {
                 e.originalEvent.stopPropagation()
@@ -67,19 +68,19 @@ export default function SpotMap(props: SpootMap) {
             {spotMarkers}
 
             {popupData && (
-                <Popup longitude={popupData.position.lng}
-                       latitude={popupData.position.lat}
+                <Popup longitude={popupData.position.geo.coordinates[0]}
+                       latitude={popupData.position.geo.coordinates[1]}
                        offset={25}
                        onClose={handPopupClose}>
-                        <Typography variant={"h6"} textAlign={"center"}>{popupData.name}</Typography>
-                        <Typography><Kitesurfing/> {popupData.disciplines.join(", ").toLowerCase()}</Typography>
-                        <Typography> <Explore/> {popupData.bestDirections.join(", ")}</Typography>
-                        <Typography><Waves/> {popupData.waveTypes.join(", ")}</Typography>
-                        <Box display={"flex"} justifyContent={"flex-end"} alignItems={"flex-end"}>
-                            <IconButton onClick={handleSpotPopupButtonClick}>
-                                <ArrowForward/>
-                            </IconButton>
-                        </Box>
+                    <Typography variant={"h6"} textAlign={"center"}>{popupData.name}</Typography>
+                    <Typography><Kitesurfing/> {popupData.disciplines.join(", ").toLowerCase()}</Typography>
+                    <Typography> <Explore/> {popupData.bestDirections.join(", ")}</Typography>
+                    <Typography><Waves/> {popupData.waveTypes.join(", ")}</Typography>
+                    <Box display={"flex"} justifyContent={"flex-end"} alignItems={"flex-end"}>
+                        <IconButton onClick={handleSpotPopupButtonClick}>
+                            <ArrowForward/>
+                        </IconButton>
+                    </Box>
                 </Popup>
             )}
         </Map>

@@ -3,7 +3,7 @@ import {AddLocation, Cancel, MyLocation, WhereToVote} from "@mui/icons-material"
 import React, {SyntheticEvent, useEffect, useState} from "react";
 import AddSpot from "./AddSpot";
 import {Position} from "../models/Position";
-import {Spot} from "../models/Spot";
+import {Spot, SpotMinimal} from "../models/Spot";
 import {useLocation, useNavigate} from "react-router-dom";
 import {MapProvider} from "react-map-gl";
 import SpotMap from "./map/SpotMap";
@@ -12,13 +12,16 @@ import {AlertModel} from "../models/AlertModel";
 import {AxiosError} from "axios";
 
 type HomepageProps = {
-    spots: Spot[]
+    spots: SpotMinimal[]
     handleAddSpot(newSpot: Spot): Promise<void>
 }
 
 export default function Homepage(props: HomepageProps) {
     const [openAddNewSpotDrawer, setOpenAddNewSpotDrawer] = useState<boolean>(false)
-    const [pickedLocation, setPickedLocation] = useState<Position>({lat: 0, lng: 0})
+    const [pickedLocation, setPickedLocation] = useState<Position>({
+        country: "",
+        geo: {type: "Point", coordinates: [0, 1]}
+    })
     const [showCenterMarker, setShowCenterMarker] = useState<boolean>(false)
     const [hidePickLocation, setHidePickLocationButton] = useState<boolean>(true)
     const navigate = useNavigate()
@@ -36,7 +39,14 @@ export default function Homepage(props: HomepageProps) {
 
     function handleCurrentPosition() {
         navigator.geolocation.getCurrentPosition((position) => {
-            setPickedLocation({...pickedLocation, lat: position.coords.latitude, lng: position.coords.longitude})
+            setPickedLocation(
+                {
+                    ...pickedLocation,
+                    geo: {
+                        ...pickedLocation.geo,
+                        coordinates: [position.coords.longitude, position.coords.latitude]
+                    }
+                })
             setOpenAddNewSpotDrawer(true)
         })
     }
@@ -96,7 +106,13 @@ export default function Homepage(props: HomepageProps) {
     function handleChoosePosition() {
         if (showCenterMarker && centerPosition) {
             setPickedLocation(
-                {...pickedLocation, lat: centerPosition.lat, lng: centerPosition.lng})
+                {
+                    ...pickedLocation,
+                    geo: {
+                        ...pickedLocation.geo,
+                        coordinates: [centerPosition.geo.coordinates[0], centerPosition.geo.coordinates[1]]
+                    }
+                })
             setOpenAddNewSpotDrawer(true)
         }
     }
@@ -121,8 +137,8 @@ export default function Homepage(props: HomepageProps) {
                              handleSpotPopupButtonClick={handleNavigateToSpotDetails}
                              spots={props.spots}
                              handleCenterPositionChange={handleCenterPosition}
-                             centerLng={centerPosition?.lng}
-                             centerLat={centerPosition?.lat}
+                             centerLng={centerPosition?.geo.coordinates[0]}
+                             centerLat={centerPosition?.geo.coordinates[1]}
                     />
                 </MapProvider>
             </Box>
