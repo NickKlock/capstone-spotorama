@@ -1,5 +1,9 @@
 export type Position = {
-    lng:number
-    lat: number
-    country?: string
+    country: string;
+    geo: Geo;
+}
+
+export type Geo = {
+    type: "Point";
+    coordinates: number[];
 }
