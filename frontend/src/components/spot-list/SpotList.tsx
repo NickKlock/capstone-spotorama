@@ -1,22 +1,22 @@
-import {Spot} from "../../models/Spot";
+import {Spot, SpotMinimal} from "../../models/Spot";
 import SpotItem from "./SpotItem";
 import {Accordion, AccordionDetails, AccordionSummary, Paper, Stack, TextField, Typography} from "@mui/material";
 import {ChangeEvent, useEffect, useState} from "react";
 import {ExpandMore} from "@mui/icons-material";
 
 type SpotListProps = {
-    spots: Spot[]
+    spots: SpotMinimal[]
 }
 export default function SpotList(props: SpotListProps) {
     const [searchTerm, setSearchTerm] = useState<string>("")
-    const [groupedSpots, setGroupedSpots] = useState<Map<string, Spot[]>>()
+    const [groupedSpots, setGroupedSpots] = useState<Map<string, SpotMinimal[]>>()
 
     function handleSearchInputChange(event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) {
         setSearchTerm(event.target.value.toLowerCase())
     }
 
     useEffect(() => {
-        const mappedSpots = new Map<string, Spot[]>()
+        const mappedSpots = new Map<string, SpotMinimal[]>()
         props.spots.forEach((spot) => {
                 if (!groupedSpots) {
                     setGroupedSpots(new Map<string, Spot[]>())
