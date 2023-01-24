@@ -1,5 +1,5 @@
 import axios, {AxiosResponse} from "axios";
-import {Spot} from "./models/Spot";
+import {Spot, SpotMinimal} from "./models/Spot";
 import {UserLoginRequest, UserRequest, UserSpot} from "./models/User";
 
 export function getAccessToken(): Promise<string> {
@@ -13,15 +13,18 @@ export function postSpot(newSpot: Spot): Promise<Spot> {
     if (newSpot.spotImage) {
         formData.append("file", newSpot.spotImage[0])
     }
-    formData.append("spot", JSON.stringify(newSpot))
+    formData.append("spot", new Blob([JSON.stringify(newSpot)],
+        {
+            type: "application/json"
+        }))
 
     return axios.post("/api/spots", formData)
         .then((response: AxiosResponse<Spot>) => response.data)
 }
 
-export function getAllSpots(): Promise<Spot[]> {
+export function getAllSpotsMinimal(): Promise<SpotMinimal[]> {
     return axios.get("/api/spots")
-        .then((response: AxiosResponse<Spot[]>) => response.data)
+        .then((response: AxiosResponse<SpotMinimal[]>) => response.data)
 }
 
 export function getSpotById(id: string): Promise<Spot> {
@@ -35,7 +38,12 @@ export function addUser(newUser: UserRequest): Promise<UserSpot> {
     if (newUser.avatar) {
         formData.append("file", newUser.avatar[0])
     }
-    formData.append("userRequest", JSON.stringify(newUser))
+    formData.append("userRequest", new Blob([JSON.stringify(newUser)],
+            {
+                type: "application/json"
+            }
+        )
+    )
 
     return axios.post("/api/users/", newUser)
         .then((response: AxiosResponse<UserSpot>) => response.data)
@@ -69,7 +77,12 @@ export function updateUser(id: string, updatedUserRequest: UserRequest): Promise
     if (updatedUserRequest.avatar) {
         formData.append("file", updatedUserRequest.avatar[0])
     }
-    formData.append("userRequest", JSON.stringify(updatedUserRequest))
+    formData.append("userRequest", new Blob([JSON.stringify(updatedUserRequest)],
+            {
+                type: "application/json"
+            }
+        )
+    )
 
     return axios.put("/api/users/" + id, formData)
         .then((response: AxiosResponse<UserSpot>) => response.data)
@@ -78,4 +91,14 @@ export function updateUser(id: string, updatedUserRequest: UserRequest): Promise
 export function deleteUser(id: string): Promise<UserSpot> {
     return axios.delete("/api/users/" + id)
         .then((response: AxiosResponse<UserSpot>) => response.data)
+}
+
+export function getSpotsAroundLocation(lng: number, lat: number, rad: number) {
+    return axios.get("/api/spots/around-user-position", {
+        params: {
+            lng: lng,
+            lat: lat,
+            rad: rad
+        }
+    })
 }

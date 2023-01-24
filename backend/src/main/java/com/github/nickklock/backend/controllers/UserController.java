@@ -1,5 +1,6 @@
 package com.github.nickklock.backend.controllers;
 
+import com.github.nickklock.backend.models.user.UserRequest;
 import com.github.nickklock.backend.models.user.UserSpot;
 import com.github.nickklock.backend.services.UserService;
 import jakarta.servlet.http.HttpSession;
@@ -23,7 +24,7 @@ public class UserController {
 
     @PostMapping(produces = {MediaType.APPLICATION_JSON_VALUE}, consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
     public ResponseEntity<UserSpot>
-    add(@RequestPart("userRequest") String userRequest,
+    add(@RequestPart("userRequest") UserRequest userRequest,
         @RequestPart("file") MultipartFile file) throws IOException {
         return new ResponseEntity<>(userService.createNewUser(userRequest, file), HttpStatus.CREATED);
     }
@@ -31,7 +32,7 @@ public class UserController {
     @PutMapping(path = "/{id}", produces = {MediaType.APPLICATION_JSON_VALUE}, consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
     public ResponseEntity<UserSpot>
     update(@PathVariable String id,
-           @RequestPart("userRequest") String userRequest,
+           @RequestPart("userRequest") UserRequest userRequest,
            @RequestPart(value = "file", required = false) MultipartFile file) throws IOException {
         return new ResponseEntity<>(userService.updateUser(id, userRequest, file), HttpStatus.OK);
     }

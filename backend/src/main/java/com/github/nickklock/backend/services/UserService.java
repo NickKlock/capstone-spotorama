@@ -29,12 +29,10 @@ public class UserService implements UserDetailsService {
     private final IdService idService;
     private static final String anonymousUser = "anonymousUser";
     private final ImageService imageService;
-    private final String2JsonService string2JsonService;
 
 
-    public UserSpot createNewUser(String userRequestString, MultipartFile file) throws IOException {
+    public UserSpot createNewUser(UserRequest userRequest, MultipartFile file) throws IOException {
 
-        UserRequest userRequest = string2JsonService.parseJsonToClass(userRequestString, UserRequest.class);
         String avatarImageBase64encoded = null;
 
         if (file != null) {
@@ -67,9 +65,8 @@ public class UserService implements UserDetailsService {
                         new Author(anonymousUser, "", "", Collections.emptyList()), null));
     }
 
-    public UserSpot updateUser(String id, String userRequestString, MultipartFile file) throws IOException {
+    public UserSpot updateUser(String id, UserRequest userRequest, MultipartFile file) throws IOException {
         String avatarImageBase64encoded = null;
-        UserRequest userRequest = string2JsonService.parseJsonToClass(userRequestString, UserRequest.class);
 
         if (file != null) {
             avatarImageBase64encoded = imageService.

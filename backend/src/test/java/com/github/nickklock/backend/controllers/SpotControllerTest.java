@@ -69,7 +69,7 @@ class SpotControllerTest {
                             "N"
                         ],
                         "waterTemperature": [],
-                        "parkingSpace": "FEW",
+                        "parkingSpace": 2,
                         "position": {
                                     "country": "Germany",
                                     "geo": {
@@ -80,7 +80,7 @@ class SpotControllerTest {
                                         ]
                                     }
                                 },
-                        "restrooms": 0,
+                        "restrooms": "Yes",
                         "imageBase64Encoded": ""
                     }
                 """.getBytes());
