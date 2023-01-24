@@ -25,10 +25,8 @@ public class SpotService {
     private final MapboxClient mapboxClient;
     private final MapboxService mapboxService;
     private final ImageService imageService;
-    private final String2JsonService string2JsonService;
 
-    public Spot add(String newSpotAsString, MultipartFile file) throws IOException {
-        SpotRequest newSpotRequest = string2JsonService.parseJsonToClass(newSpotAsString, SpotRequest.class);
+    public Spot add(SpotRequest newSpotRequest, MultipartFile file) throws IOException {
         SpotRequest spotRequestWithSpotImage;
 
         String spotImageBase64encoded = null;
@@ -38,7 +36,7 @@ public class SpotService {
                     encodeImageToBase64(spotRequestWithSpotImage.spotImage().getBytes());
         } else {
             spotRequestWithSpotImage = newSpotRequest;
-            }
+        }
 
         Position positionFromRawData = createPositionFromRawData
                 (newSpotRequest.position().geo().coordinates()[0], newSpotRequest.position().geo().coordinates()[1]);
@@ -59,8 +57,6 @@ public class SpotService {
                     spotImageBase64encoded);
 
         return spotRepo.save(spotWithId);
-
-
     }
 
     public List<SpotMinimal> list() {

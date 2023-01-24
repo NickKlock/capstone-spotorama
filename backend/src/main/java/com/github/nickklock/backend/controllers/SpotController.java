@@ -2,6 +2,7 @@ package com.github.nickklock.backend.controllers;
 
 import com.github.nickklock.backend.models.spot.Spot;
 import com.github.nickklock.backend.models.spot.SpotMinimal;
+import com.github.nickklock.backend.models.spot.SpotRequest;
 import com.github.nickklock.backend.services.SpotService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -24,7 +25,7 @@ public class SpotController {
 
     @PostMapping(produces = {MediaType.APPLICATION_JSON_VALUE}, consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
     public ResponseEntity<Spot> addSpot(
-            @RequestPart("spot") String newSpot, @RequestPart(value = "file", required = false) MultipartFile file) throws IOException {
+            @RequestPart("spot") SpotRequest newSpot, @RequestPart(value = "file", required = false) MultipartFile file) throws IOException {
         return new ResponseEntity<>(spotService.add(newSpot, file), HttpStatus.CREATED);
     }
 

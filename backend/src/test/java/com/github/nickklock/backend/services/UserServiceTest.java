@@ -31,8 +31,7 @@ class UserServiceTest {
     private final SecurityContext securityContext = mock(SecurityContext.class);
     private final HttpSession httpSession = mock(HttpSession.class);
     private final ImageService imageService = mock(ImageService.class);
-    private final String2JsonService string2JsonService = mock(String2JsonService.class);
-    private final UserService userService = new UserService(userRepo, idService, imageService, string2JsonService);
+    private final UserService userService = new UserService(userRepo, idService, imageService);
 
 
     @Test
@@ -47,9 +46,8 @@ class UserServiceTest {
         when(userRepo.save(any()))
                 .thenReturn(new User("0", givenUserRequest.username(), givenUserRequest.password(), givenUserRequest.author(), null));
 
-        when(string2JsonService.parseJsonToClass(any(), any())).thenReturn(givenUserRequest);
 
-        UserSpot result = userService.createNewUser(givenUserRequest.toString(), null);
+        UserSpot result = userService.createNewUser(givenUserRequest, null);
 
         assertEquals("0", result.id());
         assertEquals(expectedUserSpot, result);
@@ -89,7 +87,7 @@ class UserServiceTest {
     void updateUser_expect_MyUsernameNotFoundException() {
         UserRequest givenUserRequest = new UserRequest("", "", null, null);
         assertThrows(UserNotFoundException.class, () ->
-                userService.updateUser("0", givenUserRequest.toString(), null));
+                userService.updateUser("0", givenUserRequest, null));
     }
 
     @Test
@@ -106,10 +104,9 @@ class UserServiceTest {
         when(userRepo.findById("0")).thenReturn(Optional.of(
                 givenUser));
         when(userRepo.save(any())).thenReturn(givenUser);
-        when(string2JsonService.parseJsonToClass(any(), any())).thenReturn(givenUserRequest);
 
 
-        UserSpot result = userService.updateUser("0", givenUserRequest.toString(), null);
+        UserSpot result = userService.updateUser("0", givenUserRequest, null);
         assertEquals(expectedResult, result);
     }
 
