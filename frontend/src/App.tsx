@@ -14,7 +14,7 @@ import Profile from "./components/profile/Profile";
 import {muiTheme} from "./mui-theme";
 
 function App() {
-    const {spots, addSpot, getSpotsAroundUser1} = useSpots()
+    const {spots, addSpot, getSpotsAroundLocation} = useSpots()
     const {registerUser, loggedInUser, login, logout, edit, deletee} = useUser();
 
     return (
@@ -23,7 +23,7 @@ function App() {
             <BrowserRouter>
                 <Routes>
                     <Route element={<Homepage handleAddSpot={addSpot}
-                                              getSpotsAroundUser={getSpotsAroundUser1}
+                                              getSpotsAroundUser={getSpotsAroundLocation}
                                               spots={spots}/>}
                            path={"/"}/>
 
