@@ -135,4 +135,12 @@ class SpotControllerTest {
         mvc.perform(get(endPoint + "/0"))
                 .andExpect(status().isOk());
     }
+
+    @Test
+    void getSpotsAroundLocation_expect_200() throws Exception {
+        mvc.perform(MockMvcRequestBuilders.get(endPoint + "/around-user-position?lng=56.0&lat=56.0&rad=5"))
+                .andExpect(status().isOk())
+                .andExpect(content().json("[]"));
+
+    }
 }
