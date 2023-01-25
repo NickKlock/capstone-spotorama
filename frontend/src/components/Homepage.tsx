@@ -30,8 +30,9 @@ export default function Homepage(props: HomepageProps) {
     const [centerPosition, setCenterPosition] = useState<Position>()
     const [alert, setAlert] = useState<AlertModel>({alertMessage: "", open: false, severity: "success"})
     const {calculateZoomToKM} = useZoomToKM();
-
+    const [zoom, setZoom] = useState<number>(15.5)
     const location = useLocation();
+    const [currentRequest, setCurrentRequest] = useState<NodeJS.Timeout>()
 
     useEffect(() => {
         if (location.state) {
@@ -39,10 +40,24 @@ export default function Homepage(props: HomepageProps) {
         }
     }, [location.state])
 
-    // useEffect(()=> {
-    //
-    //
-    // },[centerPosition])
+    useEffect(() => {
+
+        if (currentRequest) {
+            clearTimeout(currentRequest)
+            setCurrentRequest(setTimeout(() => findSpotsAroundPosition(), 3000))
+        } else {
+            setCurrentRequest(setTimeout(() => findSpotsAroundPosition(), 3000))
+        }
+
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [centerPosition, zoom])
+
+    function findSpotsAroundPosition() {
+        const zoomInKM = calculateZoomToKM(zoom)
+        if (centerPosition) {
+            props.getSpotsAroundUser(centerPosition.geo.coordinates[0], centerPosition.geo.coordinates[1], zoomInKM)
+        }
+    }
 
 
     function handleCurrentPosition() {
@@ -137,18 +152,6 @@ export default function Homepage(props: HomepageProps) {
         setAlert({...alert, open: false})
     }
 
-
-    function handleZoomChange() {
-        console.log(centerPosition)
-        if (centerPosition) {
-            console.log("not undefined")
-            // props.getSpotsAroundUser(centerPosition.geo.coordinates[0],centerPosition.geo.coordinates[1],zoomInKM)
-        }
-    }
-
-
-    console.log(centerPosition)
-
     return (
         <Box>
             <Box position={"fixed"} height={"calc(100% - 56px)"} width={"100%"}>
@@ -157,7 +160,7 @@ export default function Homepage(props: HomepageProps) {
                              handleSpotPopupButtonClick={handleNavigateToSpotDetails}
                              spots={props.spots}
                              handleCenterPositionChange={handleCenterPosition}
-                             handleZoomChange={handleZoomChange}
+                             handleZoomChange={setZoom}
                              centerLng={centerPosition?.geo.coordinates[0]}
                              centerLat={centerPosition?.geo.coordinates[1]}
                     />
