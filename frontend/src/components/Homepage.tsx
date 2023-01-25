@@ -10,10 +10,12 @@ import SpotMap from "./map/SpotMap";
 import CustomAlert from "./ui/custom-mui-components/CustomAlert";
 import {AlertModel} from "../models/AlertModel";
 import {AxiosError} from "axios";
+import useZoomToKM from "../hooks/useZoomToKM";
 
 type HomepageProps = {
     spots: SpotMinimal[]
     handleAddSpot(newSpot: Spot): Promise<void>
+    getSpotsAroundUser(lng: number, lat: number, rad: number): void
 }
 
 export default function Homepage(props: HomepageProps) {
@@ -27,6 +29,7 @@ export default function Homepage(props: HomepageProps) {
     const navigate = useNavigate()
     const [centerPosition, setCenterPosition] = useState<Position>()
     const [alert, setAlert] = useState<AlertModel>({alertMessage: "", open: false, severity: "success"})
+    const {calculateZoomToKM} = useZoomToKM();
 
     const location = useLocation();
 
@@ -35,6 +38,11 @@ export default function Homepage(props: HomepageProps) {
             setAlert(location.state)
         }
     }, [location.state])
+
+    // useEffect(()=> {
+    //
+    //
+    // },[centerPosition])
 
 
     function handleCurrentPosition() {
@@ -129,6 +137,18 @@ export default function Homepage(props: HomepageProps) {
         setAlert({...alert, open: false})
     }
 
+
+    function handleZoomChange() {
+        console.log(centerPosition)
+        if (centerPosition) {
+            console.log("not undefined")
+            // props.getSpotsAroundUser(centerPosition.geo.coordinates[0],centerPosition.geo.coordinates[1],zoomInKM)
+        }
+    }
+
+
+    console.log(centerPosition)
+
     return (
         <Box>
             <Box position={"fixed"} height={"calc(100% - 56px)"} width={"100%"}>
@@ -137,6 +157,7 @@ export default function Homepage(props: HomepageProps) {
                              handleSpotPopupButtonClick={handleNavigateToSpotDetails}
                              spots={props.spots}
                              handleCenterPositionChange={handleCenterPosition}
+                             handleZoomChange={handleZoomChange}
                              centerLng={centerPosition?.geo.coordinates[0]}
                              centerLat={centerPosition?.geo.coordinates[1]}
                     />
