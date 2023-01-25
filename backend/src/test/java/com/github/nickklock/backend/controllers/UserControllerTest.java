@@ -50,7 +50,7 @@ class UserControllerTest {
     @Test
     void add_user_expect_status_created() throws Exception {
 
-        MockMultipartFile user = new MockMultipartFile("userRequest", """
+        MockMultipartFile user = new MockMultipartFile("userRequest", null, MediaType.APPLICATION_JSON_VALUE, """
                 {
                    "username": "nick@nick.de",
                    "password": "123fghHjasd!",
@@ -125,7 +125,7 @@ class UserControllerTest {
         User givenUser = userRepo.save(new User("1", "test@test.de", "123!", givenAuthor, ""));
         User givenUpdatedUser = givenUser.withPassword("1234Asdg!");
 
-        MockMultipartFile user = new MockMultipartFile("userRequest", """
+        MockMultipartFile user = new MockMultipartFile("userRequest", null, MediaType.APPLICATION_JSON_VALUE, """
                 {
                         "username": "test@test.de",
                         "password": "1234Asdg!",
