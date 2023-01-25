@@ -5,11 +5,6 @@ import {getSpotsAroundLocation as apiGetSpotsAroundLocation, postSpot} from "../
 export default function useSpots() {
     const [spots, setSpots] = useState<SpotMinimal[]>([])
 
-    // useEffect(() => {
-    //     getAllSpotsMinimal()
-    //         .then((allSpotsAsMinimal: SpotMinimal[]) => setSpots(allSpotsAsMinimal))
-    // }, [])
-
     function addSpot(newSpot: Spot): Promise<void> {
         return postSpot(newSpot)
             .then(response => setSpots([...spots, response]))
