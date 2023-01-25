@@ -8,6 +8,7 @@ import com.github.nickklock.backend.models.geopostion.Position;
 import com.github.nickklock.backend.models.mapbox.geocoding.CountryByCord;
 import com.github.nickklock.backend.models.mapbox.geocoding.Feature;
 import com.github.nickklock.backend.models.spot.Spot;
+import com.github.nickklock.backend.models.spot.SpotMinimal;
 import com.github.nickklock.backend.models.spot.SpotRequest;
 import com.github.nickklock.backend.repos.SpotRepo;
 import org.junit.jupiter.api.Test;
@@ -15,6 +16,7 @@ import org.springframework.mock.web.MockMultipartFile;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -151,6 +153,35 @@ class SpotServiceTest {
 
         assertEquals(expectedResult, result);
         verify(mapboxClient).countryByCords(any(), any(), any());
+
+    }
+
+    @Test
+    void testList_expect_correct_remapping() {
+        Geo geo = new Geo("Point", new double[]{0, 0});
+        Position position = new Position("country", geo);
+        Spot spot1 = new Spot("id1", "Spot 1", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), null, position, "", "");
+        Spot spot2 = new Spot("id2", "Spot 2", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), null, position, "", "");
+        when(spotRepo.findAll()).thenReturn(Arrays.asList(spot1, spot2));
+        List<SpotMinimal> result = spotService.list();
+
+        assertEquals(2, result.size());
+        assertEquals(new SpotMinimal(spot1), result.get(0));
+        assertEquals(new SpotMinimal(spot2), result.get(1));
+    }
+
+    @Test
+    void getSpotsAroundCurrentPosition_expect_correct_size() {
+        Spot spot1 = new Spot("id1", "Spot 1", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), null, new Position("country", new Geo("Point", new double[]{0, 0})), "", "");
+        Spot spot2 = new Spot("id2", "Spot 2", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), null, new Position("country", new Geo("Point", new double[]{1, 1})), "", "");
+
+        when(spotRepo.findByLocationWithin(0, 0, (100.0 / 6371)))
+                .thenReturn(List.of(new SpotMinimal(spot1), new SpotMinimal(spot2)));
+
+        List<SpotMinimal> result = spotService.getSpotsAroundCurrentPosition(0, 0, 100);
+
+        assertEquals(2, result.size());
+
 
     }
 }

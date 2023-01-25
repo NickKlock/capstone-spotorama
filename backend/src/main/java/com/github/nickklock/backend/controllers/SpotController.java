@@ -40,7 +40,7 @@ public class SpotController {
     }
 
     @GetMapping("/around-user-position")
-    public ResponseEntity<List<SpotMinimal>> getSpotsAroundUser(
+    public ResponseEntity<List<SpotMinimal>> getSpotsAroundLocation(
             @RequestParam(value = "lng", required = false, defaultValue = "56.0") double lng,
             @RequestParam(value = "lat", required = false, defaultValue = "56.0") double lat,
             @RequestParam(value = "rad") double rad) {
