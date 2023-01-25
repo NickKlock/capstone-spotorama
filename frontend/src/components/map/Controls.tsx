@@ -7,6 +7,7 @@ type ControlsProps={
     handleCenterCoordinatesChange(center:Position):void
     centerLng:number | undefined
     centerLat:number | undefined
+    handleZoomChange(zoom: number): void
 }
 export default function Controls(props:ControlsProps) {
     const {spotmap} = useMap()
@@ -21,7 +22,6 @@ export default function Controls(props:ControlsProps) {
             if (spotmap) {
                 setLat(spotmap?.getCenter().lat)
                 setLng(spotmap?.getCenter().lng)
-
                 props.handleCenterCoordinatesChange({
                     country: "",
                     geo: {
@@ -33,7 +33,16 @@ export default function Controls(props:ControlsProps) {
         }
 
         spotmap.on("move", onMove)
+
+        function onZoom() {
+            if (spotmap) {
+                props.handleZoomChange(spotmap.getZoom())
+            }
+        }
+
+        spotmap.on("zoom", onZoom)
         onMove()
+        onZoom()
 
         //disabling es lint because the props are always changing and we don't want an endless loop here
         // eslint-disable-next-line react-hooks/exhaustive-deps
