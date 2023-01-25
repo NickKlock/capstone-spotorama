@@ -13,6 +13,7 @@ type SpotMapProps = {
     handleSpotPopupButtonClick(id: string): void
     showCenterMarker: boolean
     handleCenterPositionChange(center: Position): void
+    handleZoomChange(zoom: number): void
     centerLng: number | undefined
     centerLat: number | undefined
 }
@@ -52,7 +53,8 @@ export default function SpotMap(props: SpotMapProps) {
                 latitude: 50.9988,
                 zoom: 3.5
             }}
-
+            maxZoom={15.5}
+            minZoom={3.5}
             style={{width: "100%", height: "100%"}}
             mapStyle="mapbox://styles/mapbox/satellite-streets-v12"
             mapboxAccessToken={"pk.eyJ1Ijoibmlja2tsb2NrIiwiYSI6ImNsYm5kZTBqcDBxcnIzb3BxdGg5cDlxcmYifQ.ZQHKwQswuvyOW4_1ZBZONg"}
@@ -61,6 +63,7 @@ export default function SpotMap(props: SpotMapProps) {
 
             <Controls handleCenterCoordinatesChange={props.handleCenterPositionChange}
                       showCenterMarker={props.showCenterMarker}
+                      handleZoomChange={props.handleZoomChange}
                       centerLat={props.centerLat}
                       centerLng={props.centerLng}
             />
