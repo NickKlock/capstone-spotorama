@@ -1,4 +1,15 @@
-import {Box, CloseReason, Drawer, Fab, SpeedDial, SpeedDialAction, SpeedDialIcon} from "@mui/material";
+import {
+    Backdrop,
+    Box,
+    CircularProgress,
+    CloseReason,
+    Drawer,
+    Fab,
+    SpeedDial,
+    SpeedDialAction,
+    SpeedDialIcon,
+    Typography
+} from "@mui/material";
 import {AddLocation, Cancel, MyLocation, WhereToVote} from "@mui/icons-material";
 import React, {SyntheticEvent, useEffect, useState} from "react";
 import AddSpot from "./AddSpot";
@@ -15,7 +26,7 @@ import useZoomToKM from "../hooks/useZoomToKM";
 type HomepageProps = {
     spots: SpotMinimal[]
     handleAddSpot(newSpot: Spot): Promise<void>
-    getSpotsAroundUser(lng: number, lat: number, rad: number): void
+    getSpotsAroundUser(lng: number, lat: number, rad: number): Promise<SpotMinimal[] | void>
 }
 
 export default function Homepage(props: HomepageProps) {
@@ -33,6 +44,7 @@ export default function Homepage(props: HomepageProps) {
     const [zoom, setZoom] = useState<number>(15.5)
     const location = useLocation();
     const [currentRequest, setCurrentRequest] = useState<NodeJS.Timeout>()
+    const [showLoading, setShowLoading] = useState<boolean>(true)
 
     useEffect(() => {
         if (location.state) {
@@ -44,18 +56,24 @@ export default function Homepage(props: HomepageProps) {
 
         if (currentRequest) {
             clearTimeout(currentRequest)
-            setCurrentRequest(setTimeout(() => findSpotsAroundPosition(), 3000))
-        } else {
-            setCurrentRequest(setTimeout(() => findSpotsAroundPosition(), 3000))
         }
+
+        const timeout = setTimeout(() => findSpotsAroundPosition(), 3000);
+        setCurrentRequest(timeout)
+
+
+        return () => clearTimeout(timeout);
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [centerPosition, zoom])
 
     function findSpotsAroundPosition() {
-        const zoomInKM = calculateZoomToKM(zoom)
         if (centerPosition) {
-            props.getSpotsAroundUser(centerPosition.geo.coordinates[0], centerPosition.geo.coordinates[1], zoomInKM)
+            setShowLoading(true)
+            const zoomInKM = calculateZoomToKM(zoom)
+            props.getSpotsAroundUser(
+                centerPosition.geo.coordinates[0], centerPosition.geo.coordinates[1], zoomInKM)
+                .then(() => setShowLoading(false))
         }
     }
 
@@ -154,6 +172,11 @@ export default function Homepage(props: HomepageProps) {
 
     return (
         <Box>
+            <Backdrop open={showLoading} sx={{zIndex: (theme) => theme.zIndex.drawer + 1}}>
+                <CircularProgress sx={{marginRight: 1}}/>
+                <Typography textAlign={"center"}>Loading spots...</Typography>
+            </Backdrop>
+
             <Box position={"fixed"} height={"calc(100% - 56px)"} width={"100%"}>
                 <MapProvider>
                     <SpotMap showCenterMarker={showCenterMarker}
