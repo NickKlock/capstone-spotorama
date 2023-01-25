@@ -49,7 +49,8 @@ class SpotControllerTest {
     @WithMockUser
     @Test
     void addSpot_expect_status_created() throws Exception {
-        MockMultipartFile spot = new MockMultipartFile("spot", """
+
+        MockMultipartFile spot = new MockMultipartFile("spot", null, MediaType.APPLICATION_JSON_VALUE, """
                 {
                         "id": "",
                         "name": "a",
