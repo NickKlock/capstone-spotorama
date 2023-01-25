@@ -100,5 +100,5 @@ export function getSpotsAroundLocation(lng: number, lat: number, rad: number) {
             lat: lat,
             rad: rad
         }
-    })
+    }).then((response: AxiosResponse<SpotMinimal[]>) => response.data)
 }
