@@ -45,7 +45,7 @@ export default function Homepage(props: HomepageProps) {
     const [zoom, setZoom] = useState<number>(15.5)
     const location = useLocation();
     const [currentRequest, setCurrentRequest] = useState<NodeJS.Timeout>()
-    const [showLoading, setShowLoading] = useState<boolean>(true)
+    const [showLoading, setShowLoading] = useState<boolean>(false)
     const {geoJson, refreshGeoJson} = useGeoJson()
 
     useEffect(() => {
