@@ -17,8 +17,8 @@ export default function CustomAccordion(props: CustomAccordionProps) {
                 <Typography>{props.title}</Typography>
             </AccordionSummary>
             <AccordionDetails>
-                <Typography>{Array.isArray(props.mainContent) ? props.mainContent.join(", ").toLowerCase() :
-                    props.mainContent.toLowerCase()}</Typography>
+                <Typography>{Array.isArray(props.mainContent) ? props.mainContent.join(", ").toString().toLowerCase() :
+                    props.mainContent.toString().toLowerCase()}</Typography>
             </AccordionDetails>
         </Accordion>
     )
