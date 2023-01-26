@@ -7,8 +7,8 @@ import {ArrowForward, Explore, Kitesurfing, Waves} from "@mui/icons-material";
 import Controls from "./Controls";
 import {Position} from "../../models/Position";
 import "./PopOver.css"
-import {FeatureCollection} from "geojson";
 import {heatmapLayer} from "./heatmap-style";
+import {GeoJSON} from "../../models/GeoJson";
 
 type SpotMapProps = {
     spots: SpotMinimal[]
@@ -18,45 +18,12 @@ type SpotMapProps = {
     handleZoomChange(zoom: number): void
     centerLng: number | undefined
     centerLat: number | undefined
+    geoJson: GeoJSON | undefined
+    zoom: number
 }
 export default function SpotMap(props: SpotMapProps) {
     const [popupData, setPopupData] = useState<SpotMinimal | null>(null)
 
-    const data: FeatureCollection = {
-        type: 'FeatureCollection',
-        features: [
-            {
-                type: 'Feature',
-                geometry: {
-                    type: 'Point',
-                    coordinates: [6.3398, 50.9988]
-                },
-                properties: {
-                    name: "Test"
-                }
-            },
-            {
-                type: 'Feature',
-                geometry: {
-                    type: 'Point',
-                    coordinates: [6.3398, 50.9988]
-                },
-                properties: {
-                    name: "Test"
-                }
-            },
-            {
-                type: 'Feature',
-                geometry: {
-                    type: 'Point',
-                    coordinates: [6.3398, 50.9988]
-                },
-                properties: {
-                    name: "Test"
-                }
-            },
-        ]
-    }
 
     function handPopupClose() {
         setPopupData(null)
@@ -105,11 +72,12 @@ export default function SpotMap(props: SpotMapProps) {
                       centerLng={props.centerLng}
             />
 
-            <Source type={"geojson"} data={data}>
+            {props.geoJson && <Source type={"geojson"} data={props.geoJson}>
                 <Layer {...heatmapLayer}/>
-            </Source>
+            </Source>}
 
-            {spotMarkers}
+
+            {props.zoom > 4.9 && spotMarkers}
 
             {popupData && (
                 <Popup longitude={popupData.position.geo.coordinates[0]}
