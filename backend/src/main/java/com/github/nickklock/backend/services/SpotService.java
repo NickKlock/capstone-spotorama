@@ -2,8 +2,7 @@ package com.github.nickklock.backend.services;
 
 import com.github.nickklock.backend.client.MapboxClient;
 import com.github.nickklock.backend.exceptions.NoSuchSpotException;
-import com.github.nickklock.backend.models.geopostion.Geo;
-import com.github.nickklock.backend.models.geopostion.Position;
+import com.github.nickklock.backend.models.geopostion.*;
 import com.github.nickklock.backend.models.mapbox.geocoding.CountryByCord;
 import com.github.nickklock.backend.models.spot.Spot;
 import com.github.nickklock.backend.models.spot.SpotMinimal;
@@ -85,4 +84,14 @@ public class SpotService {
     }
 
 
+    public GeoJSON getGeoJson() {
+        List<GeoFeature> geoFeatures = spotRepo.findAll().stream().map(spot ->
+                new GeoFeature("Feature",
+                        new GeoProperties(
+                                spot.name(),
+                                spot.id()),
+                        spot.position().geo())).toList();
+
+        return new GeoJSON("FeatureCollection", geoFeatures);
+    }
 }

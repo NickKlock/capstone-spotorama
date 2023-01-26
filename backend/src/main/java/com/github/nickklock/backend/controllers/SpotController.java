@@ -1,5 +1,6 @@
 package com.github.nickklock.backend.controllers;
 
+import com.github.nickklock.backend.models.geopostion.GeoJSON;
 import com.github.nickklock.backend.models.spot.Spot;
 import com.github.nickklock.backend.models.spot.SpotMinimal;
 import com.github.nickklock.backend.models.spot.SpotRequest;
@@ -46,5 +47,10 @@ public class SpotController {
             @RequestParam(value = "rad") double rad) {
         return new ResponseEntity<>(spotService
                 .getSpotsAroundCurrentPosition(lng, lat, rad), HttpStatus.OK);
+    }
+
+    @GetMapping("/geojson")
+    public ResponseEntity<GeoJSON> geoJson() {
+        return new ResponseEntity<>(spotService.getGeoJson(), HttpStatus.OK);
     }
 }
