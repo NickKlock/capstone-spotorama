@@ -23,5 +23,5 @@ export default function useSpots() {
             .then(response => response)
     }
 
-    return {spots, addSpot, getSpotsAroundLocation}
+    return {spots, addSpot, getSpotsAroundLocation, getAllSpots}
 }

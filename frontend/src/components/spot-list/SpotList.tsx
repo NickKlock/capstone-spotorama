@@ -1,23 +1,45 @@
 import {Spot, SpotMinimal} from "../../models/Spot";
 import SpotItem from "./SpotItem";
-import {Accordion, AccordionDetails, AccordionSummary, Paper, Stack, TextField, Typography} from "@mui/material";
-import {ChangeEvent, useEffect, useState} from "react";
+import {
+    Accordion,
+    AccordionDetails,
+    AccordionSummary,
+    Backdrop,
+    CircularProgress,
+    Paper,
+    Stack,
+    TextField,
+    Typography
+} from "@mui/material";
+import React, {ChangeEvent, useEffect, useState} from "react";
 import {ExpandMore} from "@mui/icons-material";
+import useSpots from "../../hooks/useSpots";
 
-type SpotListProps = {
-    spots: SpotMinimal[]
-}
-export default function SpotList(props: SpotListProps) {
+
+export default function SpotList() {
     const [searchTerm, setSearchTerm] = useState<string>("")
     const [groupedSpots, setGroupedSpots] = useState<Map<string, SpotMinimal[]>>()
+    const [allSpots, setAllSpots] = useState<SpotMinimal[]>()
+    const {getAllSpots} = useSpots()
+    const [showLoading, setShowLoading] = useState<boolean>(true)
+
+    useEffect(() => {
+        getAllSpots()
+            .then((response: SpotMinimal[]) => {
+                setAllSpots(response)
+            })
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [])
 
     function handleSearchInputChange(event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) {
         setSearchTerm(event.target.value.toLowerCase())
     }
 
     useEffect(() => {
+        if (!allSpots) return
+
         const mappedSpots = new Map<string, SpotMinimal[]>()
-        props.spots.forEach((spot) => {
+        allSpots.forEach((spot) => {
                 if (!groupedSpots) {
                     setGroupedSpots(new Map<string, Spot[]>())
                 }
@@ -34,9 +56,9 @@ export default function SpotList(props: SpotListProps) {
             }
         )
         setGroupedSpots(mappedSpots)
-
+        setShowLoading(false)
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [props.spots])
+    }, [allSpots])
 
     if (groupedSpots) {
         const filteredCountries = Array.from(groupedSpots)
@@ -67,7 +89,10 @@ export default function SpotList(props: SpotListProps) {
     } else {
 
         return (
-            <p>loading...</p>
+            <Backdrop open={showLoading} sx={{zIndex: (theme) => theme.zIndex.drawer + 1}}>
+                <CircularProgress sx={{marginRight: 1}}/>
+                <Typography textAlign={"center"}>Loading spots...</Typography>
+            </Backdrop>
         )
     }
 }

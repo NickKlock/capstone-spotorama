@@ -39,7 +39,7 @@ function App() {
                         <Route element={<Register loggedInUser={loggedInUser}
                                                   handleRegisterUser={registerUser}/>}
                                path={"/register"}/>
-                        <Route element={<SpotList spots={spots}/>}
+                        <Route element={<SpotList/>}
                                path={"/spots"}/>
                         <Route element={<SpotDetail/>}
                                path={"/spots/:id/details"}/>
