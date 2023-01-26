@@ -22,6 +22,7 @@ import CustomAlert from "./ui/custom-mui-components/CustomAlert";
 import {AlertModel} from "../models/AlertModel";
 import {AxiosError} from "axios";
 import useZoomToKM from "../hooks/useZoomToKM";
+import useGeoJson from "../hooks/useGeoJson";
 
 type HomepageProps = {
     spots: SpotMinimal[]
@@ -45,6 +46,7 @@ export default function Homepage(props: HomepageProps) {
     const location = useLocation();
     const [currentRequest, setCurrentRequest] = useState<NodeJS.Timeout>()
     const [showLoading, setShowLoading] = useState<boolean>(true)
+    const {geoJson, refreshGeoJson} = useGeoJson()
 
     useEffect(() => {
         if (location.state) {
@@ -53,12 +55,15 @@ export default function Homepage(props: HomepageProps) {
     }, [location.state])
 
     useEffect(() => {
+        if (zoom > 4.9) return
 
         if (currentRequest) {
             clearTimeout(currentRequest)
         }
 
-        const timeout = setTimeout(() => findSpotsAroundPosition(), 3000);
+        const timeout = setTimeout(() => {
+            findSpotsAroundPosition()
+        }, 3000);
         setCurrentRequest(timeout)
 
 
@@ -111,6 +116,7 @@ export default function Homepage(props: HomepageProps) {
     function handleSaveSpot(newSpot: Spot) {
         props.handleAddSpot(newSpot)
             .then(() => {
+                refreshGeoJson()
                 resetUi()
                 setAlert({
                     ...alert,
@@ -184,6 +190,8 @@ export default function Homepage(props: HomepageProps) {
                              spots={props.spots}
                              handleCenterPositionChange={handleCenterPosition}
                              handleZoomChange={setZoom}
+                             geoJson={geoJson}
+                             zoom={zoom}
                              centerLng={centerPosition?.geo.coordinates[0]}
                              centerLat={centerPosition?.geo.coordinates[1]}
                     />
