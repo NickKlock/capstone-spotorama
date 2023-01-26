@@ -102,3 +102,8 @@ export function getSpotsAroundLocation(lng: number, lat: number, rad: number) {
         }
     }).then((response: AxiosResponse<SpotMinimal[]>) => response.data)
 }
+
+export function getGeoJson() {
+    return axios.get("/api/spots/geojson")
+        .then((response: AxiosResponse) => response.data)
+}
