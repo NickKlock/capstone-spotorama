@@ -1,4 +1,4 @@
-import Map, {GeolocateControl, Marker, Popup} from 'react-map-gl';
+import Map, {GeolocateControl, Layer, Marker, Popup, Source} from 'react-map-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import {SpotMinimal} from "../../models/Spot";
 import {useState} from "react";
@@ -7,6 +7,8 @@ import {ArrowForward, Explore, Kitesurfing, Waves} from "@mui/icons-material";
 import Controls from "./Controls";
 import {Position} from "../../models/Position";
 import "./PopOver.css"
+import {FeatureCollection} from "geojson";
+import {heatmapLayer} from "./heatmap-style";
 
 type SpotMapProps = {
     spots: SpotMinimal[]
@@ -19,6 +21,42 @@ type SpotMapProps = {
 }
 export default function SpotMap(props: SpotMapProps) {
     const [popupData, setPopupData] = useState<SpotMinimal | null>(null)
+
+    const data: FeatureCollection = {
+        type: 'FeatureCollection',
+        features: [
+            {
+                type: 'Feature',
+                geometry: {
+                    type: 'Point',
+                    coordinates: [6.3398, 50.9988]
+                },
+                properties: {
+                    name: "Test"
+                }
+            },
+            {
+                type: 'Feature',
+                geometry: {
+                    type: 'Point',
+                    coordinates: [6.3398, 50.9988]
+                },
+                properties: {
+                    name: "Test"
+                }
+            },
+            {
+                type: 'Feature',
+                geometry: {
+                    type: 'Point',
+                    coordinates: [6.3398, 50.9988]
+                },
+                properties: {
+                    name: "Test"
+                }
+            },
+        ]
+    }
 
     function handPopupClose() {
         setPopupData(null)
@@ -38,7 +76,7 @@ export default function SpotMap(props: SpotMapProps) {
         />)
 
     function handleSpotPopupButtonClick() {
-        if (popupData){
+        if (popupData) {
             props.handleSpotPopupButtonClick(popupData?.id)
             setPopupData(null)
         }
@@ -54,7 +92,6 @@ export default function SpotMap(props: SpotMapProps) {
                 zoom: 3.5
             }}
             maxZoom={15.5}
-            minZoom={3.5}
             style={{width: "100%", height: "100%"}}
             mapStyle="mapbox://styles/mapbox/satellite-streets-v12"
             mapboxAccessToken={"pk.eyJ1Ijoibmlja2tsb2NrIiwiYSI6ImNsYm5kZTBqcDBxcnIzb3BxdGg5cDlxcmYifQ.ZQHKwQswuvyOW4_1ZBZONg"}
@@ -67,6 +104,10 @@ export default function SpotMap(props: SpotMapProps) {
                       centerLat={props.centerLat}
                       centerLng={props.centerLng}
             />
+
+            <Source type={"geojson"} data={data}>
+                <Layer {...heatmapLayer}/>
+            </Source>
 
             {spotMarkers}
 
