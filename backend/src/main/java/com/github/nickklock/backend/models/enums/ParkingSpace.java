@@ -1,16 +1,14 @@
 package com.github.nickklock.backend.models.enums;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
-@JsonFormat(shape = JsonFormat.Shape.NUMBER)
 public enum ParkingSpace {
-    FEW(0),
-    ENOUGH(1),
-    ALOT(2);
-
-
-    ParkingSpace(int ignoredLabel) {
-    }
+    @JsonProperty("0")
+    FEW,
+    @JsonProperty("1")
+    ENOUGH,
+    @JsonProperty("2")
+    ALOT
 
 
 }
