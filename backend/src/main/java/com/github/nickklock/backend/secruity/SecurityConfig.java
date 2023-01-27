@@ -55,6 +55,7 @@ public class SecurityConfig extends AbstractSecurityWebApplicationInitializer {
                         .requestMatchers(HttpMethod.POST, "/api/users/").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/spots/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/mapbox").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/api/spots").authenticated()
                         .anyRequest().authenticated()
                 )
                 .logout(logout -> logout

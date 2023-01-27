@@ -1,8 +1,8 @@
 package com.github.nickklock.backend.controllers;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.nickklock.backend.models.enums.ParkingSpace;
-import com.github.nickklock.backend.models.geopostion.Geo;
-import com.github.nickklock.backend.models.geopostion.Position;
+import com.github.nickklock.backend.models.geopostion.*;
 import com.github.nickklock.backend.models.spot.Spot;
 import com.github.nickklock.backend.repos.SpotRepo;
 import mockwebserver3.MockResponse;
@@ -20,9 +20,11 @@ import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
@@ -141,6 +143,40 @@ class SpotControllerTest {
         mvc.perform(MockMvcRequestBuilders.get(endPoint + "/around-user-position?lng=56.0&lat=56.0&rad=5"))
                 .andExpect(status().isOk())
                 .andExpect(content().json("[]"));
+
+    }
+
+    @Test
+    void geoJson_expect_200() throws Exception {
+        mvc.perform(MockMvcRequestBuilders.get(endPoint + "/geojson"))
+                .andExpect(status().isOk());
+
+    }
+
+    @Test
+    void geoJson_expect_200_and_data() throws Exception {
+        GeoProperties properties = new GeoProperties("Spot 1", "1");
+        Geo geometry = new Geo("Feature", new double[]{1, 1});
+        GeoFeature feature = new GeoFeature("Feature", properties, geometry);
+        GeoJSON geoJson = new GeoJSON("FeatureCollection", Collections.singletonList(feature));
+
+        spotRepo.save(new Spot("1", "Spot 1", new ArrayList<>(),
+                new ArrayList<>(), new ArrayList<>(), new ArrayList<>(),
+                new ArrayList<>(), new ArrayList<>(), new ArrayList<>(),
+                new ArrayList<>(), ParkingSpace.FEW,
+                new Position("Germany",
+                        new Geo("Point", new double[]{1, 1})),
+                "yes", ""));
+
+
+        MvcResult mvcResult = mvc.perform(get(endPoint + "/geojson"))
+                .andExpect(status().isOk())
+                .andReturn();
+
+        GeoJSON responseGeoJson = new ObjectMapper()
+                .readValue(mvcResult.getResponse().getContentAsString(), GeoJSON.class);
+
+        assertEquals(geoJson, responseGeoJson);
 
     }
 }
